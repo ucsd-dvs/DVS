@@ -1,8 +1,13 @@
 build/*
 gray-test.jpg
 
+# ignore intelliJ project files
 .idea/*
 *.iml
+
+*.dylib
+*.dll
+*.so
 
 *.class
 
