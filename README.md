@@ -8,7 +8,7 @@
 
 * import into IntelliJ
 * make sure you have your own libopencv in resources/opencv folder
-* right click build.gradle > Synchronize 'build.gradle'. This should install all dependencies
+* right click on project > Synchronize 'build.gradle'. This should install all dependencies
 * install lombok plugin. 
   * File > Settings > Plugins > Browser Repositories... > search for "Lombok Plugin"
 * enable annotation processing. 
