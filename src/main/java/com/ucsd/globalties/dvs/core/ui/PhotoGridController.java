@@ -67,6 +67,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
         if (file != null) {
             fileChooser.setInitialDirectory(file.getParentFile());
             vFilePath = file.getAbsolutePath();
+            //FIXME: rotate image before showing on UI
             imgVert.setImage(new Image("file:///" + vFilePath));
         }
     }
