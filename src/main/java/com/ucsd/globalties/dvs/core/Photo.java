@@ -1,13 +1,13 @@
 package com.ucsd.globalties.dvs.core;
 
+import com.atul.JavaOpenCV.Imshow;
 import com.ucsd.globalties.dvs.core.tools.Pair;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Rect;
-import org.opencv.core.Size;
+import org.opencv.core.*;
+import org.opencv.gpu.Gpu;
 import org.opencv.highgui.Highgui;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
 
@@ -87,6 +87,14 @@ public class Photo {
 
     public Pair<Eye, Eye> findEyes() {
         Mat image = Highgui.imread(path);
+
+        if(type == PhotoType.VERTICAL) {
+            Core.transpose(image, image);
+            Core.flip(image, image, 0);
+//            Imshow im = new Imshow("sdfd");
+//            im.showImage(image);
+        }
+
         // find face
         Rect faceBox = findFaceRoi(image);
         // Detect eyes from cropped face image
