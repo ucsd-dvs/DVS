@@ -45,6 +45,11 @@ public class Main extends Application {
     public static File TEMP_DIR;
 
     public static void main(String[] args) {
+        initOpenCV();
+        launch(args);
+    }
+
+    public static void initOpenCV() {
         // create program directories
         TEMP_DIR = new File(System.getProperty("java.io.tmpdir") + File.separator + "ucsd-dvs");
         if (!TEMP_DIR.exists()) {
@@ -63,7 +68,6 @@ public class Main extends Application {
         OUTPUT_FILE = outputDir.getAbsolutePath() + File.separator;
         controller = new Controller();
         loadLibraryComponents();
-        launch(args);
     }
 
     /**

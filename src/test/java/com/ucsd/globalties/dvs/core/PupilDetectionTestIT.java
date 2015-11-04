@@ -47,7 +47,7 @@ public class PupilDetectionTestIT {
 
     @Before
     public void setupAndClean() {
-        Main.loadLibraryComponents();
+        Main.initOpenCV();
         for (Iterator<Pair<String, String>> it = TEST_PAIRS.iterator(); it.hasNext(); ) {
             Pair<String, String> picPair = it.next();
             File fst = new File(PupilDetectionTestIT.class.getResource("/pics/" + picPair.getLeft()).getFile());
