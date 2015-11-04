@@ -7,9 +7,9 @@ import com.ucsd.globalties.dvs.core.Patient;
  * TODO design this in a better way so that the EyeDisease is appropriately restricted
  * for each respective disease detector. Perhaps extend an abstract class with restrictive
  * functionality instead of implementing this interface directly.
- * @author Rahul
  *
+ * @author Rahul
  */
 public interface DiseaseDetector {
-  public void detect(Patient p);
+    public void detect(Patient p);
 }

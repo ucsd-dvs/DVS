@@ -6,12 +6,12 @@ import com.ucsd.globalties.dvs.core.Patient;
 /**
  * Detect Astigmatism in a Patient.
  * TODO port this algorithm from the Python code when Crescent detection is added
- * @author Rahul
  *
+ * @author Rahul
  */
 public class AstigmatismDetector implements DiseaseDetector {
-  
-  public void detect(Patient p) {
-    p.getMedicalRecord().put(EyeDisease.ASTIGMATISM, "N/A: WIP");
-  }
+
+    public void detect(Patient p) {
+        p.getMedicalRecord().put(EyeDisease.ASTIGMATISM, "N/A: WIP");
+    }
 }
