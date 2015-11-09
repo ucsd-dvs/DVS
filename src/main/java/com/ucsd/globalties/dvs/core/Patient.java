@@ -17,9 +17,10 @@ import java.util.Map;
  *
  * @author Rahul
  */
-@Builder // Automatically generate a builder class for the patient that supports optional parameters.
+//@Builder // Automatically generate a builder class for the patient that supports optional parameters.
 @Slf4j
 public class Patient {
+    @Setter
     private String name, birth, gender, ethnicity, language, roomNumber, school,
             screeningComment, referral;
 
@@ -29,6 +30,33 @@ public class Patient {
 
     @Getter
     private Map<EyeDisease, String> medicalRecord;
+
+    public Patient(String name, String birth, String gender, String ethnicity, String language, String roomNumber,
+                   String school, String screeningComment, String referral) {
+        this.name = name;
+        this.birth = birth;
+        this.gender = gender;
+        this.ethnicity = ethnicity;
+        this.language = language;
+        this.roomNumber = roomNumber;
+        this.school = school;
+        this.screeningComment = screeningComment;
+        this.referral = referral;
+    }
+
+    public Patient(String name, String birth, String gender, String ethnicity, String language, String roomNumber,
+                   String school, String screeningComment, String referral, Map<EyeDisease, String> medicalRecord) {
+        this.name = name;
+        this.birth = birth;
+        this.gender = gender;
+        this.ethnicity = ethnicity;
+        this.language = language;
+        this.roomNumber = roomNumber;
+        this.school = school;
+        this.screeningComment = screeningComment;
+        this.referral = referral;
+        this.medicalRecord = medicalRecord;
+    }
 
     /**
      * Populate the patient's medical record with results from the diagnoses of all disease detectors.
