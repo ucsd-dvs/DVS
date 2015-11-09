@@ -2,11 +2,9 @@ package com.ucsd.globalties.dvs.core.excel;
 
 import com.ucsd.globalties.dvs.core.Main;
 import com.ucsd.globalties.dvs.core.Patient;
+import com.ucsd.globalties.dvs.core.ui.RootViewController;
 import javafx.scene.Node;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -42,27 +40,33 @@ import java.util.Optional;
  */
 @Slf4j
 public class ExcelDataGenerator {
-    public static void exportPatientData(List<Patient> patientList, String fileName) {
-        String pwd = askForPassword();
-        if(pwd == null) return;
+    static final boolean DEBUG = true;
 
-        if (patientList == null) {
-            log.info("nothing to export");
+
+    public static void exportPatientData(List<Patient> patientList) {
+        if(patientList == null || patientList.size() == 0) {
+            if(DEBUG) log.info("patients list is empty");
+            showError("You have no data to export");
             return;
         }
+
+        String fileName = askForFileName();
+        if(fileName == null) {
+            if(DEBUG) log.info("no filename provided");
+            return;
+        }
+
+        String pwd = askForPassword();
+        if(pwd == null) {
+            if(DEBUG) log.info("no password provided");
+            return;
+        }
+
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM_dd_YYYY_hm");
+            //This was used when filename was hardcoded
+            //Coudl be used in future for setting default filename
+            //SimpleDateFormat sdf = new SimpleDateFormat("MM_dd_YYYY_hm");
 
-            /**
-             * Encrypt excel file w/ password
-             */
-            POIFSFileSystem fs = new POIFSFileSystem();
-            EncryptionInfo info = new EncryptionInfo(EncryptionMode.agile);
-
-            Encryptor enc = info.getEncryptor();
-            enc.confirmPassword(pwd);
-
-            //Slashes and colons in file name will break writing to output
             Workbook wb = new XSSFWorkbook();
             Sheet s = wb.createSheet("Patient Data");
             int rowNum = 0, cellNum = 0;
@@ -86,6 +90,15 @@ public class ExcelDataGenerator {
             wb.write(out);
             out.close();
 
+            /**
+             * Encrypt excel file w/ password
+             */
+            POIFSFileSystem fs = new POIFSFileSystem();
+            EncryptionInfo info = new EncryptionInfo(EncryptionMode.agile);
+
+            Encryptor enc = info.getEncryptor();
+            enc.confirmPassword(pwd);
+
             OPCPackage opc = OPCPackage.open(fileName, PackageAccess.READ_WRITE);
             OutputStream os = enc.getDataStream(fs);
             opc.save(os);
@@ -99,9 +112,13 @@ public class ExcelDataGenerator {
         }
     }
 
+    /**
+     * creates and populates a dialog window to ask user for the password
+     * currently does not enforce any password format
+     * TODO: possibly ask Liliana or the Doctor about necessary security
+     * @return password to be used in encrypting the excel file or null if cancel was clicked
+     */
     private static String askForPassword() {
-        //FIXME this causes massive slowdown
-
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Password Entry");
 
@@ -167,6 +184,24 @@ public class ExcelDataGenerator {
 
         Optional<String> result = dialog.showAndWait();
 
-        return (result != null) ? result.get() : null;
+        return (result.isPresent()) ? result.get() : null;
+    }
+
+    /**
+     * TODO: user clicks save w/o providing filename, the default filename should be used at the directory user was in
+     * @return the absolute path of the filename or null if cancel was clicked
+     */
+    private static String askForFileName() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setTitle("Export File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel .xlsx File", "*.xlsx"));
+        File savedFile = fileChooser.showSaveDialog(RootViewController.stage);
+        return (savedFile != null) ? savedFile.getAbsolutePath()+".xlsx" : null;
+    }
+
+    private static void showError(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.CLOSE);
+        alert.showAndWait();
     }
 }
