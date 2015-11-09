@@ -1,6 +1,7 @@
 package com.ucsd.globalties.dvs.core;
 
 import com.atul.JavaOpenCV.Imshow;
+import com.ucsd.globalties.dvs.core.tools.EyesNotDetectedException;
 import com.ucsd.globalties.dvs.core.tools.Pair;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,7 @@ public class Photo {
     public Eye getLeftEye() {
         if (eyes == null) {
             eyes = findEyes();
+            if(eyes == null) return null;
         }
         return eyes.getLeft();
     }
@@ -59,6 +61,7 @@ public class Photo {
     public Eye getRightEye() {
         if (eyes == null) {
             eyes = findEyes();
+            if(eyes == null) return null;
         }
         return eyes.getRight();
     }
@@ -107,7 +110,7 @@ public class Photo {
         log.info("Detected {} eyes for img: {}", detectedEyes.size(), path);
         List<Rect> eyes = new ArrayList<>(2);
         if (detectedEyes.size() < 2) {
-            log.error("Minimum two eyes required.");
+            log.error("Minimum two eyes required");
             return null;
         } else if (detectedEyes.size() > 2) { // found an extra eye or two
             detectedEyes.sort(new RectAreaCompare());
