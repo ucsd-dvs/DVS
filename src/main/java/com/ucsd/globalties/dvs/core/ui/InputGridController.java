@@ -184,17 +184,30 @@ public class InputGridController implements Initializable, ControlledScreen {
      */
     private void goToPhotoGrid(ActionEvent event) {
         int i = 0;
-        rootViewController.getController().setPatient(Patient.builder()
-                .name(inputValues.get(sceneLabels[i++]).getText())
-                .birth(inputValues.get(sceneLabels[i++]).getText())
-                .gender(inputValues.get(sceneLabels[i++]).getText())
-                .ethnicity(inputValues.get(sceneLabels[i++]).getText())
-                .language(inputValues.get(sceneLabels[i++]).getText())
-                .roomNumber(inputValues.get(sceneLabels[i++]).getText())
-                .school(inputValues.get(sceneLabels[i++]).getText())
-                .screeningComment(inputValues.get(sceneLabels[i++]).getText())
-                .medicalRecord(new EnumMap<EyeDisease, String>(EyeDisease.class))
-                .build());
+        Patient patient = new Patient(
+                inputValues.get(sceneLabels[i++]).getText(),
+                inputValues.get(sceneLabels[i++]).getText(),
+                inputValues.get(sceneLabels[i++]).getText(),
+                inputValues.get(sceneLabels[i++]).getText(),
+                inputValues.get(sceneLabels[i++]).getText(),
+                inputValues.get(sceneLabels[i++]).getText(),
+                inputValues.get(sceneLabels[i++]).getText(),
+                inputValues.get(sceneLabels[i++]).getText(),
+                "",
+                new EnumMap<EyeDisease, String>(EyeDisease.class));
+        rootViewController.getController().setPatient(patient);
+
+//        rootViewController.getController().setPatient(Patient.builder()
+//                .name(inputValues.get(sceneLabels[i++]).getText())
+//                .birth(inputValues.get(sceneLabels[i++]).getText())
+//                .gender(inputValues.get(sceneLabels[i++]).getText())
+//                .ethnicity(inputValues.get(sceneLabels[i++]).getText())
+//                .language(inputValues.get(sceneLabels[i++]).getText())
+//                .roomNumber(inputValues.get(sceneLabels[i++]).getText())
+//                .school(inputValues.get(sceneLabels[i++]).getText())
+//                .screeningComment(inputValues.get(sceneLabels[i++]).getText())
+//                .medicalRecord(new EnumMap<EyeDisease, String>(EyeDisease.class))
+//                .build());
         navigationController.setScreen(Main.photoGridID);
         //System.out.println(inputValues.get(sceneLabels[3]).getText());
     }

@@ -3,6 +3,7 @@ package com.ucsd.globalties.dvs.core;
 import com.ucsd.globalties.dvs.core.Photo.PhotoType;
 import com.ucsd.globalties.dvs.core.excel.ExcelDataGenerator;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.opencv.highgui.Highgui;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 /**
  * An MVC-esque artifact that hides access of the logic (e.g. the Patient class)
  * from the front-end. Maybe you can improve this (specifically the front-end exclusive
@@ -19,6 +21,9 @@ import java.util.Map;
  * @author Rahul
  */
 public class Controller {
+
+    private final String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    private final java.util.Random rand = new java.util.Random();
 
     @Setter
     private Patient patient = null;
@@ -47,8 +52,32 @@ public class Controller {
         return patient.getMedicalRecord();
     }
 
-    public void exportData() {
-        ExcelDataGenerator.exportPatientData(sessionPatients);
+    public void exportData(String fileName) {
+        ExcelDataGenerator.exportPatientData(sessionPatients, fileName);
+    }
+
+    public void createDummyData() {
+        if(sessionPatients == null) {
+            sessionPatients = new ArrayList<Patient>();
+        }
+        for(int i = 0; i < 50; i++) {
+            Patient patient = new Patient(generateName(), generateName(), generateName(), generateName(),
+                    generateName(), generateName(), generateName(), generateName(), generateName());
+            sessionPatients.add(patient);
+        }
+
+        log.info("created {} dummy patients", sessionPatients.size());
+    }
+
+    private String generateName() {
+        StringBuilder builder = new StringBuilder();
+        while(builder.toString().length() == 0) {
+            int length = rand.nextInt(5)+5;
+            for(int i = 0; i < length; i++) {
+                builder.append(lexicon.charAt(rand.nextInt(lexicon.length())));
+            }
+        }
+        return builder.toString();
     }
 
     /**

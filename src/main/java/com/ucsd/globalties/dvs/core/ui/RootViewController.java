@@ -5,14 +5,22 @@ import com.ucsd.globalties.dvs.core.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.MenuItem;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -37,6 +45,9 @@ public class RootViewController implements Initializable {
     private StackPane stackPane;
     private NavigationController uiController;
 
+    @Setter
+    private Stage stage;
+
     @FXML
     private MenuItem exportItem;
 
@@ -57,8 +68,23 @@ public class RootViewController implements Initializable {
 
     @FXML
     private void exportToExcel(ActionEvent event) {
-        controller.exportData();
-        System.out.println("Export called");
+        String fileName = askForFileName();
+        if(fileName != null)
+            controller.exportData(fileName);
     }
 
+    @FXML
+    private void createDummyData(ActionEvent event) {
+        controller.createDummyData();
+    }
+
+
+    private String askForFileName() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setTitle("Export File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel .xlsx File", "*.xlsx"));
+        File savedFile = fileChooser.showSaveDialog(stage);
+        return (savedFile != null) ? savedFile.getAbsolutePath()+".xlsx" : null;
+    }
 }

@@ -15,6 +15,9 @@
                         <MenuItem fx:id="exportItem" mnemonicParsing="false" onAction="#exportToExcel"
                                   text="Export to Excel"/>
                     </items>
+                    <items>
+                        <MenuItem fx:id="createDummyData" mnemonicParsing="false" onAction="#createDummyData" text="Put In Dummy Data"/>
+                    </items>
                 </Menu>
             </menus>
         </MenuBar>

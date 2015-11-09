@@ -171,13 +171,13 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-
         try {
             stage.setTitle("Digital Vision Screening");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
             VBox vbox = (VBox) loader.load();
             RootViewController rootViewController = loader.getController();
             rootViewController.setController(controller);
+            rootViewController.setStage(stage);
             stage.setScene(new Scene(vbox));
             stage.show();
         } catch (IOException e) {
