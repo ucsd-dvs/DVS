@@ -2,13 +2,18 @@ package com.ucsd.globalties.dvs.core.excel;
 
 import com.ucsd.globalties.dvs.core.Main;
 import com.ucsd.globalties.dvs.core.Patient;
+import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import com.ucsd.globalties.dvs.core.ui.RootViewController;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.poi.poifs.crypt.EncryptionInfo;
@@ -21,9 +26,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,70 +51,80 @@ public class ExcelDataGenerator {
 
 
     public static void exportPatientData(List<Patient> patientList) {
-        if(patientList == null || patientList.size() == 0) {
-            if(DEBUG) log.info("patients list is empty");
-            showError("You have no data to export");
+        if (patientList == null || patientList.size() == 0) {
+            if (DEBUG) log.info("patients list is empty");
+            MyDialogs.showError("You have no data to export");
             return;
         }
 
         String fileName = askForFileName();
-        if(fileName == null) {
-            if(DEBUG) log.info("no filename provided");
+        if (fileName == null) {
+            if (DEBUG) log.info("no filename provided");
             return;
         }
 
         String pwd = askForPassword();
-        if(pwd == null) {
-            if(DEBUG) log.info("no password provided");
+        if (pwd == null) {
+            if (DEBUG) log.info("no password provided");
             return;
         }
 
-        try {
-            //This was used when filename was hardcoded
-            //Coudl be used in future for setting default filename
-            //SimpleDateFormat sdf = new SimpleDateFormat("MM_dd_YYYY_hm");
+        //This was used when filename was hardcoded
+        //Coudl be used in future for setting default filename
+        //SimpleDateFormat sdf = new SimpleDateFormat("MM_dd_YYYY_hm");
 
-            Workbook wb = new XSSFWorkbook();
-            Sheet s = wb.createSheet("Patient Data");
-            int rowNum = 0, cellNum = 0;
-            Row fieldRow = s.createRow(rowNum++);
+        Workbook wb = new XSSFWorkbook();
+        Sheet s = wb.createSheet("Patient Data");
+        int rowNum = 0, cellNum = 0;
+        Row fieldRow = s.createRow(rowNum++);
 
+        for (String field : Main.sceneLabels) {
+            Cell c = fieldRow.createCell(cellNum++);
+            c.setCellValue(field);
+        }
+
+        for (Patient p : patientList) {
+            Row r = s.createRow(rowNum++);
+            cellNum = 0;
+            Map<String, String> patientData = p.getPatientData();
             for (String field : Main.sceneLabels) {
-                Cell c = fieldRow.createCell(cellNum++);
-                c.setCellValue(field);
+                Cell c = r.createCell(cellNum++);
+                c.setCellValue(patientData.get(field));
             }
+        }
 
-            for (Patient p : patientList) {
-                Row r = s.createRow(rowNum++);
-                cellNum = 0;
-                Map<String, String> patientData = p.getPatientData();
-                for (String field : Main.sceneLabels) {
-                    Cell c = r.createCell(cellNum++);
-                    c.setCellValue(patientData.get(field));
-                }
-            }
-            FileOutputStream out = new FileOutputStream(fileName);
+        //TODO better error reporting for the user in all these exceptions
+
+        try(FileOutputStream out = new FileOutputStream(fileName)) {
             wb.write(out);
-            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            /**
-             * Encrypt excel file w/ password
-             */
-            POIFSFileSystem fs = new POIFSFileSystem();
-            EncryptionInfo info = new EncryptionInfo(EncryptionMode.agile);
+        /**
+         * Encrypt excel file w/ password
+         */
+        POIFSFileSystem fs = new POIFSFileSystem();
+        EncryptionInfo info = new EncryptionInfo(EncryptionMode.agile);
 
-            Encryptor enc = info.getEncryptor();
-            enc.confirmPassword(pwd);
+        Encryptor enc = info.getEncryptor();
+        enc.confirmPassword(pwd);
 
-            OPCPackage opc = OPCPackage.open(fileName, PackageAccess.READ_WRITE);
+        try(OPCPackage opc = OPCPackage.open(fileName, PackageAccess.READ_WRITE)) {
             OutputStream os = enc.getDataStream(fs);
             opc.save(os);
-            opc.close();
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        }
 
-            FileOutputStream fos = new FileOutputStream(fileName);
+
+        try(FileOutputStream fos = new FileOutputStream(fileName)) {
             fs.writeFilesystem(fos);
-            fos.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -116,6 +133,7 @@ public class ExcelDataGenerator {
      * creates and populates a dialog window to ask user for the password
      * currently does not enforce any password format
      * TODO: possibly ask Liliana or the Doctor about necessary security
+     *
      * @return password to be used in encrypting the excel file or null if cancel was clicked
      */
     private static String askForPassword() {
@@ -153,7 +171,7 @@ public class ExcelDataGenerator {
 
         passwordField.textProperty().addListener((observable, oldValue, newValue) -> {
             String pwd = passwordField1.getText();
-            if(!pwd.equals(newValue)) {
+            if (!pwd.equals(newValue)) {
                 errorLabel.setVisible(true);
                 okButton.setDisable(true);
             } else {
@@ -164,7 +182,7 @@ public class ExcelDataGenerator {
 
         passwordField1.textProperty().addListener((observable, oldValue, newValue) -> {
             String pwd = passwordField.getText();
-            if(!pwd.equals(newValue)) {
+            if (!pwd.equals(newValue)) {
                 errorLabel.setVisible(true);
                 okButton.setDisable(true);
             } else {
@@ -176,7 +194,7 @@ public class ExcelDataGenerator {
         dialog.getDialogPane().setContent(grid);
 
         dialog.setResultConverter(dialogButton -> {
-            if(dialogButton == ButtonType.OK) {
+            if (dialogButton == ButtonType.OK) {
                 return new String(passwordField.getText());
             }
             return null;
@@ -189,6 +207,7 @@ public class ExcelDataGenerator {
 
     /**
      * TODO: user clicks save w/o providing filename, the default filename should be used at the directory user was in
+     *
      * @return the absolute path of the filename or null if cancel was clicked
      */
     private static String askForFileName() {
@@ -197,11 +216,6 @@ public class ExcelDataGenerator {
         fileChooser.setTitle("Export File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel .xlsx File", "*.xlsx"));
         File savedFile = fileChooser.showSaveDialog(RootViewController.stage);
-        return (savedFile != null) ? savedFile.getAbsolutePath()+".xlsx" : null;
-    }
-
-    private static void showError(String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.CLOSE);
-        alert.showAndWait();
+        return (savedFile != null) ? savedFile.getAbsolutePath() + ".xlsx" : null;
     }
 }
