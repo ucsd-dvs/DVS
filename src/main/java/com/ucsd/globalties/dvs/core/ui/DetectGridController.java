@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -35,6 +36,8 @@ public class DetectGridController implements Initializable, ControlledUpdateScre
     private Button btnPrev;
     @FXML
     private Button btnNext;
+    @FXML
+    private Label errorMsg;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -66,6 +69,10 @@ public class DetectGridController implements Initializable, ControlledUpdateScre
     @Override
     public void update() {
         Map<String, String> detected = rootViewController.getController().detectAll();
+        if(detected == null) {
+            errorMsg.setText("Something went wrong!");
+            return;
+        }
         resetState();
         if (detected.get("left_eye_horizontal") != null) {
             ImageView iView = new ImageView();

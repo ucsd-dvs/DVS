@@ -26,7 +26,7 @@ public class Patient {
 
     @Setter
     @Getter
-    private List<Photo> photos;
+    private List<Photo> photos; //Has horizontal and vertical photo
 
     @Getter
     private Map<EyeDisease, String> medicalRecord;

@@ -2,6 +2,8 @@ package com.ucsd.globalties.dvs.core;
 
 import com.ucsd.globalties.dvs.core.Photo.PhotoType;
 import com.ucsd.globalties.dvs.core.excel.ExcelDataGenerator;
+import com.ucsd.globalties.dvs.core.tools.EyesNotDetectedException;
+import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.opencv.highgui.Highgui;
@@ -30,7 +32,7 @@ public class Controller {
     private List<Patient> sessionPatients = null;
 
     public void setPatientPhotos(String hFilePath, String vFilePath) {
-        List<Photo> photos = new ArrayList<Photo>();
+        List<Photo> photos = new ArrayList<>();
         photos.add(new Photo(hFilePath, patient, PhotoType.HORIZONTAL));
         photos.add(new Photo(vFilePath, patient, PhotoType.VERTICAL));
         patient.setPhotos(photos);
@@ -94,45 +96,68 @@ public class Controller {
      * @return a Map representing the successfully detected components and their output paths
      */
     public Map<String, String> detectAll() {
-        Map<String, String> detected = new HashMap<String, String>();
-        for (Photo photo : patient.getPhotos()) {
+        Map<String, String> detected = new HashMap<>();
+        Eye eye = null;
+        Pupil pupil = null;
 
-        }
-        if (patient.getPhotos().get(0).getLeftEye() != null) {
-            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_horizontal.jpg", patient.getPhotos().get(0).getLeftEye().getMat());
+        /* Horizontal Picture */
+        //Left eye
+        eye = patient.getPhotos().get(0).getLeftEye();
+        if(eye != null) {
+            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_horizontal.jpg", eye.getMat());
             detected.put("left_eye_horizontal", Main.OUTPUT_FILE + "left_eye_horizontal.jpg");
+        } else {
+            return null;
         }
-        if (patient.getPhotos().get(0).getLeftEye().getPupil() != null) {
-            patient.getPhotos().get(0).getLeftEye().getPupil().getWhiteDot();
-            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_pupil_horizontal.jpg", patient.getPhotos().get(0).getLeftEye().getPupil().getMat());
+        pupil = eye.getPupil();
+        if (pupil != null) {
+            pupil.getWhiteDot();
+            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_pupil_horizontal.jpg", pupil.getMat());
             detected.put("left_eye_pupil_horizontal", Main.OUTPUT_FILE + "left_eye_pupil_horizontal.jpg");
         }
-        if (patient.getPhotos().get(0).getRightEye() != null) {
-            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_horizontal.jpg", patient.getPhotos().get(0).getRightEye().getMat());
+
+        //Right eye
+        eye = patient.getPhotos().get(0).getRightEye();
+        if(eye != null) {
+            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_horizontal.jpg", eye.getMat());
             detected.put("right_eye_horizontal", Main.OUTPUT_FILE + "right_eye_horizontal.jpg");
+        } else {
+            return null;
         }
-        if (patient.getPhotos().get(0).getRightEye().getPupil() != null) {
-            patient.getPhotos().get(0).getRightEye().getPupil().getWhiteDot();
-            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_pupil_horizontal.jpg", patient.getPhotos().get(0).getRightEye().getPupil().getMat());
+        pupil = eye.getPupil();
+        if (pupil != null) {
+            pupil.getWhiteDot();
+            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_pupil_horizontal.jpg", pupil.getMat());
             detected.put("right_eye_pupil_horizontal", Main.OUTPUT_FILE + "right_eye_pupil_horizontal.jpg");
         }
 
-        if (patient.getPhotos().get(1).getLeftEye() != null) {
-            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_vertical.jpg", patient.getPhotos().get(1).getLeftEye().getMat());
+        /* Vertical Picture */
+        //Left eye
+        eye = patient.getPhotos().get(1).getLeftEye();
+        if(eye != null) {
+            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_vertical.jpg", eye.getMat());
             detected.put("left_eye_vertical", Main.OUTPUT_FILE + "left_eye_vertical.jpg");
+        } else {
+            return null;
         }
-        if (patient.getPhotos().get(1).getLeftEye().getPupil() != null) {
-            patient.getPhotos().get(1).getLeftEye().getPupil().getWhiteDot();
-            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_pupil_vertical.jpg", patient.getPhotos().get(1).getLeftEye().getPupil().getMat());
+        pupil = eye.getPupil();
+        if (pupil != null) {
+            pupil.getWhiteDot();
+            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_pupil_vertical.jpg", pupil.getMat());
             detected.put("left_eye_pupil_vertical", Main.OUTPUT_FILE + "left_eye_pupil_vertical.jpg");
         }
-        if (patient.getPhotos().get(1).getRightEye() != null) {
-            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_vertical.jpg", patient.getPhotos().get(1).getRightEye().getMat());
+        //Right eye
+        eye = patient.getPhotos().get(1).getRightEye();
+        if(eye != null) {
+            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_vertical.jpg", eye.getMat());
             detected.put("right_eye_vertical", Main.OUTPUT_FILE + "right_eye_vertical.jpg");
+        } else {
+            return null;
         }
-        if (patient.getPhotos().get(1).getRightEye().getPupil() != null) {
-            patient.getPhotos().get(1).getRightEye().getPupil().getWhiteDot();
-            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_pupil_vertical.jpg", patient.getPhotos().get(1).getRightEye().getPupil().getMat());
+        pupil = eye.getPupil();
+        if (pupil != null) {
+            pupil.getWhiteDot();
+            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_pupil_vertical.jpg", pupil.getMat());
             detected.put("right_eye_pupil_vertical", Main.OUTPUT_FILE + "right_eye_pupil_vertical.jpg");
         }
 
