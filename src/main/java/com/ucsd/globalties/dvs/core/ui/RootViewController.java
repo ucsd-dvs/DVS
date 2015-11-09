@@ -45,8 +45,8 @@ public class RootViewController implements Initializable {
     private StackPane stackPane;
     private NavigationController uiController;
 
-    @Setter
-    private Stage stage;
+    //stage is the window in JavaFX. This is the parent window of root
+    public static Stage stage;
 
     @FXML
     private MenuItem exportItem;
@@ -68,9 +68,7 @@ public class RootViewController implements Initializable {
 
     @FXML
     private void exportToExcel(ActionEvent event) {
-        String fileName = askForFileName();
-        if(fileName != null)
-            controller.exportData(fileName);
+        controller.exportData();
     }
 
     @FXML
@@ -79,12 +77,5 @@ public class RootViewController implements Initializable {
     }
 
 
-    private String askForFileName() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.setTitle("Export File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel .xlsx File", "*.xlsx"));
-        File savedFile = fileChooser.showSaveDialog(stage);
-        return (savedFile != null) ? savedFile.getAbsolutePath()+".xlsx" : null;
-    }
+
 }

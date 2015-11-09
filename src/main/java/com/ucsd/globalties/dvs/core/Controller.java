@@ -52,8 +52,8 @@ public class Controller {
         return patient.getMedicalRecord();
     }
 
-    public void exportData(String fileName) {
-        ExcelDataGenerator.exportPatientData(sessionPatients, fileName);
+    public void exportData() {
+        ExcelDataGenerator.exportPatientData(sessionPatients);
     }
 
     public void createDummyData() {
@@ -61,8 +61,16 @@ public class Controller {
             sessionPatients = new ArrayList<Patient>();
         }
         for(int i = 0; i < 50; i++) {
-            Patient patient = new Patient(generateName(), generateName(), generateName(), generateName(),
-                    generateName(), generateName(), generateName(), generateName(), generateName());
+            Patient patient = Patient.builder().name(generateName())
+                    .birth(generateName())
+                    .birth(generateName())
+                    .ethnicity(generateName())
+                    .language(generateName())
+                    .roomNumber(generateName())
+                    .school(generateName())
+                    .screeningComment(generateName())
+                    .referral(generateName())
+                    .build();
             sessionPatients.add(patient);
         }
 

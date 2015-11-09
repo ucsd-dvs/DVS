@@ -177,7 +177,7 @@ public class Main extends Application {
             VBox vbox = (VBox) loader.load();
             RootViewController rootViewController = loader.getController();
             rootViewController.setController(controller);
-            rootViewController.setStage(stage);
+            rootViewController.stage = stage;
             stage.setScene(new Scene(vbox));
             stage.show();
         } catch (IOException e) {
