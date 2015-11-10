@@ -164,4 +164,7 @@ public class Controller {
         return detected;
     }
 
+    public boolean checkPatientList() {
+        return (sessionPatients == null || sessionPatients.size() < 1) ? false : true;
+    }
 }
