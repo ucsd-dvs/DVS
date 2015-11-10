@@ -10,5 +10,5 @@ public interface ControlledUpdateScreen extends ControlledScreen {
     /**
      * Method to update a screen
      */
-    public void update();
+    public void update() throws Exception;
 }

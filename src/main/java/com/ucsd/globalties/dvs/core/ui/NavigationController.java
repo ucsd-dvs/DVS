@@ -1,5 +1,6 @@
 package com.ucsd.globalties.dvs.core.ui;
 
+import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import com.ucsd.globalties.dvs.core.tools.Pair;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -84,7 +85,12 @@ public class NavigationController extends StackPane {
         if (screens.get(name) != null) {   //screen loaded
             Pair<Node, ControlledScreen> screenPair = screens.get(name);
             if (screenPair.getRight() instanceof ControlledUpdateScreen) {
-                ((ControlledUpdateScreen) screenPair.getRight()).update();
+                try {
+                    ((ControlledUpdateScreen) screenPair.getRight()).update();
+                } catch (Exception e) {
+                    MyDialogs.showError("Something went wrong!");
+                    return false;
+                }
             }
             if (!getChildren().isEmpty()) {    //if there is more than one screen
                 getChildren().remove(0);                    //remove the displayed screen
