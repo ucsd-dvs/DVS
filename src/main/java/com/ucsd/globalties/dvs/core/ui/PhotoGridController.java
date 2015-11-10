@@ -61,9 +61,8 @@ public class PhotoGridController implements Initializable, ControlledScreen {
 
     @FXML
     /**
-     * FIXME: vertical image needs to be rotated before being displayedon UI
      * JavaFX ignores orientation of image so vertical images get loaded as horizontal
-     * probably more efficient to transpose then flip the image than to rotate it
+     * and has to be rotated
      */
     private void selectVerticalPicture(ActionEvent event) {
         File dir = new File(System.getProperty("user.dir")+"/src/main/resources/pics");
@@ -73,6 +72,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
             fileChooser.setInitialDirectory(file.getParentFile());
             vFilePath = file.getAbsolutePath();
             imgVert.setImage(new Image("file:///" + vFilePath));
+            imgVert.setRotate(-90);
         }
     }
 
