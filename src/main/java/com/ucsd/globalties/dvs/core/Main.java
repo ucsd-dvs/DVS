@@ -1,14 +1,20 @@
 package com.ucsd.globalties.dvs.core;
 
+import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import com.ucsd.globalties.dvs.core.ui.RootViewController;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.util.Optional;
 
 @Slf4j
 /**
@@ -180,6 +186,27 @@ public class Main extends Application {
             rootViewController.stage = stage;
             stage.setScene(new Scene(vbox));
             stage.show();
+
+            /**
+             * Override window close event and check if there's unexported data.
+             * If there are then ask for confirmation to exit.
+             * TODO: need an indicator to let user know if there's any unexported data
+             */
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    if(controller.checkPatientList()) {
+                        event.consume();
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("You have unsaved data");
+                        alert.setContentText("Are you sure you want to exit?");
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if(result.get() == ButtonType.OK) {
+                            stage.close();
+                        }
+                    }
+                }
+            });
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
