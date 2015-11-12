@@ -43,6 +43,8 @@ public class RootViewController implements Initializable {
     private VBox root;
     @FXML
     private StackPane stackPane;
+
+    @Getter
     private NavigationController uiController;
 
     //stage is the window in JavaFX. This is the parent window of root
@@ -57,13 +59,13 @@ public class RootViewController implements Initializable {
         assert exportItem != null : "fx:id=\"exportItem\" was not injected: check your FXML file 'main.fxml'.";
 
         //initialize the navigation controller with different screens
-        NavigationController mainContainer = new NavigationController(this);
-        mainContainer.loadScreen(Main.inputScreenID, Main.inputScreenFile);
-        mainContainer.loadScreen(Main.photoGridID, Main.photoGridFile);
-        mainContainer.loadScreen(Main.detectGridID, Main.detectGridFile);
-        mainContainer.loadScreen(Main.resultGridID, Main.resultGridFile);
-        mainContainer.setScreen(Main.inputScreenID);
-        root.getChildren().addAll(mainContainer);
+        uiController = new NavigationController(this);
+        uiController.loadScreen(Main.inputScreenID, Main.inputScreenFile);
+        uiController.loadScreen(Main.photoGridID, Main.photoGridFile);
+        uiController.loadScreen(Main.detectGridID, Main.detectGridFile);
+        uiController.loadScreen(Main.resultGridID, Main.resultGridFile);
+        uiController.setScreen(Main.inputScreenID);
+        root.getChildren().addAll(uiController);
     }
 
     @FXML
