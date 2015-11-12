@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lombok.extern.slf4j.Slf4j;
 
+import java.awt.*;
 import java.io.*;
 import java.util.Optional;
 
@@ -185,6 +186,7 @@ public class Main extends Application {
             rootViewController.setController(controller);
             rootViewController.stage = stage;
             stage.setScene(new Scene(vbox));
+            stage.setResizable(false);
             stage.show();
 
             /**
@@ -192,18 +194,15 @@ public class Main extends Application {
              * If there are then ask for confirmation to exit.
              * TODO: need an indicator to let user know if there's any unexported data
              */
-            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent event) {
-                    if(controller.checkPatientList()) {
-                        event.consume();
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("You have unsaved data");
-                        alert.setContentText("Are you sure you want to exit?");
-                        Optional<ButtonType> result = alert.showAndWait();
-                        if(result.get() == ButtonType.OK) {
-                            stage.close();
-                        }
+            stage.setOnCloseRequest((WindowEvent event) -> {
+                if(controller.checkPatientList()) {
+                    event.consume();
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setHeaderText("You have unsaved data!");
+                    alert.setContentText("Are you sure you want to exit?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if(result.get() == ButtonType.OK) {
+                        stage.close();
                     }
                 }
             });
