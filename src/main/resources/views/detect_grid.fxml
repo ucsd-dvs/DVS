@@ -10,6 +10,7 @@
             minWidth="600" minHeight="400" maxWidth="-Infinity" maxHeight="-Infinity"
             fx:controller="com.ucsd.globalties.dvs.core.ui.DetectGridController">
 
+    <!--This is to show an error msg on the screen-->
     <!--<top>-->
         <!--<HBox alignment="CENTER" style="-fx-background-color: firebrick;">-->
             <!--<padding>-->
@@ -25,7 +26,8 @@
             <Label text="Horizontal" GridPane.halignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0"
                    style="-fx-font-weight: bold;"/>
             <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1"
-                      style="-fx-border-color: grey; -fx-border-width: 1dpi; -fx-border-radius: 5%;" hgap="10" vgap="10">
+                      style="-fx-border-color: grey; -fx-border-width: 1dpi; -fx-border-radius: 5%;"
+                      hgap="10" vgap="10">
                 <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 
                 <Label text="Left Eye" GridPane.halignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0" />
@@ -41,7 +43,8 @@
             <Label text="Vertical" GridPane.halignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0"
             style="-fx-font-weight: bold;"/>
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1"
-                    style="-fx-border-color: grey; -fx-border-width: 1dpi; -fx-border-radius: 5%;" hgap="10" vgap="10">
+                    style="-fx-border-color: grey; -fx-border-width: 1dpi; -fx-border-radius: 5%;"
+                      hgap="10" vgap="10">
                 <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 
                 <Label text="Left Eye" GridPane.halignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0" />
