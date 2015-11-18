@@ -3,11 +3,17 @@ package com.ucsd.globalties.dvs.core;
 import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import com.ucsd.globalties.dvs.core.ui.RootViewController;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -16,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.awt.*;
 import java.io.*;
 import java.util.Optional;
+import java.util.concurrent.atomic.DoubleAccumulator;
 
 @Slf4j
 /**
@@ -46,7 +53,6 @@ public class Main extends Application {
     public static String HAAR_FACE_PATH;
     public static String HAAR_EYE_PATH;
 
-    private static int BUFFER_SIZE = Short.MAX_VALUE;
     private static Controller controller;
     public static String OUTPUT_FILE;
     public static File TEMP_DIR;
@@ -163,6 +169,7 @@ public class Main extends Application {
     }
 
     private static void copyResourceToFile(InputStream in, File dst) throws IOException {
+        int BUFFER_SIZE = Short.MAX_VALUE;
         OutputStream out = new BufferedOutputStream(new FileOutputStream(dst), BUFFER_SIZE);
         int b = 0;
         while ((b = in.read()) >= 0) {
@@ -181,12 +188,12 @@ public class Main extends Application {
         try {
             stage.setTitle("Digital Vision Screening");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
-            VBox vbox = (VBox) loader.load();
+            AnchorPane anchorPane = loader.load();
+            anchorPane.getStylesheets().add("/stylesheets/fextile.css");
             RootViewController rootViewController = loader.getController();
             rootViewController.setController(controller);
             rootViewController.stage = stage;
-            stage.setScene(new Scene(vbox));
-            stage.setResizable(false);
+            stage.setScene(new Scene(anchorPane));
             stage.show();
 
             /**

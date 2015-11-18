@@ -1,6 +1,7 @@
 package com.ucsd.globalties.dvs.core.excel;
 
-import com.ucsd.globalties.dvs.core.Main;
+import com.ucsd.globalties.dvs.core.Eye;
+import com.ucsd.globalties.dvs.core.EyeDisease;
 import com.ucsd.globalties.dvs.core.Patient;
 import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import com.ucsd.globalties.dvs.core.ui.RootViewController;
@@ -35,9 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-//
-//
-
 /**
  * Basic excel export class that writes patient information into an excel file
  * TODO make excel file prettier with formatting and colors
@@ -70,33 +68,45 @@ public class ExcelDataGenerator {
         }
 
         //This was used when filename was hardcoded
-        //Coudl be used in future for setting default filename
+        //Could be used in future for setting default filename
         //SimpleDateFormat sdf = new SimpleDateFormat("MM_dd_YYYY_hm");
 
-        Workbook wb = new XSSFWorkbook();
-        Sheet s = wb.createSheet("Patient Data");
+        Workbook workBook = new XSSFWorkbook();
+        Sheet sheet = workBook.createSheet("Patient Data");
         int rowNum = 0, cellNum = 0;
-        Row fieldRow = s.createRow(rowNum++);
+        Row headerRow = sheet.createRow(rowNum++);
 
-        for (String field : Main.sceneLabels) {
-            Cell c = fieldRow.createCell(cellNum++);
-            c.setCellValue(field);
+        // Create Row headers for Patient information
+        Map<String, String> pData = patientList.get(0).getPatientData();
+        for (String key : pData.keySet()) {
+            Cell cell = headerRow.createCell(cellNum++);
+            cell.setCellValue(key);
+        }
+        Map<EyeDisease, String> medRecord = patientList.get(0).getMedicalRecord();
+        for (EyeDisease disease : medRecord.keySet()) {
+            Cell cell = headerRow.createCell(cellNum++);
+            cell.setCellValue(disease.toString());
         }
 
         for (Patient p : patientList) {
-            Row r = s.createRow(rowNum++);
+            Row row = sheet.createRow(rowNum++);
             cellNum = 0;
             Map<String, String> patientData = p.getPatientData();
-            for (String field : Main.sceneLabels) {
-                Cell c = r.createCell(cellNum++);
-                c.setCellValue(patientData.get(field));
+            for(String value : patientData.values()) {
+                Cell cell = row.createCell(cellNum++);
+                cell.setCellValue(value);
+            }
+            Map<EyeDisease, String> medicalRecord = p.getMedicalRecord();
+            for(String value : medicalRecord.values()) {
+                Cell cell = row.createCell(cellNum++);
+                cell.setCellValue(value);
             }
         }
 
-        //TODO better error reporting for the user in all these exceptions
+        //TODO: better error reporting for the user in all these exceptions
 
         try(FileOutputStream out = new FileOutputStream(fileName)) {
-            wb.write(out);
+            workBook.write(out);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -121,10 +131,13 @@ public class ExcelDataGenerator {
             e.printStackTrace();
         }
 
-
+        //TODO: need to clear all patient data so the warning on exit doesn't show up
         try(FileOutputStream fos = new FileOutputStream(fileName)) {
             fs.writeFilesystem(fos);
+            patientList.clear();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedOperationException e) {
             e.printStackTrace();
         }
     }
@@ -216,6 +229,8 @@ public class ExcelDataGenerator {
         fileChooser.setTitle("Export File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel .xlsx File", "*.xlsx"));
         File savedFile = fileChooser.showSaveDialog(RootViewController.stage);
+
+        //FIXME: if user replaces existing file then .xlsx gets appended again
         return (savedFile != null) ? savedFile.getAbsolutePath() + ".xlsx" : null;
     }
 }

@@ -29,21 +29,32 @@ import java.util.ResourceBundle;
  *
  * @author Sabit
  */
-public class ResultGridController implements Initializable, ControlledUpdateScreen {
+public class ResultGridController implements Initializable, ControlledScreen {
+
+    /***************************************************************************
+     * Private Members
+     ***************************************************************************/
     private NavigationController navigationController;
     private RootViewController rootViewController;
-    private List<Node> controlList;
 
-    @FXML
-    private ScrollPane root;
+    /***************************************************************************
+     * View Component ID bindings
+     ***************************************************************************/
+    @FXML private GridPane root;
+    @FXML private VBox contentBox;
 
-    @FXML
-    private VBox contentBox;
-
+    /***************************************************************************
+     * Public Methods
+     ***************************************************************************/
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         assert root != null : "fx:id=\"root\" was not injected: check your FXML file 'detect_grid.fxml'.";
-        controlList = new ArrayList<>();
+        List<Node> controlList = new ArrayList<>();
+
+        log.info("ResultsScreen Initialized");
+        log.info("Child id: {}", root.getChildren().get(0).getId());
+        ((ScrollPane) root.getChildren().get(0)).prefViewportWidthProperty().bind(root.prefWidthProperty());
+        ((ScrollPane) root.getChildren().get(0)).prefViewportHeightProperty().bind(root.prefHeightProperty());
     }
 
     @Override
@@ -56,49 +67,39 @@ public class ResultGridController implements Initializable, ControlledUpdateScre
         this.rootViewController = rootViewController;
     }
 
-    @FXML
-    private void goToInputGrid(ActionEvent event) {
-        rootViewController.getController().finalizePatient();
-        navigationController.resetAll();
-        navigationController.setScreen(Main.inputScreenID);
+    @Override
+    public void onLoad() {
+        rootViewController.fireWindowSizeChangedEvent();
     }
-
 
     /**
      * Updates and creates UI elements to show Diagnosis results
      */
     @Override
     public void update() {
+        resetState();
+        bindButtons();
+
         for(int i = 0; i < 3; i++) {
             String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed";
             Node node = makeElement("Myopia", "PASS", msg);
             Line line = makeHorizontalRule();
-            if(i != 6) {
-                contentBox.getChildren().addAll(node, line);
-            } else {
-                contentBox.getChildren().add(node);
-            }
+            contentBox.getChildren().add(node);
         }
         for(int i = 3; i < 5; i++) {
             String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed";
             Node node = makeElement("Myopia", "REFER", msg);
             Line line = makeHorizontalRule();
-            if(i != 6) {
-                contentBox.getChildren().addAll(node, line);
-            } else {
-                contentBox.getChildren().add(node);
-            }
+            contentBox.getChildren().add(node);
         }
         for(int i = 5; i < 6; i++) {
             String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed";
             Node node = makeElement("Myopia", "N/A", msg);
             Line line = makeHorizontalRule();
-            if(i != 6) {
-                contentBox.getChildren().addAll(node, line);
-            } else {
-                contentBox.getChildren().add(node);
-            }
+            contentBox.getChildren().add(node);
         }
+
+        rootViewController.getController().finalizePatient();
 
         //get results
 //        rootViewController.getController().diagnose();
@@ -117,10 +118,30 @@ public class ResultGridController implements Initializable, ControlledUpdateScre
 
     @Override
     public void resetState() {
-//        root.getChildren().removeAll(controlList);
+        contentBox.getChildren().clear();
 //        controlList.clear();
     }
 
+    @Override
+    public void bindButtons() {
+        rootViewController.getBackButton().setVisible(false);
+        rootViewController.getNextButton().setText("Start Over");
+        rootViewController.getNextButton().setMinWidth(100);
+        rootViewController.getNextButton().setOnAction((event) -> goToInputGrid());
+    }
+
+    /***************************************************************************
+     * Event Handlers
+     ***************************************************************************/
+    @FXML
+    private void goToInputGrid() {
+        navigationController.resetAll();
+        navigationController.setScreen(Main.inputScreenID);
+    }
+
+    /***************************************************************************
+     * Private Methods
+     ***************************************************************************/
     /**
      * Creating UI components and returning the top most element.
      * This UI components are being created in code instead of in fxml is to
@@ -170,8 +191,12 @@ public class ResultGridController implements Initializable, ControlledUpdateScre
         gp.add(diseaseBox, 0, 0);
         gp.add(statusBox, 1, 0);
 
-        Text desc = new Text(description);
-        desc.setWrappingWidth(550);
+//        Text desc = new Text(description);
+//        desc.wrappingWidthProperty().bind(root.prefWidthProperty());
+//        desc.setWrappingWidth(root.prefWidth(0));
+
+        Label desc = new Label(description);
+        desc.setWrapText(true);
 
         vBox.getChildren().addAll(gp, desc);
 
@@ -189,4 +214,6 @@ public class ResultGridController implements Initializable, ControlledUpdateScre
         line.setEndX(550);
         return line;
     } /* END makeHorizontalRule() */
+
+
 }
