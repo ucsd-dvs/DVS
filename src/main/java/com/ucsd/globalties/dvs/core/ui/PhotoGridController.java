@@ -10,7 +10,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.net.URL;
@@ -22,6 +27,7 @@ import java.util.concurrent.atomic.DoubleAccumulator;
  *
  * @author Sabit
  */
+@Slf4j
 public class PhotoGridController implements Initializable, ControlledScreen {
 
     /***************************************************************************
@@ -36,10 +42,10 @@ public class PhotoGridController implements Initializable, ControlledScreen {
      * View Component bindings
      ***************************************************************************/
     @FXML private GridPane root;
-    @FXML private Button btnHoriz;
-    @FXML private Button btnVert;
     @FXML private ImageView imgHoriz;
     @FXML private ImageView imgVert;
+    @FXML private HBox imgHorizBox;
+    @FXML private HBox imgVertBox;
 
     /***************************************************************************
      * Public Methods
@@ -48,6 +54,23 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     public void initialize(URL arg0, ResourceBundle arg1) {
         assert root != null : "fx:id=\"root\" was not injected: check your FXML file 'photo_grid.fxml'.";
         fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+
+        /**
+         * Bindings so the images resize properly as the window resizes
+         */
+        imgHorizBox.prefWidthProperty().bind(root.prefWidthProperty());
+        imgHorizBox.prefHeightProperty().bind(root.prefHeightProperty());
+        imgVertBox.prefWidthProperty().bind(root.prefWidthProperty());
+        imgVertBox.prefHeightProperty().bind(root.prefHeightProperty());
+        // Necessary to divide vertical image by 1.2 because the resize happens
+        // before the image gets rotated so the resulting image breaks out of
+        // its parent container. The Horizontal image is divided so there isn't
+        // a noticeable difference in size between the horizontal and vertical
+        // images
+        imgHoriz.fitWidthProperty().bind(imgHorizBox.widthProperty().divide(1.1));
+        imgHoriz.fitHeightProperty().bind(imgHorizBox.heightProperty().divide(1.1));
+        imgVert.fitWidthProperty().bind(imgVertBox.widthProperty().divide(1.2));
+        imgVert.fitHeightProperty().bind(imgVertBox.heightProperty().divide(1.2));
     }
 
     @Override
