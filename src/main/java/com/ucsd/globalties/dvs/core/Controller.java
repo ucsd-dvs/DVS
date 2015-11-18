@@ -4,14 +4,12 @@ import com.ucsd.globalties.dvs.core.Photo.PhotoType;
 import com.ucsd.globalties.dvs.core.excel.ExcelDataGenerator;
 import com.ucsd.globalties.dvs.core.tools.EyesNotDetectedException;
 import com.ucsd.globalties.dvs.core.tools.MyDialogs;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.opencv.highgui.Highgui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 /**
@@ -24,9 +22,9 @@ import java.util.Map;
  */
 public class Controller {
 
-    private final String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     private final java.util.Random rand = new java.util.Random();
 
+    @Getter
     @Setter
     private Patient patient = null;
     private List<Patient> sessionPatients = null;
@@ -42,6 +40,8 @@ public class Controller {
         if (sessionPatients == null) {
             sessionPatients = new ArrayList<Patient>();
         }
+        log.info("[FINALIZING PATIENT]");
+        patient.print();
         sessionPatients.add(patient);
         patient = null;
     }
@@ -63,16 +63,24 @@ public class Controller {
             sessionPatients = new ArrayList<Patient>();
         }
         for(int i = 0; i < 50; i++) {
-            Patient patient = Patient.builder().name(generateName())
+            Patient patient = Patient.builder()
+                    .firstName(generateName())
+                    .lastName(generateName())
                     .birth(generateName())
                     .birth(generateName())
                     .ethnicity(generateName())
                     .language(generateName())
                     .roomNumber(generateName())
                     .school(generateName())
-                    .screeningComment(generateName())
-                    .referral(generateName())
+                    .comment(generateName())
+                    .medicalRecord(new EnumMap<EyeDisease, String>(EyeDisease.class))
                     .build();
+            patient.getMedicalRecord().put(EyeDisease.ANISOMETROPIA, "TEST");
+            patient.getMedicalRecord().put(EyeDisease.MYOPIA, "TEST");
+            patient.getMedicalRecord().put(EyeDisease.HYPEROPIA, "TEST");
+            patient.getMedicalRecord().put(EyeDisease.ASTIGMATISM, "TEST");
+            patient.getMedicalRecord().put(EyeDisease.CATARACTS, "TEST");
+            patient.getMedicalRecord().put(EyeDisease.STRABISMUS, "TEST");
             sessionPatients.add(patient);
         }
 
@@ -84,6 +92,7 @@ public class Controller {
         while(builder.toString().length() == 0) {
             int length = rand.nextInt(5)+5;
             for(int i = 0; i < length; i++) {
+                String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
                 builder.append(lexicon.charAt(rand.nextInt(lexicon.length())));
             }
         }

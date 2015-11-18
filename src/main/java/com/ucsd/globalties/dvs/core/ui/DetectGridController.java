@@ -24,34 +24,31 @@ import java.util.ResourceBundle;
  * @author Sabit
  */
 @Slf4j
-public class DetectGridController implements Initializable, ControlledUpdateScreen {
+public class DetectGridController implements Initializable, ControlledScreen {
+
+    /***************************************************************************
+     * Private Members
+     ***************************************************************************/
     private NavigationController navigationController;
     private RootViewController rootViewController;
 
-    @FXML
-    private Button btnPrev;
-    @FXML
-    private Button btnNext;
-    @FXML
-    private BorderPane root;
-    @FXML
-    private ImageView hLeftEye;
-    @FXML
-    private ImageView hLeftPupil;
-    @FXML
-    private ImageView hRightEye;
-    @FXML
-    private ImageView hRightPupil;
-    @FXML
-    private ImageView vLeftEye;
-    @FXML
-    private ImageView vLeftPupil;
-    @FXML
-    private ImageView vRightEye;
-    @FXML
-    private ImageView vRightPupil;
+    /***************************************************************************
+     * View Component ID bindings
+     ***************************************************************************/
+    @FXML private GridPane root;
+    @FXML private ImageView hLeftEye;
+    @FXML private ImageView hLeftPupil;
+    @FXML private ImageView hRightEye;
+    @FXML private ImageView hRightPupil;
+    @FXML private ImageView vLeftEye;
+    @FXML private ImageView vLeftPupil;
+    @FXML private ImageView vRightEye;
+    @FXML private ImageView vRightPupil;
 
 
+    /***************************************************************************
+     * Public Methods
+     ***************************************************************************/
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         assert root != null : "fx:id=\"root\" was not injected: check your FXML file 'detect_grid.fxml'.";
@@ -67,17 +64,9 @@ public class DetectGridController implements Initializable, ControlledUpdateScre
         this.rootViewController = rootViewController;
     }
 
-    /**
-     * FIXME: already detected eyes & pupils need to be cleared on back button.
-     */
-    @FXML
-    private void goToPhotoGrid(ActionEvent event) {
-        navigationController.setScreen(Main.photoGridID);
-    }
-
-    @FXML
-    private void goToResultsGrid(ActionEvent event) {
-        navigationController.setScreen(Main.resultGridID);
+    @Override
+    public void onLoad() {
+        rootViewController.fireWindowSizeChangedEvent();
     }
 
     /**
@@ -87,6 +76,10 @@ public class DetectGridController implements Initializable, ControlledUpdateScre
      */
     @Override
     public void update() throws Exception {
+        ControlledScreen.super.update();
+
+        //FIXME: I want to update the view w/o detecting
+
         Map<String, String> detected = rootViewController.getController().detectAll();
         if(detected == null) {
             throw new Exception();
@@ -114,10 +107,35 @@ public class DetectGridController implements Initializable, ControlledUpdateScre
             vRightEye.setImage(new Image("file:" + detected.get("right_eye_vertical")));
         }
         if (detected.get("right_eye_pupil_vertical") != null) {
-            vRightPupil.setImage(new Image("file:" + detected.get("right_eye_pupil_vertical")));
+            vRightPupil.setImage(new Image("file:" + detected.get
+("right_eye_pupil_vertical")));
         }
     }
 
     @Override
     public void resetState() {}
+
+    @Override
+    public void bindButtons() {
+        rootViewController.getBackButton().setOnAction((event) -> goToPhotoGrid());
+        rootViewController.getNextButton().setText("Next");
+        rootViewController.getNextButton().setOnAction((event) -> goToResultsGrid());
+    }
+
+    /***************************************************************************
+     * Event Handlers
+     ***************************************************************************/
+
+    /**
+     * FIXME: already detected eyes & pupils need to be cleared on back button.
+     */
+    @FXML
+    private void goToPhotoGrid() {
+        navigationController.setScreen(Main.photoGridID);
+    }
+
+    @FXML
+    private void goToResultsGrid() {
+        navigationController.setScreen(Main.resultGridID);
+    }
 }

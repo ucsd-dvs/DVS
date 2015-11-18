@@ -15,6 +15,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.DoubleAccumulator;
 
 /**
  * Implementation logic for photo grid
@@ -22,27 +23,27 @@ import java.util.ResourceBundle;
  * @author Sabit
  */
 public class PhotoGridController implements Initializable, ControlledScreen {
+
+    /***************************************************************************
+     * Private Members
+     ***************************************************************************/
     private String hFilePath, vFilePath;
     private final FileChooser fileChooser = new FileChooser();
-
-    @FXML
-    private GridPane root;
-    @FXML
-    private Button btnHoriz;
-    @FXML
-    private Button btnVert;
-    @FXML
-    private Button btnPrev;
-    @FXML
-    private Button btnNext;
-    @FXML
-    private ImageView imgHoriz;
-    @FXML
-    private ImageView imgVert;
-
     private NavigationController navigationController;
     private RootViewController rootViewController;
 
+    /***************************************************************************
+     * View Component bindings
+     ***************************************************************************/
+    @FXML private GridPane root;
+    @FXML private Button btnHoriz;
+    @FXML private Button btnVert;
+    @FXML private ImageView imgHoriz;
+    @FXML private ImageView imgVert;
+
+    /***************************************************************************
+     * Public Methods
+     ***************************************************************************/
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         assert root != null : "fx:id=\"root\" was not injected: check your FXML file 'photo_grid.fxml'.";
@@ -59,11 +60,41 @@ public class PhotoGridController implements Initializable, ControlledScreen {
         this.rootViewController = rootViewController;
     }
 
-    @FXML
+    @Override
+    public void resetState() {
+        vFilePath = null;
+        hFilePath = null;
+        imgHoriz.setImage(null);
+        imgVert.setImage(null);
+
+    }
+
+    @Override
+    public void onLoad() {
+        rootViewController.fireWindowSizeChangedEvent();
+    }
+
+    @Override
+    public void update() throws Exception {
+        ControlledScreen.super.update();
+    }
+
+    @Override
+    public void bindButtons() {
+        rootViewController.getBackButton().setVisible(true);
+        rootViewController.getBackButton().setOnAction((event) -> goToInputGrid());
+        rootViewController.getNextButton().setText("Next");
+        rootViewController.getNextButton().setOnAction((event) -> goToDetectGrid());
+    }
+
+    /***************************************************************************
+     * Event Handlers
+     ***************************************************************************/
     /**
      * JavaFX ignores orientation of image so vertical images get loaded as horizontal
      * and has to be rotated
      */
+    @FXML
     private void selectVerticalPicture(ActionEvent event) {
         File dir = new File(System.getProperty("user.dir")+"/src/main/resources/pics");
         fileChooser.setInitialDirectory(dir.getAbsoluteFile());
@@ -88,18 +119,14 @@ public class PhotoGridController implements Initializable, ControlledScreen {
         }
     }
 
-    @FXML
-    private void goToInputGrid(ActionEvent event) {
+    private void goToInputGrid() {
         navigationController.setScreen(Main.inputScreenID);
     }
 
     /**
      * TODO need to improve passing user input to controller
-     *
-     * @param event
      */
-    @FXML
-    private void goToDetectGrid(ActionEvent event) {
+    private void goToDetectGrid() {
         if (vFilePath == null || hFilePath == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select the appropriate images", ButtonType.CLOSE);
             alert.showAndWait();
@@ -108,14 +135,4 @@ public class PhotoGridController implements Initializable, ControlledScreen {
             navigationController.setScreen(Main.detectGridID);
         }
     }
-
-    @Override
-    public void resetState() {
-        vFilePath = null;
-        hFilePath = null;
-        imgHoriz.setImage(null);
-        imgVert.setImage(null);
-
-    }
-
 }

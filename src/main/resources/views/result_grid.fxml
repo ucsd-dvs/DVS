@@ -4,35 +4,47 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane fx:id="root" fitToWidth="true" prefWidth="600" prefHeight="450" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ucsd.globalties.dvs.core.ui.ResultGridController">
-    <content>
-        <VBox fx:id="contentBox" spacing="10">
-            <padding>
-                <Insets bottom="10" left="10" right="10" top="10"/>
-            </padding>
+<GridPane fx:id="root" id="resultgrid" alignment="CENTER"
+          maxHeight="-Infinity" maxWidth="-Infinity"
+          minHeight="-Infinity" minWidth="-Infinity"
+          prefHeight="500" prefWidth="700"
+          xmlns="http://javafx.com/javafx/8"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.ucsd.globalties.dvs.core.ui.ResultGridController"
+style="-fx-border-color: black; -fx-border-width: 1px">
+    <ScrollPane GridPane.columnIndex="0" GridPane.rowIndex="0"
+                GridPane.fillWidth="true" GridPane.fillHeight="true"
+                fitToWidth="true" fitToHeight="true"
+    style="-fx-border-color: red; -fx-border-width: 1px" id="scrollpane">
+        <content>
+            <VBox fx:id="contentBox" spacing="10" alignment="TOP_CENTER">
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="10"/>
+                </padding>
 
-            <!--This is the structure that makeElement() is creating-->
-            <!--<VBox fillWidth="true" spacing="5">-->
+                <!--This is the structure that makeElement() is creating-->
+                <!--<VBox fillWidth="true" spacing="5">-->
                 <!--<GridPane>-->
-                    <!--<columnConstraints>-->
-                        <!--<ColumnConstraints percentWidth="50"></ColumnConstraints>-->
-                        <!--<ColumnConstraints percentWidth="50"></ColumnConstraints>-->
-                    <!--</columnConstraints>-->
-                    <!--<HBox GridPane.columnIndex="0" GridPane.rowIndex="0">-->
-                        <!--<Label text="Myopia"/>-->
-                    <!--</HBox>-->
-                    <!--<HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER_RIGHT">-->
-                        <!--<Label text="PASS"/>-->
-                    <!--</HBox>-->
+                <!--<columnConstraints>-->
+                <!--<ColumnConstraints percentWidth="50"></ColumnConstraints>-->
+                <!--<ColumnConstraints percentWidth="50"></ColumnConstraints>-->
+                <!--</columnConstraints>-->
+                <!--<HBox GridPane.columnIndex="0" GridPane.rowIndex="0">-->
+                <!--<Label text="Myopia"/>-->
+                <!--</HBox>-->
+                <!--<HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER_RIGHT">-->
+                <!--<Label text="PASS"/>-->
+                <!--</HBox>-->
                 <!--</GridPane>-->
                 <!--<Text text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed."-->
-                      <!--wrappingWidth="550"/>-->
-            <!--</VBox>-->
-            <!--<Line endX="550" startX="0"/>-->
+                <!--wrappingWidth="550"/>-->
+                <!--</VBox>-->
+                <!--<Line endX="550" startX="0"/>-->
 
-        </VBox>
-    </content>
-</ScrollPane>
+            </VBox>
+        </content>
+    </ScrollPane>
+</GridPane>
+
 
 

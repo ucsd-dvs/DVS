@@ -1,25 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.VBox?>
-<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="440" minWidth="600"
-      prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.ucsd.globalties.dvs.core.ui.RootViewController">
-    <children>
-        <MenuBar>
-            <menus>
-                <Menu mnemonicParsing="false" text="More">
-                    <items>
-                        <MenuItem fx:id="exportItem" mnemonicParsing="false" onAction="#exportToExcel"
-                                  text="Export to Excel"/>
-                    </items>
-                    <items>
-                        <MenuItem fx:id="createDummyData" mnemonicParsing="false" onAction="#createDummyData" text="Put In Dummy Data"/>
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-    </children>
-</VBox>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import java.net.URL?>
+
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ucsd.globalties.dvs.core.ui.RootViewController">
+   <children>
+       <!--<MenuBar AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">-->
+       <!--<menus>-->
+       <!--<Menu mnemonicParsing="false" text="More">-->
+       <!--<items>-->
+       <!--<MenuItem fx:id="exportItem" mnemonicParsing="false" onAction="#exportToExcel" text="Export to Excel" />-->
+       <!--</items>-->
+       <!--<items>-->
+       <!--<MenuItem fx:id="createDummyData" mnemonicParsing="false" onAction="#createDummyData" text="Put In Dummy Data" />-->
+       <!--</items>-->
+       <!--</Menu>-->
+       <!--</menus>-->
+       <!--</MenuBar>-->
+       <ToolBar id="toolbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+           <padding>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+           </padding>
+          <items>
+              <Button onAction="#exportToExcel" text="Export" />
+              <Button onAction="#createDummyData" text="Create Dummy Data" />
+              <Button onAction="#goToResults" text="Results Screen" />
+          </items>
+       </ToolBar>
+       <HBox id="hbox" prefHeight="17.0" prefWidth="800.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+          <children>
+              <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                 <children>
+                     <HBox AnchorPane.rightAnchor="20.0" AnchorPane.bottomAnchor="0.0" spacing="10.0">
+                         <Button fx:id="backButton" mnemonicParsing="false" styleClass="btn-hand, btn-default" text="Back" />
+                         <Button fx:id="nextButton" mnemonicParsing="false" styleClass="btn-hand, btn-primary" text="Next" />
+                      </HBox>
+                 </children>
+              </AnchorPane>
+          </children>
+       </HBox>
+   </children>
+</AnchorPane>
