@@ -1,5 +1,6 @@
 package com.ucsd.globalties.dvs.core.ui;
 
+import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import com.ucsd.globalties.dvs.core.tools.Pair;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,10 +22,17 @@ import java.util.Map;
  */
 @Slf4j
 public class NavigationController extends StackPane {
-    //Holds the screens to be displayed
+
+    /***************************************************************************
+     * Private Members
+     ***************************************************************************/
     private Map<String, Pair<Node, ControlledScreen>> screens = new HashMap<>();
     private RootViewController rootViewController;
 
+
+    /***************************************************************************
+     * Private Methods
+     ***************************************************************************/
     public NavigationController(RootViewController rootViewController) {
         super();
         this.rootViewController = rootViewController;
@@ -83,14 +91,18 @@ public class NavigationController extends StackPane {
     public boolean setScreen(String name) {
         if (screens.get(name) != null) {   //screen loaded
             Pair<Node, ControlledScreen> screenPair = screens.get(name);
-            if (screenPair.getRight() instanceof ControlledUpdateScreen) {
-                ((ControlledUpdateScreen) screenPair.getRight()).update();
+            try {
+                screenPair.getRight().update();
+            } catch (Exception e) {
+                e.printStackTrace();
+                MyDialogs.showError("Something went wrong!");
+                return false;
             }
             if (!getChildren().isEmpty()) {    //if there is more than one screen
                 getChildren().remove(0);                    //remove the displayed screen
                 getChildren().add(0, screenPair.getLeft());     //add the screen
+                screenPair.getRight().onLoad();
             } else {
-
                 getChildren().add(screenPair.getLeft());       //no other screen is displayed so show
             }
             return true;

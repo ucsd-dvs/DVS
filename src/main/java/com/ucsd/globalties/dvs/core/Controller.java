@@ -2,14 +2,16 @@ package com.ucsd.globalties.dvs.core;
 
 import com.ucsd.globalties.dvs.core.Photo.PhotoType;
 import com.ucsd.globalties.dvs.core.excel.ExcelDataGenerator;
+import com.ucsd.globalties.dvs.core.tools.EyesNotDetectedException;
+import com.ucsd.globalties.dvs.core.tools.MyDialogs;
+import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.opencv.highgui.Highgui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+@Slf4j
 /**
  * An MVC-esque artifact that hides access of the logic (e.g. the Patient class)
  * from the front-end. Maybe you can improve this (specifically the front-end exclusive
@@ -20,12 +22,15 @@ import java.util.Map;
  */
 public class Controller {
 
+    private final java.util.Random rand = new java.util.Random();
+
+    @Getter
     @Setter
     private Patient patient = null;
     private List<Patient> sessionPatients = null;
 
     public void setPatientPhotos(String hFilePath, String vFilePath) {
-        List<Photo> photos = new ArrayList<Photo>();
+        List<Photo> photos = new ArrayList<>();
         photos.add(new Photo(hFilePath, patient, PhotoType.HORIZONTAL));
         photos.add(new Photo(vFilePath, patient, PhotoType.VERTICAL));
         patient.setPhotos(photos);
@@ -34,6 +39,11 @@ public class Controller {
     public void finalizePatient() {
         if (sessionPatients == null) {
             sessionPatients = new ArrayList<Patient>();
+        }
+        if(patient == null) {
+            log.info("[FINALIZING PATIENT]");
+            patient = Patient.builder().build();
+            patient.print();
         }
         sessionPatients.add(patient);
         patient = null;
@@ -51,55 +61,122 @@ public class Controller {
         ExcelDataGenerator.exportPatientData(sessionPatients);
     }
 
+    public void createDummyData() {
+        if(sessionPatients == null) {
+            sessionPatients = new ArrayList<Patient>();
+        }
+        for(int i = 0; i < 50; i++) {
+            Patient patient = Patient.builder()
+                    .firstName(generateName())
+                    .lastName(generateName())
+                    .birth(generateName())
+                    .birth(generateName())
+                    .ethnicity(generateName())
+                    .language(generateName())
+                    .roomNumber(generateName())
+                    .school(generateName())
+                    .comment(generateName())
+                    .medicalRecord(new EnumMap<EyeDisease, String>(EyeDisease.class))
+                    .build();
+            patient.getMedicalRecord().put(EyeDisease.ANISOMETROPIA, "TEST");
+            patient.getMedicalRecord().put(EyeDisease.MYOPIA, "TEST");
+            patient.getMedicalRecord().put(EyeDisease.HYPEROPIA, "TEST");
+            patient.getMedicalRecord().put(EyeDisease.ASTIGMATISM, "TEST");
+            patient.getMedicalRecord().put(EyeDisease.CATARACTS, "TEST");
+            patient.getMedicalRecord().put(EyeDisease.STRABISMUS, "TEST");
+            sessionPatients.add(patient);
+        }
+
+        log.info("created {} dummy patients", sessionPatients.size());
+    }
+
+    private String generateName() {
+        StringBuilder builder = new StringBuilder();
+        while(builder.toString().length() == 0) {
+            int length = rand.nextInt(5)+5;
+            for(int i = 0; i < length; i++) {
+                String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+                builder.append(lexicon.charAt(rand.nextInt(lexicon.length())));
+            }
+        }
+        return builder.toString();
+    }
+
     /**
      * TODO improve this to make it more elegant and more forward-compatible.
      *
      * @return a Map representing the successfully detected components and their output paths
      */
     public Map<String, String> detectAll() {
-        Map<String, String> detected = new HashMap<String, String>();
-        for (Photo photo : patient.getPhotos()) {
+        Map<String, String> detected = new HashMap<>();
+        Eye eye = null;
+        Pupil pupil = null;
 
-        }
-        if (patient.getPhotos().get(0).getLeftEye() != null) {
-            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_horizontal.jpg", patient.getPhotos().get(0).getLeftEye().getMat());
+        /* Horizontal Picture */
+        //Left eye
+        eye = patient.getPhotos().get(0).getLeftEye();
+        if(eye != null) {
+            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_horizontal.jpg", eye.getMat());
             detected.put("left_eye_horizontal", Main.OUTPUT_FILE + "left_eye_horizontal.jpg");
+        } else {
+            return null;
         }
-        if (patient.getPhotos().get(0).getLeftEye().getPupil() != null) {
-            patient.getPhotos().get(0).getLeftEye().getPupil().getWhiteDot();
-            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_pupil_horizontal.jpg", patient.getPhotos().get(0).getLeftEye().getPupil().getMat());
+        pupil = eye.getPupil();
+        if (pupil != null) {
+            pupil.getWhiteDot();
+            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_pupil_horizontal.jpg", pupil.getMat());
             detected.put("left_eye_pupil_horizontal", Main.OUTPUT_FILE + "left_eye_pupil_horizontal.jpg");
         }
-        if (patient.getPhotos().get(0).getRightEye() != null) {
-            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_horizontal.jpg", patient.getPhotos().get(0).getRightEye().getMat());
+
+        //Right eye
+        eye = patient.getPhotos().get(0).getRightEye();
+        if(eye != null) {
+            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_horizontal.jpg", eye.getMat());
             detected.put("right_eye_horizontal", Main.OUTPUT_FILE + "right_eye_horizontal.jpg");
+        } else {
+            return null;
         }
-        if (patient.getPhotos().get(0).getRightEye().getPupil() != null) {
-            patient.getPhotos().get(0).getRightEye().getPupil().getWhiteDot();
-            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_pupil_horizontal.jpg", patient.getPhotos().get(0).getRightEye().getPupil().getMat());
+        pupil = eye.getPupil();
+        if (pupil != null) {
+            pupil.getWhiteDot();
+            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_pupil_horizontal.jpg", pupil.getMat());
             detected.put("right_eye_pupil_horizontal", Main.OUTPUT_FILE + "right_eye_pupil_horizontal.jpg");
         }
 
-        if (patient.getPhotos().get(1).getLeftEye() != null) {
-            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_vertical.jpg", patient.getPhotos().get(1).getLeftEye().getMat());
+        /* Vertical Picture */
+        //Left eye
+        eye = patient.getPhotos().get(1).getLeftEye();
+        if(eye != null) {
+            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_vertical.jpg", eye.getMat());
             detected.put("left_eye_vertical", Main.OUTPUT_FILE + "left_eye_vertical.jpg");
+        } else {
+            return null;
         }
-        if (patient.getPhotos().get(1).getLeftEye().getPupil() != null) {
-            patient.getPhotos().get(1).getLeftEye().getPupil().getWhiteDot();
-            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_pupil_vertical.jpg", patient.getPhotos().get(1).getLeftEye().getPupil().getMat());
+        pupil = eye.getPupil();
+        if (pupil != null) {
+            pupil.getWhiteDot();
+            Highgui.imwrite(Main.OUTPUT_FILE + "left_eye_pupil_vertical.jpg", pupil.getMat());
             detected.put("left_eye_pupil_vertical", Main.OUTPUT_FILE + "left_eye_pupil_vertical.jpg");
         }
-        if (patient.getPhotos().get(1).getRightEye() != null) {
-            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_vertical.jpg", patient.getPhotos().get(1).getRightEye().getMat());
+        //Right eye
+        eye = patient.getPhotos().get(1).getRightEye();
+        if(eye != null) {
+            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_vertical.jpg", eye.getMat());
             detected.put("right_eye_vertical", Main.OUTPUT_FILE + "right_eye_vertical.jpg");
+        } else {
+            return null;
         }
-        if (patient.getPhotos().get(1).getRightEye().getPupil() != null) {
-            patient.getPhotos().get(1).getRightEye().getPupil().getWhiteDot();
-            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_pupil_vertical.jpg", patient.getPhotos().get(1).getRightEye().getPupil().getMat());
+        pupil = eye.getPupil();
+        if (pupil != null) {
+            pupil.getWhiteDot();
+            Highgui.imwrite(Main.OUTPUT_FILE + "right_eye_pupil_vertical.jpg", pupil.getMat());
             detected.put("right_eye_pupil_vertical", Main.OUTPUT_FILE + "right_eye_pupil_vertical.jpg");
         }
 
         return detected;
     }
 
+    public boolean checkPatientList() {
+        return (sessionPatients == null || sessionPatients.size() < 1) ? false : true;
+    }
 }

@@ -20,12 +20,13 @@ import java.util.Map;
 @Builder // Automatically generate a builder class for the patient that supports optional parameters.
 @Slf4j
 public class Patient {
-    private String name, birth, gender, ethnicity, language, roomNumber, school,
-            screeningComment, referral;
+    @Setter
+    private String firstName, lastName, birth, gender, ethnicity,
+            language, roomNumber, school, comment;
 
     @Setter
     @Getter
-    private List<Photo> photos;
+    private List<Photo> photos; //Has horizontal and vertical photo
 
     @Getter
     private Map<EyeDisease, String> medicalRecord;
@@ -53,10 +54,10 @@ public class Patient {
             }
         }
         if (photos.isEmpty()) {
-            log.warn("Skipping diagnosis for patient " + name + " because no adequate photos exist.");
+            log.warn("Skipping diagnosis for patient {} {} because no adequate photos exist.", firstName, lastName);
             return;
         } else if (photos.size() < 2) {
-            log.warn("A photo was removed from " + name + " because not enough eyes/pupils/whitedots were found.");
+            log.warn("A photo was removed from {} {} because not enough eyes/pupils/whitedots were found.", firstName, lastName);
         }
         for (EyeDisease disease : EyeDisease.values()) {
             disease.getDetector().detect(this);
@@ -70,16 +71,32 @@ public class Patient {
      * @return
      */
     public Map<String, String> getPatientData() {
-        Map<String, String> data = new HashMap<String, String>();
-        String[] labels = Main.sceneLabels;
-        data.put(labels[0], name);
-        data.put(labels[1], birth);
-        data.put(labels[2], gender);
-        data.put(labels[3], ethnicity);
-        data.put(labels[4], language);
-        data.put(labels[5], roomNumber);
-        data.put(labels[6], school);
-        data.put(labels[7], screeningComment);
+        Map<String, String> data = new HashMap<>();
+        data.put("Name", firstName + " " + lastName);
+        data.put("Date of Birth", birth);
+        data.put("Gender", gender);
+        data.put("Ethnicity", ethnicity);
+        data.put("Language", language);
+        data.put("School", school);
+        data.put("Room Number", roomNumber);
+        data.put("School", school);
+        data.put("Comment", comment);
         return data;
+    }
+
+    /**
+     * DEBUG method
+     */
+    public void print() {
+        log.info("[PATIENT] ==========================");
+        log.info("First Name: {}, Last Name: {}", firstName, lastName);
+        log.info("Date of Birth: {}", birth);
+        log.info("Gender: {}", gender);
+        log.info("Ethnicity: {}", ethnicity);
+        log.info("Language: {}", language);
+        log.info("Room Number: {}", roomNumber);
+        log.info("School: {}", school);
+        log.info("Comment: {}", comment);
+        log.info("========================");
     }
 }

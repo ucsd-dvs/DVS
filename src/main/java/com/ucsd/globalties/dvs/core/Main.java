@@ -1,14 +1,28 @@
 package com.ucsd.globalties.dvs.core;
 
+import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import com.ucsd.globalties.dvs.core.ui.RootViewController;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import lombok.extern.slf4j.Slf4j;
 
+import java.awt.*;
 import java.io.*;
+import java.util.Optional;
+import java.util.concurrent.atomic.DoubleAccumulator;
 
 @Slf4j
 /**
@@ -39,7 +53,6 @@ public class Main extends Application {
     public static String HAAR_FACE_PATH;
     public static String HAAR_EYE_PATH;
 
-    private static int BUFFER_SIZE = Short.MAX_VALUE;
     private static Controller controller;
     public static String OUTPUT_FILE;
     public static File TEMP_DIR;
@@ -156,6 +169,7 @@ public class Main extends Application {
     }
 
     private static void copyResourceToFile(InputStream in, File dst) throws IOException {
+        int BUFFER_SIZE = Short.MAX_VALUE;
         OutputStream out = new BufferedOutputStream(new FileOutputStream(dst), BUFFER_SIZE);
         int b = 0;
         while ((b = in.read()) >= 0) {
@@ -171,15 +185,34 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-
         try {
             stage.setTitle("Digital Vision Screening");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
-            VBox vbox = (VBox) loader.load();
+            AnchorPane anchorPane = loader.load();
+            anchorPane.getStylesheets().add("/stylesheets/fextile.css");
             RootViewController rootViewController = loader.getController();
             rootViewController.setController(controller);
-            stage.setScene(new Scene(vbox));
+            rootViewController.stage = stage;
+            stage.setScene(new Scene(anchorPane));
             stage.show();
+
+            /**
+             * Override window close event and check if there's unexported data.
+             * If there are then ask for confirmation to exit.
+             * TODO: need an indicator to let user know if there's any unexported data
+             */
+            stage.setOnCloseRequest((WindowEvent event) -> {
+                if(controller.checkPatientList()) {
+                    event.consume();
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setHeaderText("You have unsaved data!");
+                    alert.setContentText("Are you sure you want to exit?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if(result.get() == ButtonType.OK) {
+                        stage.close();
+                    }
+                }
+            });
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -1,5 +1,7 @@
 package com.ucsd.globalties.dvs.core.ui;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Common interface for our screens
  *
@@ -12,7 +14,7 @@ public interface ControlledScreen {
      *
      * @param navigationController
      */
-    public void setScreenParent(NavigationController navigationController);
+    void setScreenParent(NavigationController navigationController);
 
     /**
      * Provide reference to root view to reference backend controller
@@ -20,10 +22,30 @@ public interface ControlledScreen {
      *
      * @param rootViewController
      */
-    public void setRootView(RootViewController rootViewController);
+    void setRootView(RootViewController rootViewController);
 
     /**
      * Reset screen state to default configuration
      */
-    public void resetState();
+    void resetState();
+
+    /**
+     * Updates the screen to draw components
+     * This is needed because all the views are loaded on startup
+     * and screen specific components and behaviors need to be set
+     * whenever we switch to it
+     * @throws Exception
+     */
+    default void update() throws Exception {
+        bindButtons();
+    }
+
+    /**
+     * Called after after update() and screens have been
+     * switched to resize the new screen to whatever current
+     * size is the window is
+     */
+    void onLoad();
+
+    void bindButtons();
 }
