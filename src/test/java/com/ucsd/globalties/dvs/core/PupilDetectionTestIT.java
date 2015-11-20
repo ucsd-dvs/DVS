@@ -74,7 +74,7 @@ public class PupilDetectionTestIT {
                     Pair<String, String> test = TEST_PAIRS.get(index);
                     int found = 0;
                     try {
-                        Patient p = Patient.builder().name("Test" + index).build();
+                        Patient p = Patient.builder().firstName("Test" + index).build();
                         File l = new File(PupilDetectionTestIT.class.getResource("/pics/" + test.getLeft()).getFile());
                         File r = new File(PupilDetectionTestIT.class.getResource("/pics/" + test.getRight()).getFile());
                         Photo pL = new Photo(l.getAbsolutePath(), p, PhotoType.VERTICAL);
