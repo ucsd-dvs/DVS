@@ -13,6 +13,9 @@ bin/
 pom.xml
 target/
 
+# ignore bin outputs
+out/*
+
 *.dylib
 *.dll
 *.so
