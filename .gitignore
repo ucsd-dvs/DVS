@@ -5,6 +5,14 @@ gray-test.jpg
 .idea/*
 *.iml
 
+# ignore eclipse luna project files
+*.classpath
+*.project
+.settings/
+bin/
+pom.xml
+target/
+
 *.dylib
 *.dll
 *.so
