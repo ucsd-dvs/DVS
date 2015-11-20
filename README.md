@@ -15,6 +15,18 @@
   * Settings > Build, Execution, Deployment > Compiler > Annotation Processors > Enable annotation processing
 * make sure Lombok plugin is enabled. Settings > Other Settings > Lombok Plugin
 
+WIP:
+
+* install intellij
+* add java jdk
+* install gradle into machine
+* import as gradle (for macs do brew install), point gradle home to your grade installation (on macs, /usr/local/Cellar/gradle/2.0/libexec)
+* build opencv
+* put libopencv into into opencv/
+* install lombok plugin
+* enable annotation processing
+* create run configuration
+
 ---
 
 Some Test Photos (go to album view): https://www.flickr.com/gp/132858191@N07/239nT3/
