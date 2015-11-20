@@ -44,8 +44,8 @@
               <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                  <children>
                      <HBox AnchorPane.rightAnchor="20.0" AnchorPane.bottomAnchor="0.0" spacing="10.0">
-                         <Button fx:id="backButton" mnemonicParsing="false" styleClass="btn-hand, btn-default" text="Back" />
-                         <Button fx:id="nextButton" mnemonicParsing="false" styleClass="btn-hand, btn-primary" text="Next" />
+                         <Button fx:id="backButton" mnemonicParsing="false" styleClass="btn-hand, btn-default" text="&lt; Back" />
+                         <Button fx:id="nextButton" mnemonicParsing="false" styleClass="btn-hand, btn-primary" text="Next >" />
                       </HBox>
                  </children>
               </AnchorPane>

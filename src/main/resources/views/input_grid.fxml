@@ -19,8 +19,7 @@
           prefHeight="500" prefWidth="700.0"
           xmlns="http://javafx.com/javafx/8"
           xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.ucsd.globalties.dvs.core.ui.InputGridController"
-          style="-fx-border-color: red; -fx-border-width: 1px">
+          fx:controller="com.ucsd.globalties.dvs.core.ui.InputGridController">
     <padding>
         <Insets left="25.0" right="25.0"/>
     </padding>

@@ -40,8 +40,11 @@ public class Controller {
         if (sessionPatients == null) {
             sessionPatients = new ArrayList<Patient>();
         }
-        log.info("[FINALIZING PATIENT]");
-        patient.print();
+        if(patient == null) {
+            log.info("[FINALIZING PATIENT]");
+            patient = Patient.builder().build();
+            patient.print();
+        }
         sessionPatients.add(patient);
         patient = null;
     }

@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -190,10 +191,6 @@ public class ResultGridController implements Initializable, ControlledScreen {
 
         gp.add(diseaseBox, 0, 0);
         gp.add(statusBox, 1, 0);
-
-//        Text desc = new Text(description);
-//        desc.wrappingWidthProperty().bind(root.prefWidthProperty());
-//        desc.setWrappingWidth(root.prefWidth(0));
 
         Label desc = new Label(description);
         desc.setWrapText(true);

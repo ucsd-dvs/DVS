@@ -94,6 +94,7 @@ public class NavigationController extends StackPane {
             try {
                 screenPair.getRight().update();
             } catch (Exception e) {
+                e.printStackTrace();
                 MyDialogs.showError("Something went wrong!");
                 return false;
             }
