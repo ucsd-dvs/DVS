@@ -140,7 +140,9 @@ public class InputGridController implements Initializable, ControlledScreen {
     } /* END setupInputGrid() */
 
     /**
-     *
+     * TODO: group relevant components together and label them so user knows what can and can't be skipped
+     * FIXME: fix the size and text wrap of the text area
+     * Creates each component on the UI
      */
     private void createComponents() {
         // Name
@@ -212,7 +214,6 @@ public class InputGridController implements Initializable, ControlledScreen {
 
         //Comment
         comment = new TextArea();
-
     } /* END createComponents() */
 
     /**
@@ -252,7 +253,7 @@ public class InputGridController implements Initializable, ControlledScreen {
     @Override
     public void bindButtons() {
         rootViewController.getBackButton().setVisible(false);
-        rootViewController.getNextButton().setText("Next");
+        rootViewController.getNextButton().setText("Next >");
         rootViewController.getNextButton().setOnAction((event) -> goToPhotoGrid());
         rootViewController.getNextButton().setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
     }

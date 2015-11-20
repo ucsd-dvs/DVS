@@ -118,7 +118,7 @@ public class DetectGridController implements Initializable, ControlledScreen {
     @Override
     public void bindButtons() {
         rootViewController.getBackButton().setOnAction((event) -> goToPhotoGrid());
-        rootViewController.getNextButton().setText("Next");
+        rootViewController.getNextButton().setText("Next >");
         rootViewController.getNextButton().setOnAction((event) -> goToResultsGrid());
     }
 

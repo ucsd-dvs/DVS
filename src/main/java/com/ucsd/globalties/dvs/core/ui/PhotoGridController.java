@@ -53,7 +53,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         assert root != null : "fx:id=\"root\" was not injected: check your FXML file 'photo_grid.fxml'.";
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+//        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 
         /**
          * Bindings so the images resize properly as the window resizes
@@ -106,7 +106,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     public void bindButtons() {
         rootViewController.getBackButton().setVisible(true);
         rootViewController.getBackButton().setOnAction((event) -> goToInputGrid());
-        rootViewController.getNextButton().setText("Next");
+        rootViewController.getNextButton().setText("Next >");
         rootViewController.getNextButton().setOnAction((event) -> goToDetectGrid());
     }
 
@@ -119,7 +119,8 @@ public class PhotoGridController implements Initializable, ControlledScreen {
      */
     @FXML
     private void selectVerticalPicture(ActionEvent event) {
-        File dir = new File(System.getProperty("user.dir")+"/src/main/resources/pics");
+        File dir = new File(System.getProperty("user.dir")+"/pics"); // use this for testing
+//        File dir = new File(System.getProperty("user.home")); // use this for production
         fileChooser.setInitialDirectory(dir.getAbsoluteFile());
         File file = fileChooser.showOpenDialog(root.getScene().getWindow());
         if (file != null) {
@@ -132,7 +133,8 @@ public class PhotoGridController implements Initializable, ControlledScreen {
 
     @FXML
     private void selectHorizontalPicture(ActionEvent event) {
-        File dir = new File(System.getProperty("user.dir")+"/src/main/resources/pics");
+        File dir = new File(System.getProperty("user.dir")+"/pics"); // use this for testing
+//        File dir = new File(System.getProperty("user.home")); // use this for production
         fileChooser.setInitialDirectory(dir.getAbsoluteFile());
         File file = fileChooser.showOpenDialog(root.getScene().getWindow());
         if (file != null) {
