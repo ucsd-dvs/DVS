@@ -15,10 +15,7 @@ bin/
 pom.xml
 target/
 
-*.dylib
-*.dll
 *.so
-
 *.class
 
 # Mobile Tools for Java (J2ME)
