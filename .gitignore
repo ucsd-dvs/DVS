@@ -1,4 +1,6 @@
-build/*
+build/
+out/
+.gradle/
 gray-test.jpg
 
 # ignore intelliJ project files
@@ -12,9 +14,6 @@ gray-test.jpg
 bin/
 pom.xml
 target/
-
-# ignore bin outputs
-out/*
 
 *.dylib
 *.dll
