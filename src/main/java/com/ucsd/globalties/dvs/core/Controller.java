@@ -70,7 +70,7 @@ public class Controller {
                     .firstName(generateName())
                     .lastName(generateName())
                     .birth(generateName())
-                    .birth(generateName())
+                    .gender(generateName())
                     .ethnicity(generateName())
                     .language(generateName())
                     .roomNumber(generateName())
