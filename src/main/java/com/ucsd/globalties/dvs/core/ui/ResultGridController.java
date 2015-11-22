@@ -52,10 +52,10 @@ public class ResultGridController implements Initializable, ControlledScreen {
         assert root != null : "fx:id=\"root\" was not injected: check your FXML file 'detect_grid.fxml'.";
         List<Node> controlList = new ArrayList<>();
 
-        log.info("ResultsScreen Initialized");
-        log.info("Child id: {}", root.getChildren().get(0).getId());
-        ((ScrollPane) root.getChildren().get(0)).prefViewportWidthProperty().bind(root.prefWidthProperty());
-        ((ScrollPane) root.getChildren().get(0)).prefViewportHeightProperty().bind(root.prefHeightProperty());
+//        log.info("ResultsScreen Initialized");
+//        log.info("Child id: {}", root.getChildren().get(0).getId());
+//        ((ScrollPane) root.getChildren().get(0)).prefViewportWidthProperty().bind(root.prefWidthProperty());
+//        ((ScrollPane) root.getChildren().get(0)).prefViewportHeightProperty().bind(root.prefHeightProperty());
     }
 
     @Override
@@ -81,26 +81,26 @@ public class ResultGridController implements Initializable, ControlledScreen {
         resetState();
         bindButtons();
 
-        for(int i = 0; i < 3; i++) {
-            String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed";
-            Node node = makeElement("Myopia", "PASS", msg);
-            Line line = makeHorizontalRule();
-            contentBox.getChildren().add(node);
-        }
-        for(int i = 3; i < 5; i++) {
-            String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed";
-            Node node = makeElement("Myopia", "REFER", msg);
-            Line line = makeHorizontalRule();
-            contentBox.getChildren().add(node);
-        }
-        for(int i = 5; i < 6; i++) {
-            String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed";
-            Node node = makeElement("Myopia", "N/A", msg);
-            Line line = makeHorizontalRule();
-            contentBox.getChildren().add(node);
-        }
+//        for(int i = 0; i < 3; i++) {
+//            String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed";
+//            Node node = makeElement("Myopia", "PASS", msg);
+//            Line line = makeHorizontalRule();
+//            contentBox.getChildren().addAll(node, line);
+//        }
+//        for(int i = 3; i < 5; i++) {
+//            String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed";
+//            Node node = makeElement("Myopia", "REFER", msg);
+//            Line line = makeHorizontalRule();
+//            contentBox.getChildren().addAll(node, line);
+//        }
+//        for(int i = 5; i < 6; i++) {
+//            String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed";
+//            Node node = makeElement("Myopia", "N/A", msg);
+//            Line line = makeHorizontalRule();
+//            contentBox.getChildren().addAll(node, line);
+//        }
 
-        rootViewController.getController().finalizePatient();
+//        rootViewController.getController().finalizePatient();
 
         //get results
 //        rootViewController.getController().diagnose();
@@ -119,7 +119,7 @@ public class ResultGridController implements Initializable, ControlledScreen {
 
     @Override
     public void resetState() {
-        contentBox.getChildren().clear();
+//        contentBox.getChildren().clear();
 //        controlList.clear();
     }
 
@@ -192,10 +192,11 @@ public class ResultGridController implements Initializable, ControlledScreen {
         gp.add(diseaseBox, 0, 0);
         gp.add(statusBox, 1, 0);
 
-        Label desc = new Label(description);
-        desc.setWrapText(true);
+//        Label desc = new Label(description);
+//        desc.setWrapText(true);
 
-        vBox.getChildren().addAll(gp, desc);
+//        vBox.getChildren().addAll(gp, desc);
+        vBox.getChildren().addAll(gp);
 
         return vBox;
     } /* END makeElement() */
