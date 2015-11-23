@@ -6,6 +6,7 @@ import com.ucsd.globalties.dvs.core.Patient;
 import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import com.ucsd.globalties.dvs.core.ui.RootViewController;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -160,6 +161,7 @@ public class ExcelDataGenerator {
 
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Password");
+        Platform.runLater(() -> { passwordField.requestFocus(); });
         PasswordField passwordField1 = new PasswordField();
         passwordField1.setPromptText("Reenter Password");
 

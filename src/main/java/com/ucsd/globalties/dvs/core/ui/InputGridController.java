@@ -3,6 +3,7 @@ package com.ucsd.globalties.dvs.core.ui;
 import com.ucsd.globalties.dvs.core.EyeDisease;
 import com.ucsd.globalties.dvs.core.Main;
 import com.ucsd.globalties.dvs.core.Patient;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -156,6 +157,7 @@ public class InputGridController implements Initializable, ControlledScreen {
     private void createComponents() {
         // Name
         firstNameField = new TextField();
+        Platform.runLater(() -> { firstNameField.requestFocus(); });
         lastNameField = new TextField();
 
         // Date of Birth
