@@ -4,6 +4,7 @@ import com.ucsd.globalties.dvs.core.EyeDisease;
 import com.ucsd.globalties.dvs.core.Patient;
 import com.ucsd.globalties.dvs.core.Photo;
 import com.ucsd.globalties.dvs.core.WhiteDot;
+import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 
 /**
  * Detect strabismus in a patient.
@@ -46,6 +47,9 @@ public class StrabismusDetector implements DiseaseDetector {
         double rightDistDiff = rightDot.getDistance();
         String distMsg = "";
 
+        DiseaseRecord diseaseRecord = new DiseaseRecord();
+        diseaseRecord.setDiseaseName(EyeDisease.STRABISMUS);
+
         if (leftDistDiff > DISTANCE_THRESHOLD || rightDistDiff > DISTANCE_THRESHOLD) {
             distMsg = String.format("\tDistance of %.2f and %.2f detected when allowed limit is %.2f\n", leftDistDiff, rightDistDiff, DISTANCE_THRESHOLD);
             distWarning = true;
@@ -63,18 +67,16 @@ public class StrabismusDetector implements DiseaseDetector {
 
         if (distWarning && angleWarning) {
             //msg.append("Patient has Strabismus");
-            msg.append("Refer\n");
-            msg.append(distMsg);
-            msg.append(angleMsg);
+            diseaseRecord.setStatus("REFER");
+            diseaseRecord.setDescription(distMsg + "\n" + angleMsg);
         } else if (distWarning || angleWarning) {
             //msg.append("Patient may have Strabismus");
-            msg.append("Refer\n");
-            msg.append(distMsg);
-            msg.append(angleMsg);
+            diseaseRecord.setStatus("REFER");
+            diseaseRecord.setDescription(distMsg + "\n" + angleMsg);
         } else {
-            msg.append("Pass");
+            diseaseRecord.setStatus("PASS");
         }
 
-        p.getMedicalRecord().put(EyeDisease.STRABISMUS, msg.toString());
+        p.getDiseaseRecord().add(diseaseRecord);
     }
 }

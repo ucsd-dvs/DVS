@@ -1,6 +1,7 @@
 package com.ucsd.globalties.dvs.core.detect;
 
 import com.ucsd.globalties.dvs.core.*;
+import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 
 public class HyperopiaDetector implements DiseaseDetector {
 
@@ -13,24 +14,27 @@ public class HyperopiaDetector implements DiseaseDetector {
         Crescent_info leftCrescent = photo.getLeftEye().getPupil().getCrescent();
         Crescent_info rightCrescent = photo.getRightEye().getPupil().getCrescent();
 
+        DiseaseRecord diseaseRecord = new DiseaseRecord();
+        diseaseRecord.setDiseaseName(EyeDisease.HYPEROPIA);
+
         if (leftCrescent.isCrescentIsAtBot() && rightCrescent.isCrescentIsAtBot()) {
-            p.getMedicalRecord().put(EyeDisease.HYPEROPIA, "Pass");
+            diseaseRecord.setStatus("PASS");
         } else if (leftCrescent.isCrescentIsAtTop() || rightCrescent.isCrescentIsAtTop()) {
-            msg.append("Refer\n");
+            diseaseRecord.setStatus("REFER");
             if (leftCrescent.isCrescentIsAtBot()) {
                 double diopter = Pupil.findClosestDiopter(leftCrescent.getCrescentSize());
                 if (diopter > HYPEROPIA_THRESHOLD)
-                    msg.append(String.format("\tLeft eye crescent diopter is %.2f when allowed limit is %.2f\n", diopter, HYPEROPIA_THRESHOLD));
+                    diseaseRecord.setDescription(String.format("Left eye crescent diopter is %.2f when allowed limit is %.2f\n", diopter, HYPEROPIA_THRESHOLD));
             }
             if (rightCrescent.isCrescentIsAtBot()) {
                 double diopter = Pupil.findClosestDiopter(rightCrescent.getCrescentSize());
                 if (diopter > HYPEROPIA_THRESHOLD)
-                    msg.append(String.format("\tRight eye crescent diopter is %.2f when allowed limit is %.2f\n", diopter, HYPEROPIA_THRESHOLD));
+                    diseaseRecord.setDescription(String.format("Right eye crescent diopter is %.2f when allowed limit is %.2f\n", diopter, HYPEROPIA_THRESHOLD));
             }
         } else {
-            msg.append("Pass");
+            diseaseRecord.setStatus("PASS");
         }
 
-        p.getMedicalRecord().put(EyeDisease.HYPEROPIA, msg.toString());
+        p.getDiseaseRecord().add(diseaseRecord);
     }
 }

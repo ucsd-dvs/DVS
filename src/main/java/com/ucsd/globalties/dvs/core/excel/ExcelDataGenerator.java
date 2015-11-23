@@ -3,6 +3,7 @@ package com.ucsd.globalties.dvs.core.excel;
 import com.ucsd.globalties.dvs.core.Eye;
 import com.ucsd.globalties.dvs.core.EyeDisease;
 import com.ucsd.globalties.dvs.core.Patient;
+import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import com.ucsd.globalties.dvs.core.ui.RootViewController;
 import javafx.scene.Node;
@@ -82,10 +83,10 @@ public class ExcelDataGenerator {
             Cell cell = headerRow.createCell(cellNum++);
             cell.setCellValue(key);
         }
-        Map<EyeDisease, String> medRecord = patientList.get(0).getMedicalRecord();
-        for (EyeDisease disease : medRecord.keySet()) {
+        List<DiseaseRecord> diseaseRecord = patientList.get(0).getDiseaseRecord();
+        for (DiseaseRecord disease : diseaseRecord) {
             Cell cell = headerRow.createCell(cellNum++);
-            cell.setCellValue(disease.toString());
+            cell.setCellValue(disease.getDiseaseName().toString());
         }
 
         for (Patient p : patientList) {
@@ -96,10 +97,9 @@ public class ExcelDataGenerator {
                 Cell cell = row.createCell(cellNum++);
                 cell.setCellValue(value);
             }
-            Map<EyeDisease, String> medicalRecord = p.getMedicalRecord();
-            for(String value : medicalRecord.values()) {
+            for(DiseaseRecord disease : diseaseRecord) {
                 Cell cell = row.createCell(cellNum++);
-                cell.setCellValue(value);
+                cell.setCellValue(disease.getStatus());
             }
         }
 

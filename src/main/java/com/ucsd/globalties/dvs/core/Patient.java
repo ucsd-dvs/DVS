@@ -1,14 +1,12 @@
 package com.ucsd.globalties.dvs.core;
 
+import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Builder;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The Patient class contains all information about the patient.
@@ -20,6 +18,7 @@ import java.util.Map;
 @Builder // Automatically generate a builder class for the patient that supports optional parameters.
 @Slf4j
 public class Patient {
+    @Getter
     @Setter
     private String firstName, lastName, birth, gender, ethnicity,
             language, roomNumber, school, comment;
@@ -31,6 +30,9 @@ public class Patient {
     @Getter
     private Map<EyeDisease, String> medicalRecord;
 
+    @Getter
+    private List<DiseaseRecord> diseaseRecord;
+
     /**
      * Populate the patient's medical record with results from the diagnoses of all disease detectors.
      * BY THE WAY, this is lame. Back end code shouldn't really have null checks here, because that
@@ -39,6 +41,8 @@ public class Patient {
      * TODO PLZ REFACTOR.
      */
     public void diagnose() {
+        diseaseRecord = new ArrayList<>();
+
         for (Iterator<Photo> it = photos.iterator(); it.hasNext(); ) {
             Photo p = it.next();
             Eye left = p.getLeftEye();
@@ -62,7 +66,7 @@ public class Patient {
         for (EyeDisease disease : EyeDisease.values()) {
             disease.getDetector().detect(this);
         }
-        log.info("Done detecting. Medical record: " + medicalRecord.toString());
+        log.info("Done detecting. Medical record: " + diseaseRecord.toString());
     }
 
     /**

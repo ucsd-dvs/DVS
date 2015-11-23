@@ -2,6 +2,7 @@ package com.ucsd.globalties.dvs.core;
 
 import com.ucsd.globalties.dvs.core.Photo.PhotoType;
 import com.ucsd.globalties.dvs.core.excel.ExcelDataGenerator;
+import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 import com.ucsd.globalties.dvs.core.tools.EyesNotDetectedException;
 import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import lombok.Getter;
@@ -53,8 +54,12 @@ public class Controller {
         patient.diagnose();
     }
 
-    public Map<EyeDisease, String> getRecords() {
-        return patient.getMedicalRecord();
+//    public Map<EyeDisease, String> getRecords() {
+//        return patient.getMedicalRecord();
+//    }
+
+    public List<DiseaseRecord> getRecords() {
+        return patient.getDiseaseRecord();
     }
 
     public void exportData() {
@@ -78,12 +83,12 @@ public class Controller {
                     .comment(generateName())
                     .medicalRecord(new EnumMap<EyeDisease, String>(EyeDisease.class))
                     .build();
-            patient.getMedicalRecord().put(EyeDisease.ANISOMETROPIA, "TEST");
-            patient.getMedicalRecord().put(EyeDisease.MYOPIA, "TEST");
-            patient.getMedicalRecord().put(EyeDisease.HYPEROPIA, "TEST");
-            patient.getMedicalRecord().put(EyeDisease.ASTIGMATISM, "TEST");
-            patient.getMedicalRecord().put(EyeDisease.CATARACTS, "TEST");
-            patient.getMedicalRecord().put(EyeDisease.STRABISMUS, "TEST");
+            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ANISOMETROPIA, "PASS", "TEST"));
+            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.MYOPIA, "PASS", "TEST"));
+            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.HYPEROPIA, "PASS", "TEST"));
+            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ASTIGMATISM, "PASS", "TEST"));
+            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.CATARACTS, "PASS", "TEST"));
+            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.STRABISMUS, "PASS", "TEST"));
             sessionPatients.add(patient);
         }
 
