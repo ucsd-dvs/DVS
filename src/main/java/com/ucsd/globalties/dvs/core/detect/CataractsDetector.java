@@ -2,6 +2,7 @@ package com.ucsd.globalties.dvs.core.detect;
 
 import com.ucsd.globalties.dvs.core.EyeDisease;
 import com.ucsd.globalties.dvs.core.Patient;
+import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 
 /**
  * Detect Cataracts in a Patient
@@ -11,6 +12,6 @@ import com.ucsd.globalties.dvs.core.Patient;
  */
 public class CataractsDetector implements DiseaseDetector {
     public void detect(Patient p) {
-        p.getMedicalRecord().put(EyeDisease.CATARACTS, "N/A: WIP");
+        p.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.CATARACTS, "N/A: WIP", ""));
     }
 }

@@ -194,6 +194,7 @@ public class Main extends Application {
             rootViewController.setController(controller);
             rootViewController.stage = stage;
             stage.setScene(new Scene(anchorPane));
+            stage.setMinHeight(600); // set minimum window size
             stage.show();
 
             /**

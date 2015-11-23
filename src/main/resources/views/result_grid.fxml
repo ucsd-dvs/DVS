@@ -21,12 +21,13 @@
 
     <VBox spacing="20" GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="TOP_CENTER">
 
-        <Label text="John Doe" styleClass="h3, text-primary" />
+        <Label fx:id="nameLabel" text="John Doe" styleClass="h3, text-primary" />
 
-        <Label text="REFER" styleClass="h4, alert-danger, container" />
+        <Label fx:id="globalStatusLabel" text="N/A" styleClass="h4, alert-danger, container" />
 
         <Separator></Separator>
 
+        <!--Myopia-->
         <GridPane>
             <columnConstraints>
                 <ColumnConstraints percentWidth="50"></ColumnConstraints>
@@ -36,12 +37,13 @@
                 <Label text="Myopia" />
             </HBox>
             <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
-                <Label text="PASS" styleClass="alert-success, container" />
+                <Label fx:id="myopiaLabel" text="N/A" />
             </HBox>
         </GridPane>
 
         <Separator></Separator>
 
+        <!--Hyperopia-->
         <GridPane>
             <columnConstraints>
                 <ColumnConstraints percentWidth="50"></ColumnConstraints>
@@ -51,12 +53,13 @@
                 <Label text="Hyperopia" />
             </HBox>
             <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
-                <Label text="N/A" styleClass="alert-warning, container" />
+                <Label fx:id="hyperopiaLabel" text="N/A" />
             </HBox>
         </GridPane>
 
         <Separator></Separator>
 
+        <!--Astigmatism-->
         <GridPane>
             <columnConstraints>
                 <ColumnConstraints percentWidth="50"></ColumnConstraints>
@@ -66,12 +69,13 @@
                 <Label text="Astigmatism" />
             </HBox>
             <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
-                <Label text="REFER" styleClass="alert-danger, container" />
+                <Label fx:id="astigmatismLabel" text="N/A" />
             </HBox>
         </GridPane>
 
         <Separator></Separator>
 
+        <!--Strabismus-->
         <GridPane>
             <columnConstraints>
                 <ColumnConstraints percentWidth="50"></ColumnConstraints>
@@ -81,12 +85,13 @@
                 <Label text="Strabismus" />
             </HBox>
             <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
-                <Label text="PASS" styleClass="alert-success, container" />
+                <Label fx:id="strabismusLabel" text="N/A" />
             </HBox>
         </GridPane>
 
         <Separator></Separator>
 
+        <!--Cataracts-->
         <GridPane>
             <columnConstraints>
                 <ColumnConstraints percentWidth="50"></ColumnConstraints>
@@ -96,12 +101,13 @@
                 <Label text="Cataracts" />
             </HBox>
             <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
-                <Label text="PASS" />
+                <Label fx:id="cataractsLabel" text="N/A" />
             </HBox>
         </GridPane>
 
         <Separator></Separator>
 
+        <!--Anisometropia-->
         <GridPane>
             <columnConstraints>
                 <ColumnConstraints percentWidth="50"></ColumnConstraints>
@@ -111,44 +117,11 @@
                 <Label text="Anisometropia" />
             </HBox>
             <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
-                <Label text="PASS" />
+                <Label fx:id="anisometropiaLabel" text="N/A" />
             </HBox>
         </GridPane>
 
     </VBox>
-
-    <!---->
-    <!--<ScrollPane GridPane.columnIndex="0" GridPane.rowIndex="0"-->
-                <!--GridPane.fillWidth="true" GridPane.fillHeight="true"-->
-                <!--fitToWidth="true" fitToHeight="true">-->
-        <!--<content>-->
-            <!--<VBox fx:id="contentBox" spacing="10" alignment="TOP_CENTER">-->
-                <!--<padding>-->
-                    <!--<Insets bottom="10" left="10" right="10" top="10"/>-->
-                <!--</padding>-->
-
-                <!--&lt;!&ndash;This is the structure that makeElement() is creating&ndash;&gt;-->
-                <!--&lt;!&ndash;<VBox fillWidth="true" spacing="5">&ndash;&gt;-->
-                <!--&lt;!&ndash;<GridPane>&ndash;&gt;-->
-                <!--&lt;!&ndash;<columnConstraints>&ndash;&gt;-->
-                <!--&lt;!&ndash;<ColumnConstraints percentWidth="50"></ColumnConstraints>&ndash;&gt;-->
-                <!--&lt;!&ndash;<ColumnConstraints percentWidth="50"></ColumnConstraints>&ndash;&gt;-->
-                <!--&lt;!&ndash;</columnConstraints>&ndash;&gt;-->
-                <!--&lt;!&ndash;<HBox GridPane.columnIndex="0" GridPane.rowIndex="0">&ndash;&gt;-->
-                <!--&lt;!&ndash;<Label text="Myopia"/>&ndash;&gt;-->
-                <!--&lt;!&ndash;</HBox>&ndash;&gt;-->
-                <!--&lt;!&ndash;<HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER_RIGHT">&ndash;&gt;-->
-                <!--&lt;!&ndash;<Label text="PASS"/>&ndash;&gt;-->
-                <!--&lt;!&ndash;</HBox>&ndash;&gt;-->
-                <!--&lt;!&ndash;</GridPane>&ndash;&gt;-->
-                <!--&lt;!&ndash;<Text text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed."&ndash;&gt;-->
-                <!--&lt;!&ndash;wrappingWidth="550"/>&ndash;&gt;-->
-                <!--&lt;!&ndash;</VBox>&ndash;&gt;-->
-                <!--&lt;!&ndash;<Line endX="550" startX="0"/>&ndash;&gt;-->
-
-            <!--</VBox>-->
-        <!--</content>-->
-    <!--</ScrollPane>-->
 </GridPane>
 
 

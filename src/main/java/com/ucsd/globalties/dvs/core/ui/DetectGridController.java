@@ -79,6 +79,7 @@ public class DetectGridController implements Initializable, ControlledScreen {
         ControlledScreen.super.update();
 
         //FIXME: I want to update the view w/o detecting
+        //So I can show a progress bar on the screen while the detection runs in the background
 
         Map<String, String> detected = rootViewController.getController().detectAll();
         if(detected == null) {

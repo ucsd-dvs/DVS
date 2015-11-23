@@ -1,36 +1,41 @@
 package com.ucsd.globalties.dvs.core.detect;
 
+import com.sun.javafx.binding.StringFormatter;
 import com.ucsd.globalties.dvs.core.*;
+import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 
 public class MyopiaDetector implements DiseaseDetector {
 
     public void detect(Patient p) {
-        StringBuilder msg = new StringBuilder();
-
         Photo photo = p.getPhotos().get(0);        // Use horizontal picture for now.
         final double MYOPIA_THRESHOLD = -3.25;
 
         Crescent_info leftCrescent = photo.getLeftEye().getPupil().getCrescent();
         Crescent_info rightCrescent = photo.getRightEye().getPupil().getCrescent();
 
+        DiseaseRecord disease = new DiseaseRecord();
+        disease.setDiseaseName(EyeDisease.MYOPIA);
+
         if (leftCrescent.isCrescentIsAtTop() && rightCrescent.isCrescentIsAtTop()) {
-            p.getMedicalRecord().put(EyeDisease.MYOPIA, "Pass");
+            disease.setStatus("PASS");
         } else if (leftCrescent.isCrescentIsAtBot() || rightCrescent.isCrescentIsAtBot()) {
-            msg.append("Refer\n");
+            disease.setStatus("REFER");
             if (leftCrescent.isCrescentIsAtBot()) {
                 double diopter = Pupil.findClosestDiopter(leftCrescent.getCrescentSize());
-                if (diopter < MYOPIA_THRESHOLD)
-                    msg.append(String.format("\tLeft eye crescent diopter is %.2f when allowed limit is %.2f\n", diopter, MYOPIA_THRESHOLD));
+                if (diopter < MYOPIA_THRESHOLD) {
+                    disease.setDescription(String.format("Left eye crescent diopter is %.2f when allowed limit is %.2f", diopter, MYOPIA_THRESHOLD));
+                }
             }
             if (rightCrescent.isCrescentIsAtBot()) {
                 double diopter = Pupil.findClosestDiopter(rightCrescent.getCrescentSize());
-                if (diopter < MYOPIA_THRESHOLD)
-                    msg.append(String.format("\tRight eye crescent diopter is %.2f when allowed limit is %.2f\n", diopter, MYOPIA_THRESHOLD));
+                if (diopter < MYOPIA_THRESHOLD) {
+                    disease.setDescription(String.format("Right eye crescent diopter is %.2f when allowed limit is %.2f", diopter, MYOPIA_THRESHOLD));
+                }
             }
         } else {
-            msg.append("Pass");
+            disease.setStatus("REFER");
         }
 
-        p.getMedicalRecord().put(EyeDisease.MYOPIA, msg.toString());
+        p.getDiseaseRecord().add(disease);
     }
 }

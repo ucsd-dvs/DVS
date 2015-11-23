@@ -2,6 +2,7 @@ package com.ucsd.globalties.dvs.core.ui;
 
 import com.ucsd.globalties.dvs.core.EyeDisease;
 import com.ucsd.globalties.dvs.core.Main;
+import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,10 +20,7 @@ import javafx.scene.text.Font;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Slf4j
 /**
@@ -42,7 +40,15 @@ public class ResultGridController implements Initializable, ControlledScreen {
      * View Component ID bindings
      ***************************************************************************/
     @FXML private GridPane root;
-    @FXML private VBox contentBox;
+    @FXML private Label nameLabel;
+    @FXML private Label globalStatusLabel;
+    @FXML private Label myopiaLabel;
+    @FXML private Label hyperopiaLabel;
+    @FXML private Label astigmatismLabel;
+    @FXML private Label strabismusLabel;
+    @FXML private Label cataractsLabel;
+    @FXML private Label anisometropiaLabel;
+
 
     /***************************************************************************
      * Public Methods
@@ -81,40 +87,53 @@ public class ResultGridController implements Initializable, ControlledScreen {
         resetState();
         bindButtons();
 
-//        for(int i = 0; i < 3; i++) {
-//            String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed";
-//            Node node = makeElement("Myopia", "PASS", msg);
-//            Line line = makeHorizontalRule();
-//            contentBox.getChildren().addAll(node, line);
-//        }
-//        for(int i = 3; i < 5; i++) {
-//            String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed";
-//            Node node = makeElement("Myopia", "REFER", msg);
-//            Line line = makeHorizontalRule();
-//            contentBox.getChildren().addAll(node, line);
-//        }
-//        for(int i = 5; i < 6; i++) {
-//            String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sollicitudin ipsum, non efficitur diam. Nulla auctor lectus lorem, in lacinia nisi suscipit sed";
-//            Node node = makeElement("Myopia", "N/A", msg);
-//            Line line = makeHorizontalRule();
-//            contentBox.getChildren().addAll(node, line);
-//        }
+        //FIXME: set the patient's name and overall referral status
+        nameLabel.setText(rootViewController.getController().getPatient().getFirstName() +
+                " " + rootViewController.getController().getPatient().getLastName());
 
-//        rootViewController.getController().finalizePatient();
+        rootViewController.getController().diagnose();
+        List<DiseaseRecord> medicalRecord = rootViewController.getController().getRecords();
+        for(DiseaseRecord record : medicalRecord) {
+            switch(record.getDiseaseName())  {
+                case MYOPIA: {
+                    myopiaLabel.setText(record.getStatus());
+                    break;
+                }
+                case HYPEROPIA: {
+                    hyperopiaLabel.setText(record.getStatus());
+                    break;
+                }
+                case ANISOMETROPIA: {
+                    anisometropiaLabel.setText(record.getStatus());
+                    break;
+                }
+                case STRABISMUS: {
+                    strabismusLabel.setText(record.getStatus());
+                    break;
+                }
+                case CATARACTS: {
+                    cataractsLabel.setText(record.getStatus());
+                    break;
+                }
+                case ASTIGMATISM: {
+                    astigmatismLabel.setText(record.getStatus());
+                    break;
+                }
+                default: {
+                    log.error("Something went wrong!");
+                    break;
+                }
+            }
+        }
 
-        //get results
-//        rootViewController.getController().diagnose();
-//        Map<EyeDisease, String> medicalRecord = rootViewController.getController().getRecords();
-//        int index = 0;
-//        for (Map.Entry<EyeDisease, String> entry : medicalRecord.entrySet()) {
-//            Label diseaseLabel = new Label(entry.getKey().toString());
-//            Text commentText = new Text(entry.getValue());
-//            root.add(diseaseLabel, 0, index);
-//            root.add(commentText, 1, index);
-//            controlList.add(diseaseLabel);
-//            controlList.add(commentText);
-//            index++;
-//        }
+        setStyleForLabel(myopiaLabel);
+        setStyleForLabel(hyperopiaLabel);
+        setStyleForLabel(astigmatismLabel);
+        setStyleForLabel(strabismusLabel);
+        setStyleForLabel(cataractsLabel);
+        setStyleForLabel(anisometropiaLabel);
+
+        rootViewController.getController().finalizePatient();
     } /* END update() */
 
     @Override
@@ -143,75 +162,19 @@ public class ResultGridController implements Initializable, ControlledScreen {
     /***************************************************************************
      * Private Methods
      ***************************************************************************/
+
     /**
-     * Creating UI components and returning the top most element.
-     * This UI components are being created in code instead of in fxml is to
-     * avoid having 20+ member variables referencing all the text that need
-     * to be updated.
-     *
-     * Refer to result_grid.fxml for what this looks like in xml format
-     * @param disease refer to EyeDisease for what these are
-     * @param status accepted values are: PASS, REFER, or N/A
-     * @param description further details on the status
-     * @return A node representing a tree of elements to be drawn onto the UI
+     * sets the css style for the labels depending on whether its "pass"/"refet"/"n/a"
+     * @param label
      */
-    private VBox makeElement(String disease, String status, String description) {
-        VBox vBox = new VBox();
-        vBox.setSpacing(5);
-
-        GridPane gp = new GridPane();
-        ColumnConstraints leftCol = new ColumnConstraints();
-        leftCol.setPercentWidth(50);
-        ColumnConstraints rightCol = new ColumnConstraints();
-        rightCol.setPercentWidth(50);
-        gp.getColumnConstraints().addAll(leftCol, rightCol);
-
-        HBox diseaseBox = new HBox();
-        Label diseaseLabel = new Label(disease);
-
-        diseaseLabel.setStyle("-fx-text-fill: blue; -fx-font-weight: bold;");
-
-        diseaseBox.getChildren().add(diseaseLabel);
-
-        HBox statusBox = new HBox();
-        statusBox.setAlignment(Pos.CENTER_RIGHT);
-        Label statusLabel = new Label(status);
-
-        if(status.equalsIgnoreCase("pass")) {
-            statusLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
-        } else if(status.equalsIgnoreCase("refer")) {
-            statusLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
-        } else if(status.equalsIgnoreCase("n/a")) {
-            statusLabel.setStyle("-fx-text-fill: orange;");
+    private void setStyleForLabel(Label label) {
+        if(label.getText().equalsIgnoreCase("pass")) {
+            label.getStyleClass().addAll("alert-success", "container");
+        } else if(label.getText().equalsIgnoreCase("refer")) {
+            label.getStyleClass().addAll("alert-danger", "container");
         } else {
-            log.error("Status not recognized");
+            label.getStyleClass().addAll("alert-warning", "container");
         }
-
-        statusBox.getChildren().add(statusLabel);
-
-        gp.add(diseaseBox, 0, 0);
-        gp.add(statusBox, 1, 0);
-
-//        Label desc = new Label(description);
-//        desc.setWrapText(true);
-
-//        vBox.getChildren().addAll(gp, desc);
-        vBox.getChildren().addAll(gp);
-
-        return vBox;
-    } /* END makeElement() */
-
-    /**
-     * This creates a horizontal line that is used as the divider on
-     * the results screen
-     * @return a horizontal line
-     */
-    private Line makeHorizontalRule() {
-        Line line = new Line();
-        line.setStartX(0);
-        line.setEndX(550);
-        return line;
-    } /* END makeHorizontalRule() */
-
+    }
 
 }
