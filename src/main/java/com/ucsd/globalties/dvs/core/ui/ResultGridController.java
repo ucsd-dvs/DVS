@@ -87,7 +87,7 @@ public class ResultGridController implements Initializable, ControlledScreen {
         resetState();
         bindButtons();
 
-        //FIXME: set the patient's name and overall referral status
+        //FIXME: set the overall patient's status
         nameLabel.setText(rootViewController.getController().getPatient().getFirstName() +
                 " " + rootViewController.getController().getPatient().getLastName());
 

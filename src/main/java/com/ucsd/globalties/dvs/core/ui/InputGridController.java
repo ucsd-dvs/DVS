@@ -80,9 +80,18 @@ public class InputGridController implements Initializable, ControlledScreen {
 
     @Override
     public void resetState() {
-        for (Map.Entry<String, TextField> entry : inputValues.entrySet()) {
-            entry.getValue().clear();
-        }
+        firstNameField.clear();
+        lastNameField.clear();
+        month.setValue(null);
+        day.setValue(null);
+        year.setValue(null);
+        maleRadio.setSelected(false);
+        femaleRadio.setSelected(false);
+        ethnicity.setValue(null);
+        language.setValue(null);
+        school.clear();
+        roomNumber.clear();
+        comment.clear();
     }
 
     /***************************************************************************
@@ -223,7 +232,10 @@ public class InputGridController implements Initializable, ControlledScreen {
      */
     private void goToPhotoGrid() {
         int i = 0;
-        String dob = month.getValue() + "/" + day.getValue() + "/" + year.getValue();
+        String dob =
+                ((month.getValue() != null) ? month.getValue().toString() : "") + "/" +
+                ((day.getValue() != null) ? day.getValue().toString() : "") + "/" +
+                ((year.getValue() != null) ? year.getValue().toString() : "");
         RadioButton selected = (RadioButton) sex.getSelectedToggle();
         rootViewController.getController().setPatient(Patient.builder()
                 .firstName(firstNameField.getText())
