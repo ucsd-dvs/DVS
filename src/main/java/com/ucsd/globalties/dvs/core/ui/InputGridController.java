@@ -249,7 +249,7 @@ public class InputGridController implements Initializable, ControlledScreen {
                 .roomNumber(roomNumber.getText())
                 .school(school.getText())
                 .comment(comment.getText())
-                .medicalRecord(new EnumMap<EyeDisease, String>(EyeDisease.class))
+                .diseaseRecord(new ArrayList<>())
                 .build());
         navigationController.setScreen(Main.photoGridID);
     }

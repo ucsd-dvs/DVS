@@ -28,9 +28,6 @@ public class Patient {
     private List<Photo> photos; //Has horizontal and vertical photo
 
     @Getter
-    private Map<EyeDisease, String> medicalRecord;
-
-    @Getter
     private List<DiseaseRecord> diseaseRecord;
 
     /**
@@ -41,8 +38,6 @@ public class Patient {
      * TODO PLZ REFACTOR.
      */
     public void diagnose() {
-        diseaseRecord = new ArrayList<>();
-
         for (Iterator<Photo> it = photos.iterator(); it.hasNext(); ) {
             Photo p = it.next();
             Eye left = p.getLeftEye();

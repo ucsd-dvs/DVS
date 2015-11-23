@@ -81,7 +81,7 @@ public class Controller {
                     .roomNumber(generateName())
                     .school(generateName())
                     .comment(generateName())
-                    .medicalRecord(new EnumMap<EyeDisease, String>(EyeDisease.class))
+                    .diseaseRecord(new ArrayList<>())
                     .build();
             patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ANISOMETROPIA, "PASS", "TEST"));
             patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.MYOPIA, "PASS", "TEST"));
