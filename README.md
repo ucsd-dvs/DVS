@@ -4,7 +4,7 @@
 
 ## Instructions
 
-More detailed instructions here: https://github.com/ucsd-dvs/DVS/wiki
+More detailed instructions here: https://github.com/ucsd-dvs/DVS/wiki/Installation
 
 ### IntelliJ
 
