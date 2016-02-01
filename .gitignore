@@ -3,11 +3,6 @@ out/
 .gradle/
 gray-test.jpg
 
-# ignore native libraries
-*.so
-*.dylib
-*.dll
-
 # ignore intelliJ project files
 .idea/*
 *.iml
