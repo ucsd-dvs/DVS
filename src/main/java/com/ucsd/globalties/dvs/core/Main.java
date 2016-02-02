@@ -1,10 +1,15 @@
 package com.ucsd.globalties.dvs.core;
 
 import com.ucsd.globalties.dvs.core.tools.MyDialogs;
+import com.ucsd.globalties.dvs.core.tools.WatchDir;
 import com.ucsd.globalties.dvs.core.ui.RootViewController;
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,6 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.concurrent.atomic.DoubleAccumulator;
 
@@ -127,7 +134,7 @@ public class Main extends Application {
         try {
             InputStream in = null;
             String osName = System.getProperty("os.name");
-            String fileName = "opencv_java249";
+            String fileName = "opencv_java";
             String ext = ".dll";
             log.info(osName);
             if (osName.startsWith("Windows")) {
@@ -214,8 +221,27 @@ public class Main extends Application {
                     }
                 }
             });
+
+            Path dir_path = Paths.get(System.getProperty("user.home") + "/Pictures/" + "test");
+            WatchDir watcher = new WatchDir(dir_path, false);
+
+            /**
+             * TODO: Questions to ask
+             * 1) How do we respond if user takes picture outside of img upload screen
+             * 2) How do we respond to events other than file creation
+             * 3) How do we respond if user runs DVS before taking test picture (folder not yet created)
+             * 4) Do we delete picture if it can't be processed?
+             * 5) What do we do w/ existing pictures in folder?
+             */
+            rootViewController.getController().getHStrProperty().bind(watcher.messageProperty());
+
+            Thread th = new Thread(watcher);
+            th.setDaemon(true);
+            th.start();
+
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -5,12 +5,21 @@ import com.ucsd.globalties.dvs.core.excel.ExcelDataGenerator;
 import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 import com.ucsd.globalties.dvs.core.tools.EyesNotDetectedException;
 import com.ucsd.globalties.dvs.core.tools.MyDialogs;
+import com.ucsd.globalties.dvs.core.tools.WatchDir;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.opencv.highgui.Highgui;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 
 @Slf4j
 /**
@@ -29,6 +38,22 @@ public class Controller {
     @Setter
     private Patient patient = null;
     private List<Patient> sessionPatients = null;
+
+    @Getter @Setter private StringProperty hStrProperty;
+    @Getter @Setter private StringProperty vStrProperty;
+
+    public Controller() {
+        hStrProperty = new SimpleStringProperty();
+        hStrProperty.addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println("hStrProperty change listener");
+                System.out.println(newValue);
+            }
+        });
+
+        vStrProperty = new SimpleStringProperty();
+    }
 
     public void setPatientPhotos(String hFilePath, String vFilePath) {
         List<Photo> photos = new ArrayList<>();
