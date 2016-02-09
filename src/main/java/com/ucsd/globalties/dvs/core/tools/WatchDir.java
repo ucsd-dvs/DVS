@@ -121,6 +121,11 @@ public class WatchDir extends Task<Void> {
         System.out.println("processEvents()");
         for (;;) {
 
+            if (isCancelled()) {
+                System.out.println("Thread cancelled");
+                return;
+            }
+
             // wait for key to be signalled
             WatchKey key;
             try {
