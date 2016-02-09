@@ -1,6 +1,11 @@
 package com.ucsd.globalties.dvs.core.ui;
 
 import com.ucsd.globalties.dvs.core.Main;
+import com.ucsd.globalties.dvs.core.tools.WatchDir;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,10 +20,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.DoubleAccumulator;
 
@@ -46,6 +55,11 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     @FXML private ImageView imgVert;
     @FXML private HBox imgHorizBox;
     @FXML private HBox imgVertBox;
+
+    @Getter
+    @Setter
+    private StringProperty hStrProperty;
+    @Getter @Setter private StringProperty vStrProperty;
 
     /***************************************************************************
      * Public Methods
@@ -100,6 +114,41 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     @Override
     public void update() throws Exception {
         ControlledScreen.super.update();
+
+        /**
+         * TODO: Questions to ask
+         * 1) How do we respond if user takes picture outside of img upload screen
+         * 2) How do we respond to events other than file creation
+         * 3) How do we respond if user runs DVS before taking test picture (folder not yet created)
+         * 4) Do we delete picture if it can't be processed?
+         * 5) What do we do w/ existing pictures in folder?
+         */
+
+        Path dir_path = Paths.get(System.getProperty("user.home") + "/Desktop/2016_02_08");
+        WatchDir watcher = new WatchDir(dir_path, false);
+
+        hStrProperty = new SimpleStringProperty();
+        vStrProperty = new SimpleStringProperty();
+
+        hStrProperty.bind(watcher.messageProperty());
+
+        //Set vertical picture
+        hStrProperty.addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println("hStrProperty change listener");
+                System.out.println(newValue);
+
+//                imgHoriz.setImage(new Image("file:///" + hStrProperty));
+                imgHoriz.setImage(new Image("file:///" + newValue));
+            }
+        });
+
+        //Run watcher on individual thread
+        Thread th = new Thread(watcher);
+        th.setDaemon(true);
+        th.start();
+
     }
 
     @Override
@@ -141,6 +190,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
             fileChooser.setInitialDirectory(file.getParentFile());
             hFilePath = file.getAbsolutePath();
             imgHoriz.setImage(new Image("file:///" + hFilePath));
+//            System.out.println(hFilePath);
         }
     }
 
@@ -152,6 +202,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
      * TODO need to improve passing user input to controller
      */
     private void goToDetectGrid() {
+        // TODO Delete watcher here
         if (vFilePath == null || hFilePath == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select the appropriate images", ButtonType.CLOSE);
             alert.showAndWait();

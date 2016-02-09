@@ -150,7 +150,7 @@ public class WatchDir extends Task<Void> {
 
                 // print out event
 //                System.out.format("%s: %s\n", event.kind().name(), child);
-                updateMessage(event.kind().name() + ": " + child);
+                updateMessage(child+"");
 
                 // if directory is created, and watching recursively, then
                 // register it and its sub-directories

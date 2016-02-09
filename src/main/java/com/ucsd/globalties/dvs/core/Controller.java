@@ -11,6 +11,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
+import javafx.scene.image.Image;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -39,20 +40,9 @@ public class Controller {
     private Patient patient = null;
     private List<Patient> sessionPatients = null;
 
-    @Getter @Setter private StringProperty hStrProperty;
-    @Getter @Setter private StringProperty vStrProperty;
 
     public Controller() {
-        hStrProperty = new SimpleStringProperty();
-        hStrProperty.addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println("hStrProperty change listener");
-                System.out.println(newValue);
-            }
-        });
 
-        vStrProperty = new SimpleStringProperty();
     }
 
     public void setPatientPhotos(String hFilePath, String vFilePath) {
