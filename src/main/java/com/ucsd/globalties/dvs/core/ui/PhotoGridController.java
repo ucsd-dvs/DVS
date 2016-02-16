@@ -52,16 +52,28 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     /***************************************************************************
      * View Component bindings
      ***************************************************************************/
-    @FXML private GridPane root;
-    @FXML private ImageView imgHoriz;
-    @FXML private ImageView imgVert;
-    @FXML private HBox imgHorizBox;
-    @FXML private HBox imgVertBox;
+    @FXML
+    private GridPane root;
+    @FXML
+    private ImageView imgHoriz;
+    @FXML
+    private ImageView imgVert;
+    @FXML
+    private HBox imgHorizBox;
+    @FXML
+    private HBox imgVertBox;
 
+    /***************************************************************************
+     * Directory Watcher bindings
+     ***************************************************************************/
     @Getter
     @Setter
     private StringProperty hStrProperty;
-    @Getter @Setter private StringProperty vStrProperty;
+    @Getter
+    @Setter
+    private StringProperty vStrProperty;
+
+    private WatchDir watcher = null;
 
     /***************************************************************************
      * Public Methods
@@ -133,17 +145,26 @@ public class PhotoGridController implements Initializable, ControlledScreen {
          * 5) What do we do w/ existing pictures in folder?
          */
 
+<<<<<<< HEAD
         String folder = getCurrentTimeStamp();
         System.out.println("This is our folder: " + folder);
         Path dir_path = Paths.get(System.getProperty("user.home") + "/Desktop/" + folder);
         WatchDir watcher = new WatchDir(dir_path, false);
 
 //        private String hFilePath, vFilePath;
+=======
+        Path dir_path = Paths.get(System.getProperty("user.home") + "/Pictures/test");
+        watcher = new WatchDir(dir_path, false);
+
+        // Set horizontal picture
+>>>>>>> 28e8c9e121ca0dacb6b1eb220493164815174679
         hStrProperty = new SimpleStringProperty();
-        vStrProperty = new SimpleStringProperty();
-
         hStrProperty.bind(watcher.messageProperty());
+        hStrProperty.addListener((observable, oldValue, newValue) -> {
+            imgHoriz.setImage(new Image("file:///" + newValue));
+            hFilePath = newValue;
 
+<<<<<<< HEAD
         //Set vertical picture
         hStrProperty.addListener(new ChangeListener<String>() {
             @Override
@@ -159,7 +180,42 @@ public class PhotoGridController implements Initializable, ControlledScreen {
                     imgVert.setRotate(-90);
                 }
             }
+=======
+            // TODO check if image is good before unbinding
+            System.out.println("Inside hStrProperty listener");
+            System.out.println(oldValue + " vs. " + newValue);
+            System.out.println(hStrProperty.isBound());
+            System.out.println(vStrProperty.isBound());
+            System.out.println();
+
+            hStrProperty.unbind();
+            vStrProperty.bind(watcher.messageProperty());
+>>>>>>> 28e8c9e121ca0dacb6b1eb220493164815174679
         });
+
+        // Set vertical picture
+        vStrProperty = new SimpleStringProperty();
+        vStrProperty.addListener(((observable, oldValue, newValue) -> {
+            // There has to be a null check b/c the listener gets signaled
+            // as soon as vStrProperty is bound. So a signal gets fired as
+            // soon as the horizontal picture is taken and needs to be
+            // ignored here.
+            if (oldValue != null) {
+                imgVert.setImage(new Image("file:///" + newValue));
+                imgVert.setRotate(-90);
+                vFilePath = newValue;
+
+                // TODO check if image is good before unbinding
+                System.out.println("Inside vStrProperty listener");
+                System.out.println(oldValue + " vs. " + newValue);
+                System.out.println(hStrProperty.isBound());
+                System.out.println(vStrProperty.isBound());
+                System.out.println();
+
+                vStrProperty.unbind();
+//                rootViewController.getNextButton().setDisable(false);
+            }
+        }));
 
         //Run watcher on individual thread
         Thread th = new Thread(watcher);
@@ -174,6 +230,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
         rootViewController.getBackButton().setOnAction((event) -> goToInputGrid());
         rootViewController.getNextButton().setText("Next >");
         rootViewController.getNextButton().setOnAction((event) -> goToDetectGrid());
+//        rootViewController.getNextButton().setDisable(true);
     }
 
     /***************************************************************************
@@ -183,8 +240,13 @@ public class PhotoGridController implements Initializable, ControlledScreen {
      * JavaFX ignores orientation of image so vertical images get loaded as horizontal
      * and has to be rotated
      */
+<<<<<<< HEAD
     @FXML
     private void selectVerticalPicture(ActionEvent event) {
+=======
+//    @FXML
+//    private void selectVerticalPicture(ActionEvent event) {
+>>>>>>> 28e8c9e121ca0dacb6b1eb220493164815174679
 //        File dir = new File(System.getProperty("user.dir")+"/pics"); // use this for testing
 ////        File dir = new File(System.getProperty("user.home")); // use this for production
 //        fileChooser.setInitialDirectory(dir.getAbsoluteFile());
@@ -195,12 +257,19 @@ public class PhotoGridController implements Initializable, ControlledScreen {
 //            imgVert.setImage(new Image("file:///" + vFilePath));
 //            imgVert.setRotate(-90);
 //        }
+<<<<<<< HEAD
         vFilePath = null;
         imgVert.setImage(null);
     }
 
     @FXML
     private void selectHorizontalPicture(ActionEvent event) {
+=======
+//    }
+//
+//    @FXML
+//    private void selectHorizontalPicture(ActionEvent event) {
+>>>>>>> 28e8c9e121ca0dacb6b1eb220493164815174679
 //        File dir = new File(System.getProperty("user.dir")+"/pics"); // use this for testing
 ////        File dir = new File(System.getProperty("user.home")); // use this for production
 //        fileChooser.setInitialDirectory(dir.getAbsoluteFile());
@@ -211,25 +280,38 @@ public class PhotoGridController implements Initializable, ControlledScreen {
 //            imgHoriz.setImage(new Image("file:///" + hFilePath));
 ////            System.out.println(hFilePath);
 //        }
+<<<<<<< HEAD
         hFilePath = null;
         imgHoriz.setImage(null);
     }
 
+=======
+//    }
+>>>>>>> 28e8c9e121ca0dacb6b1eb220493164815174679
     private void goToInputGrid() {
-        navigationController.setScreen(Main.inputScreenID);
+        if (watcher != null) {
+            if (!watcher.cancel()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Could not cancel watcher thread!", ButtonType.CLOSE);
+                alert.showAndWait();
+            } else {
+                navigationController.setScreen(Main.inputScreenID);
+            }
+        }
     }
 
     /**
      * TODO need to improve passing user input to controller
      */
     private void goToDetectGrid() {
-        // TODO Delete watcher here
-        if (vFilePath == null || hFilePath == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select the appropriate images", ButtonType.CLOSE);
-            alert.showAndWait();
-        } else {
-            rootViewController.getController().setPatientPhotos(hFilePath, vFilePath);
-            navigationController.setScreen(Main.detectGridID);
+        if (watcher != null) {
+            // FIXME thread isn't being cancelled for some reason
+            if (!watcher.cancel()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Could not cancel watcher thread!", ButtonType.CLOSE);
+                alert.showAndWait();
+            } else {
+                rootViewController.getController().setPatientPhotos(hFilePath, vFilePath);
+                navigationController.setScreen(Main.detectGridID);
+            }
         }
     }
 }

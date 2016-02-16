@@ -28,11 +28,19 @@
         <ImageView fx:id="imgVert" cache="true" fitHeight="300.0" fitWidth="300.0" preserveRatio="true" smooth="true"/>
     </HBox>
 
+<<<<<<< HEAD
     <Button fx:id="btnHoriz" alignment="CENTER" mnemonicParsing="false" onAction="#selectHorizontalPicture"
             text="Reselect Horizontal Picture" GridPane.columnIndex="0" GridPane.halignment="CENTER"
             GridPane.rowIndex="1"/>
     <Button fx:id="btnVert" alignment="CENTER" mnemonicParsing="false" onAction="#selectVerticalPicture"
             text="Reselect Vertical Picture" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+=======
+    <!--<Button fx:id="btnHoriz" alignment="CENTER" mnemonicParsing="false" onAction="#selectHorizontalPicture"-->
+            <!--text="Select Horizontal Picture" GridPane.columnIndex="0" GridPane.halignment="CENTER"-->
+            <!--GridPane.rowIndex="1"/>-->
+    <!--<Button fx:id="btnVert" alignment="CENTER" mnemonicParsing="false" onAction="#selectVerticalPicture"-->
+            <!--text="Select Vertical Picture" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>-->
+>>>>>>> 28e8c9e121ca0dacb6b1eb220493164815174679
 
     <padding>
         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
