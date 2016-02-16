@@ -28,6 +28,8 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.DoubleAccumulator;
 
@@ -111,6 +113,13 @@ public class PhotoGridController implements Initializable, ControlledScreen {
         rootViewController.fireWindowSizeChangedEvent();
     }
 
+    public static String getCurrentTimeStamp() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy_MM_dd");
+        Date now = new Date();
+        String strDate = sdfDate.format(now);
+        return strDate;
+    }
+
     @Override
     public void update() throws Exception {
         ControlledScreen.super.update();
@@ -124,9 +133,12 @@ public class PhotoGridController implements Initializable, ControlledScreen {
          * 5) What do we do w/ existing pictures in folder?
          */
 
-        Path dir_path = Paths.get(System.getProperty("user.home") + "/Desktop/2016_02_08");
+        String folder = getCurrentTimeStamp();
+        System.out.println("This is our folder: " + folder);
+        Path dir_path = Paths.get(System.getProperty("user.home") + "/Desktop/" + folder);
         WatchDir watcher = new WatchDir(dir_path, false);
 
+//        private String hFilePath, vFilePath;
         hStrProperty = new SimpleStringProperty();
         vStrProperty = new SimpleStringProperty();
 
@@ -138,9 +150,14 @@ public class PhotoGridController implements Initializable, ControlledScreen {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 System.out.println("hStrProperty change listener");
                 System.out.println(newValue);
-
-//                imgHoriz.setImage(new Image("file:///" + hStrProperty));
-                imgHoriz.setImage(new Image("file:///" + newValue));
+                if(hFilePath == null){
+                    hFilePath = newValue;
+                    imgHoriz.setImage(new Image("file:///" + newValue));
+                } else if(vFilePath == null){
+                    vFilePath = newValue;
+                    imgVert.setImage(new Image("file:///" + newValue));
+                    imgVert.setRotate(-90);
+                }
             }
         });
 
@@ -168,30 +185,34 @@ public class PhotoGridController implements Initializable, ControlledScreen {
      */
     @FXML
     private void selectVerticalPicture(ActionEvent event) {
-        File dir = new File(System.getProperty("user.dir")+"/pics"); // use this for testing
-//        File dir = new File(System.getProperty("user.home")); // use this for production
-        fileChooser.setInitialDirectory(dir.getAbsoluteFile());
-        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
-        if (file != null) {
-            fileChooser.setInitialDirectory(file.getParentFile());
-            vFilePath = file.getAbsolutePath();
-            imgVert.setImage(new Image("file:///" + vFilePath));
-            imgVert.setRotate(-90);
-        }
+//        File dir = new File(System.getProperty("user.dir")+"/pics"); // use this for testing
+////        File dir = new File(System.getProperty("user.home")); // use this for production
+//        fileChooser.setInitialDirectory(dir.getAbsoluteFile());
+//        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+//        if (file != null) {
+//            fileChooser.setInitialDirectory(file.getParentFile());
+//            vFilePath = file.getAbsolutePath();
+//            imgVert.setImage(new Image("file:///" + vFilePath));
+//            imgVert.setRotate(-90);
+//        }
+        vFilePath = null;
+        imgVert.setImage(null);
     }
 
     @FXML
     private void selectHorizontalPicture(ActionEvent event) {
-        File dir = new File(System.getProperty("user.dir")+"/pics"); // use this for testing
-//        File dir = new File(System.getProperty("user.home")); // use this for production
-        fileChooser.setInitialDirectory(dir.getAbsoluteFile());
-        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
-        if (file != null) {
-            fileChooser.setInitialDirectory(file.getParentFile());
-            hFilePath = file.getAbsolutePath();
-            imgHoriz.setImage(new Image("file:///" + hFilePath));
-//            System.out.println(hFilePath);
-        }
+//        File dir = new File(System.getProperty("user.dir")+"/pics"); // use this for testing
+////        File dir = new File(System.getProperty("user.home")); // use this for production
+//        fileChooser.setInitialDirectory(dir.getAbsoluteFile());
+//        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+//        if (file != null) {
+//            fileChooser.setInitialDirectory(file.getParentFile());
+//            hFilePath = file.getAbsolutePath();
+//            imgHoriz.setImage(new Image("file:///" + hFilePath));
+////            System.out.println(hFilePath);
+//        }
+        hFilePath = null;
+        imgHoriz.setImage(null);
     }
 
     private void goToInputGrid() {

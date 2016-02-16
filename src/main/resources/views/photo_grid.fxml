@@ -29,10 +29,10 @@
     </HBox>
 
     <Button fx:id="btnHoriz" alignment="CENTER" mnemonicParsing="false" onAction="#selectHorizontalPicture"
-            text="Select Horizontal Picture" GridPane.columnIndex="0" GridPane.halignment="CENTER"
+            text="Reselect Horizontal Picture" GridPane.columnIndex="0" GridPane.halignment="CENTER"
             GridPane.rowIndex="1"/>
     <Button fx:id="btnVert" alignment="CENTER" mnemonicParsing="false" onAction="#selectVerticalPicture"
-            text="Select Vertical Picture" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+            text="Reselect Vertical Picture" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
 
     <padding>
         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
