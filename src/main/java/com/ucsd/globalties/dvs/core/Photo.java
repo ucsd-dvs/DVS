@@ -82,9 +82,21 @@ public class Photo {
             // is found.
             return null;
         }
+
+        Rect[] rects = faceDetections.toArray();
+        Mat test = new Mat();
+        image.copyTo(test);
+        for(int i = 0; i < rects.length; i++) {
+            Rect current = rects[i];
+            Core.rectangle(test, new Point(current.x, current.y),
+                    new Point(current.x + current.width, current.y + current.height), new Scalar(255,0,0,255), 3);
+        }
+        Imshow testImage = new Imshow("Faces Detected");
+        if(test != null)
+            testImage.showImage(test);
+
         detectedFace = faceDetections.toArray()[0];
         Rect faceBox = new Rect(detectedFace.x, detectedFace.y, detectedFace.width, (detectedFace.height * 2) / 3);
-        //Highgui.imwrite("face_"+ type + ".jpg", new Mat(image, faceBox));
         return faceBox;
     }
 
@@ -117,8 +129,8 @@ public class Photo {
             // we can safely get the last 2 biggest ones, because after the crop the eyes take up the most space
             eyes.add(detectedEyes.get(detectedEyes.size() - 1));
             eyes.add(detectedEyes.get(detectedEyes.size() - 2));
-            // TODO maybe add some more criteria here and have criterion weights for more accurate behavior, but
-            // only necessary if future pictures have unsatisfactory eye detection rates.
+            /* TODO maybe add some more criteria here and have criterion weights for more accurate behavior, but
+                    only necessary if future pictures have unsatisfactory eye detection rates. */
         } else {
             eyes.addAll(eyeDetections.toList());
         }

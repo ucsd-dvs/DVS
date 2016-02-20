@@ -94,7 +94,7 @@ public class Eye {
 //    dilate.showImage(gray);
     
     Imgproc.erode(gray, gray, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(3, 3)));
-    Imshow erode= new Imshow("dilate");
+    Imshow erode= new Imshow("erode");
 //    erode.showImage(gray);
     //Imgproc.equalizeHist(gray,gray);
     //smooth out image to prevent false circles
