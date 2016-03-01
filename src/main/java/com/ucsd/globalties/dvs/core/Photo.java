@@ -27,11 +27,16 @@ import java.util.List;
 @Slf4j
 public class Photo {
     public enum PhotoType {
-        HORIZONTAL, VERTICAL;
+        HORIZONTAL, VERTICAL
+    }
+
+    public enum TemplateType {
+        TM_SQDIFF, TM_SQDIFF_NORMED, TM_CCOEFF, TM_CCOEFF_NORMED, TM_CCORR, TM_CCORR_NORMED
     }
 
     @Getter
     private PhotoType type;
+    private TemplateType templateType;
     private String path;
     @Getter
     private double pupillaryDistance = 0;
@@ -40,6 +45,8 @@ public class Photo {
     private Patient patient;
 
     private Pair<Eye, Eye> eyes;
+
+    private Mat mFace;
 
     public Photo(String path, Patient patient, PhotoType type) {
         this.path = path;
@@ -66,6 +73,27 @@ public class Photo {
         return eyes.getRight();
     }
 
+    private Rect getTemplate(CascadeClassifier classifier, Rect faceRec) {
+        MatOfRect mEyes = new MatOfRect();
+        Mat region = new Mat(mFace, faceRec);
+        classifier.detectMultiScale(region, mEyes, 1.15, 2, Objdetect.CASCADE_FIND_BIGGEST_OBJECT|Objdetect.CASCADE_SCALE_IMAGE, new Size(30,30), new Size());
+        Rect isolatedEye = null;
+        Rect[] eyes = mEyes.toArray();
+        for(int i = 0; i < eyes.length; i++) {
+            Rect eye = eyes[i];
+            eye.x += faceRec.x;
+            eye.y += faceRec.y;
+            isolatedEye = new Rect((int)eye.tl().x,
+                    (int)(eye.tl().y + eye.height * 0.3),
+                    eye.width, (int)(eye.height * 0.5));
+            region = mFace.submat(isolatedEye);
+            //Imshow testImage = new Imshow("Eye");
+            //testImage.showImage(region);
+            break;
+        }
+        return isolatedEye;
+    }
+
     private Rect findFaceRoi(Mat image) {
         CascadeClassifier faceDetector = new CascadeClassifier(Main.HAAR_FACE_PATH);
         MatOfRect faceDetections = new MatOfRect();
@@ -82,9 +110,18 @@ public class Photo {
             // is found.
             return null;
         }
+
+        Rect[] rects = faceDetections.toArray();
+        Mat test = new Mat();
+        image.copyTo(test);
+        for(int i = 0; i < rects.length; i++) {
+            Rect current = rects[i];
+            Core.rectangle(test, new Point(current.x, current.y),
+                    new Point(current.x + current.width, current.y + current.height), new Scalar(255,0,0,255), 3);
+        }
+
         detectedFace = faceDetections.toArray()[0];
-        Rect faceBox = new Rect(detectedFace.x, detectedFace.y, detectedFace.width, (detectedFace.height * 2) / 3);
-        //Highgui.imwrite("face_"+ type + ".jpg", new Mat(image, faceBox));
+        Rect faceBox = new Rect(detectedFace.x, detectedFace.y, detectedFace.width, detectedFace.height);
         return faceBox;
     }
 
@@ -93,34 +130,66 @@ public class Photo {
 
         if(type == PhotoType.VERTICAL) {
             Core.transpose(image, image);
-            Core.flip(image, image, 0);
-//            Imshow im = new Imshow("sdfd");
-//            im.showImage(image);
+            Core.flip(image.t(), image, 1);
+            //Imshow im = new Imshow("negative");
+            //im.showImage(image);
         }
 
         // find face
         Rect faceBox = findFaceRoi(image);
         // Detect eyes from cropped face image
         CascadeClassifier eyeDetector = new CascadeClassifier(Main.HAAR_EYE_PATH);
-        MatOfRect eyeDetections = new MatOfRect();
-        Mat faceImage = faceBox != null ? new Mat(image, faceBox) : image;
-        eyeDetector.detectMultiScale(faceImage, eyeDetections);
+        /******************************************************/
+        mFace = (faceBox != null) ? new Mat(image, faceBox) : image;
+        Rect bothEyes =  new Rect(faceBox.x + faceBox.width/8,
+                        (int) (faceBox.y + faceBox.height/4.5),
+                        faceBox.width - 2 * faceBox.width/8,
+                        (int) faceBox.height/30);
 
-        List<Rect> detectedEyes = eyeDetections.toList();
-        log.info("Detected {} eyes for img: {}", detectedEyes.size(), path);
-        List<Rect> eyes = new ArrayList<>(2);
-        if (detectedEyes.size() < 2) {
-            log.error("Minimum two eyes required");
-            return null;
-        } else if (detectedEyes.size() > 2) { // found an extra eye or two
-            detectedEyes.sort(new RectAreaCompare());
-            // we can safely get the last 2 biggest ones, because after the crop the eyes take up the most space
-            eyes.add(detectedEyes.get(detectedEyes.size() - 1));
-            eyes.add(detectedEyes.get(detectedEyes.size() - 2));
-            // TODO maybe add some more criteria here and have criterion weights for more accurate behavior, but
-            // only necessary if future pictures have unsatisfactory eye detection rates.
+        Core.rectangle(image, bothEyes.tl(), bothEyes.br(), new Scalar(255,0,0,255), 2);
+        Rect rightArea = new Rect(faceBox.x + faceBox.width/16,
+                        (int)(faceBox.y + faceBox.height/4.5),
+                        (faceBox.width - 2 * faceBox.width/16)/2,
+                        (int)(faceBox.height/3.0));
+        Rect leftArea = new Rect(faceBox.x + faceBox.width/16 + (faceBox.width - 2 * faceBox.width/16)/2,
+                        (int)(faceBox.y + faceBox.height/4.5),
+                        (faceBox.width - 2 * faceBox.width/16)/2,
+                        (int)(faceBox.height/3.0));
+        Core.rectangle(image, leftArea.tl(), leftArea.br(), new Scalar(255, 0, 0, 255), 2);
+        Core.rectangle(image, rightArea.tl(), rightArea.br(), new Scalar(255, 0, 0, 255), 2);
+        //Imshow testImage = new Imshow("Faces With Eyes");
+        //testImage.showImage(image);
+        mFace = image;
+        List<Rect> detectedEyes = new ArrayList<Rect>();
+        Rect templateL = getTemplate(eyeDetector, leftArea);
+        Rect templateR = getTemplate(eyeDetector, rightArea);
+        if(templateL != null) detectedEyes.add(templateL);
+        if(templateR != null) detectedEyes.add(templateR);
+        /******************************************************/
+        List<Rect> eyes = new ArrayList<Rect>(2);
+        Mat faceImage = mFace;
+        if(detectedEyes.size() != 2) {
+            MatOfRect eyeDetections = new MatOfRect();
+            eyeDetector.detectMultiScale
+                    (faceImage, eyeDetections, 1.15, 5, Objdetect.CASCADE_FIND_BIGGEST_OBJECT | Objdetect.CASCADE_SCALE_IMAGE, new Size(30, 30), new Size(faceImage.width(), faceImage.height()));
+
+            detectedEyes = eyeDetections.toList();
+            log.info("Detected {} eyes for img: {}", detectedEyes.size(), path);
+            if (detectedEyes.size() < 2) {
+                log.error("Minimum two eyes required");
+                return null;
+            } else if (detectedEyes.size() > 2) { // found an extra eye or two
+                detectedEyes.sort(new RectAreaCompare());
+                // we can safely get the last 2 biggest ones, because after the crop the eyes take up the most space
+                eyes.add(detectedEyes.get(detectedEyes.size() - 1));
+                eyes.add(detectedEyes.get(detectedEyes.size() - 2));
+            /* TODO maybe add some more criteria here and have criterion weights for more accurate behavior, but
+                    only necessary if future pictures have unsatisfactory eye detection rates. */
+            } else {
+                eyes.addAll(eyeDetections.toList());
+            }
         } else {
-            eyes.addAll(eyeDetections.toList());
+            eyes = detectedEyes;
         }
         eyes.sort(new EyeXCompare()); // simple sort to know which eye is left and which is right
         Mat leftEyeMat = new Mat(faceImage, eyes.get(0));

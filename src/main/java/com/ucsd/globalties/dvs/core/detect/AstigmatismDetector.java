@@ -1,7 +1,6 @@
 package com.ucsd.globalties.dvs.core.detect;
 
-import com.ucsd.globalties.dvs.core.EyeDisease;
-import com.ucsd.globalties.dvs.core.Patient;
+import com.ucsd.globalties.dvs.core.*;
 import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 
 /**
@@ -13,6 +12,40 @@ import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 public class AstigmatismDetector implements DiseaseDetector {
 
     public void detect(Patient p) {
-        p.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ASTIGMATISM, "N/A: WIP", ""));
+        StringBuilder msg = new StringBuilder();
+        DiseaseRecord diseaseRecord = new DiseaseRecord();
+        diseaseRecord.setDiseaseName(EyeDisease.ASTIGMATISM);
+
+        Photo horizontal = p.getPhotos().get(0);
+        Photo vertical   = p.getPhotos().get(1);
+
+        Crescent_info leftHorizontal  = horizontal.getLeftEye().getPupil().getCrescent();
+        Crescent_info rightHorizontal = horizontal.getRightEye().getPupil().getCrescent();
+
+        Crescent_info leftVertical =  vertical.getLeftEye().getPupil().getCrescent();
+        Crescent_info rightVertical = vertical.getRightEye().getPupil().getCrescent();
+
+        double horizontalSize = leftHorizontal.getCrescentSize();
+        double verticalSize   = leftVertical.getCrescentSize();
+
+        diseaseRecord.setStatus("PASSED");
+
+        if( horizontalSize < verticalSize - verticalSize * 0.1 || horizontalSize > verticalSize + verticalSize * 0.1) {
+            diseaseRecord.setStatus("REFER");
+            diseaseRecord.setDescription(String.format(
+                    "Left eye crescent is asymmetrical: horizontal crescent size %.2f vertical crescent size %.2f\n",
+                    horizontalSize, verticalSize));
+        }
+
+        horizontalSize = rightHorizontal.getCrescentSize();
+        verticalSize   = rightVertical.getCrescentSize();
+        if(horizontalSize < verticalSize - verticalSize * 0.1 || horizontalSize > verticalSize + verticalSize * 0.1) {
+            diseaseRecord.setStatus("REFER");
+            diseaseRecord.setDescription(String.format(
+                    "Left eye crescent is asymmetrical: horizontal crescent size %.2f vertical crescent size %.2f\n",
+                    horizontalSize, verticalSize));
+        }
+
+        p.getDiseaseRecord().add(diseaseRecord);
     }
 }
