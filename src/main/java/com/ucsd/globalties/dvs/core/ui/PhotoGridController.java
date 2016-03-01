@@ -147,15 +147,36 @@ public class PhotoGridController implements Initializable, ControlledScreen {
 
         String folder = getCurrentTimeStamp();
         System.out.println("This is our folder: " + folder);
-        Path dir_path = Paths.get(System.getProperty("user.home") + "/Pictures/test");
+        Path dir_path = Paths.get(System.getProperty("user.home") + "/Desktop/" + folder);
         watcher = new WatchDir(dir_path, false);
 
-        waitForHorizontalPicture();
+        // Set horizontal picture
+        hStrProperty = new SimpleStringProperty();
+        hStrProperty.bind(watcher.messageProperty());
+
+        //Set vertical picture
+        hStrProperty.addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println("hStrProperty change listener");
+                System.out.println(newValue);
+                if(hFilePath == null){
+                    hFilePath = newValue;
+                    imgHoriz.setImage(new Image("file:///" + newValue));
+                } else if(vFilePath == null){
+                    vFilePath = newValue;
+                    imgVert.setImage(new Image("file:///" + newValue));
+                    imgVert.setRotate(-90);
+                }
+            }
+
+        });
 
         //Run watcher on individual thread
         Thread th = new Thread(watcher);
         th.setDaemon(true);
         th.start();
+
     }
 
     @Override
@@ -177,6 +198,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
 
     @FXML
     private void selectVerticalPicture(ActionEvent event) {
+
         vFilePath = null;
         imgVert.setImage(null);
     }
@@ -212,33 +234,5 @@ public class PhotoGridController implements Initializable, ControlledScreen {
                 navigationController.setScreen(Main.detectGridID);
             }
         }
-    }
-
-    private void waitForHorizontalPicture() {
-        hStrProperty = new SimpleStringProperty();
-        hStrProperty.bind(watcher.messageProperty());
-        hStrProperty.addListener((observable, oldValue, newValue) -> {
-            imgHoriz.setImage(new Image("file:///" + newValue));
-            hFilePath = newValue;
-
-            // TODO check if image is good before unbinding
-
-            hStrProperty.unbind();
-            waitForVerticalPicture();
-        });
-    }
-
-    private void waitForVerticalPicture() {
-        vStrProperty = new SimpleStringProperty();
-        vStrProperty.bind(watcher.messageProperty());
-        vStrProperty.addListener(((observable, oldValue, newValue) -> {
-            imgVert.setImage(new Image("file:///" + newValue));
-//            imgVert.setRotate(-90);
-            vFilePath = newValue;
-
-            // TODO check if image is good before unbinding
-
-            vStrProperty.unbind();
-        }));
     }
 }
