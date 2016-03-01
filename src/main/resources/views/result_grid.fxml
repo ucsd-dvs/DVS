@@ -23,7 +23,41 @@
 
         <Label fx:id="nameLabel" text="John Doe" styleClass="h3, text-primary" />
 
-        <Label fx:id="globalStatusLabel" text="N/A" styleClass="h4, alert-danger, container" />
+        <Label fx:id="globalStatusLabel" text="N/A" />
+
+        <GridPane>
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                <ColumnConstraints percentWidth="50"></ColumnConstraints>
+            </columnConstraints>
+            <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
+                <Label text="Horizontal" />
+            </HBox>
+            <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
+                <Label text="Vertical" />
+            </HBox>
+        </GridPane>
+
+        <GridPane>
+            <columnConstraints>
+                <ColumnConstraints percentWidth="25"></ColumnConstraints>
+                <ColumnConstraints percentWidth="25"></ColumnConstraints>
+                <ColumnConstraints percentWidth="25"></ColumnConstraints>
+                <ColumnConstraints percentWidth="25"></ColumnConstraints>
+            </columnConstraints>
+            <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
+                <Label text="Left Eye" />
+            </HBox>
+            <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
+                <Label text="Right Eye" />
+            </HBox>
+            <HBox GridPane.columnIndex="2" GridPane.rowIndex="0" alignment="CENTER">
+                <Label text="Left Eye" />
+            </HBox>
+            <HBox GridPane.columnIndex="3" GridPane.rowIndex="0" alignment="CENTER">
+                <Label text="Right Eye" />
+            </HBox>
+        </GridPane>
 
         <Separator></Separator>
 
@@ -33,13 +67,63 @@
                 <ColumnConstraints percentWidth="50"></ColumnConstraints>
                 <ColumnConstraints percentWidth="50"></ColumnConstraints>
             </columnConstraints>
-            <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
-                <Label text="Myopia" />
-            </HBox>
-            <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
-                <Label fx:id="myopiaLabel" text="N/A" />
-            </HBox>
+
+            <!--Horizontal-->
+            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                    <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                </columnConstraints>
+                <!--Left Eye-->
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
+                    <Label text="Threshold:" />
+                    <Label fx:id="myopiaHLThreshold" text="n/a" />
+                </HBox>
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" alignment="CENTER" spacing="10">
+                    <Label text="Diopter: " />
+                    <Label fx:id="myopiaHLValue" text="n/a" />
+                </HBox>
+
+                <!--Right Eye-->
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
+                    <Label text="Threshold:" />
+                    <Label fx:id="myopiaHRThreshold" text="n/a" />
+                </HBox>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" spacing="10">
+                    <Label text="Diopter: " />
+                    <Label fx:id="myopiaHRValue" text="n/a" />
+                </HBox>
+            </GridPane>
+
+            <!--Vertical-->
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                    <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                </columnConstraints>
+
+                <!--Left Eye-->
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
+                    <Label text="Threshold:" />
+                    <Label fx:id="myopiaVLThreshold" text="n/a" />
+                </HBox>
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" alignment="CENTER" spacing="10">
+                    <Label text="Diopter: " />
+                    <Label fx:id="myopiaVLValue" text="n/a" />
+                </HBox>
+
+                <!--Right Eye-->
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
+                    <Label text="Threshold:" />
+                    <Label fx:id="myopiaVRThreshold" text="n/a" />
+                </HBox>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" spacing="10">
+                    <Label text="Diopter: " />
+                    <Label fx:id="myopiaVRValue" text="n/a" />
+                </HBox>
+            </GridPane>
         </GridPane>
+        <!--END myopia-->
 
         <Separator></Separator>
 
@@ -49,31 +133,82 @@
                 <ColumnConstraints percentWidth="50"></ColumnConstraints>
                 <ColumnConstraints percentWidth="50"></ColumnConstraints>
             </columnConstraints>
-            <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
-                <Label text="Hyperopia" />
-            </HBox>
-            <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
-                <Label fx:id="hyperopiaLabel" text="N/A" />
-            </HBox>
+
+            <!--Horizontal-->
+            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                    <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                </columnConstraints>
+                <!--Left Eye-->
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
+                    <Label text="Threshold:" />
+                    <Label fx:id="hyperopiaHLThreshold" text="n/a" />
+                </HBox>
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" alignment="CENTER" spacing="10">
+                    <Label text="Diopter: " />
+                    <Label fx:id="hyperopiaHLValue" text="n/a" />
+                </HBox>
+
+                <!--Right Eye-->
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
+                    <Label text="Threshold:" />
+                    <Label fx:id="hyperopiaHRThreshold" text="n/a" />
+                </HBox>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" spacing="10">
+                    <Label text="Diopter: " />
+                    <Label fx:id="hyperopiaHRValue" text="n/a" />
+                </HBox>
+            </GridPane>
+
+            <!--Vertical-->
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                    <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                </columnConstraints>
+
+                <!--Left Eye-->
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
+                    <Label text="Threshold:" />
+                    <Label fx:id="hyperopiaVLThreshold" text="n/a" />
+                </HBox>
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" alignment="CENTER" spacing="10">
+                    <Label text="Diopter: " />
+                    <Label fx:id="hyperopiaVLValue" text="n/a" />
+                </HBox>
+
+                <!--Right Eye-->
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
+                    <Label text="Threshold:" />
+                    <Label fx:id="hyperopiaVRThreshold" text="n/a" />
+                </HBox>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" spacing="10">
+                    <Label text="Diopter: " />
+                    <Label fx:id="hyperopiaVRValue" text="n/a" />
+                </HBox>
+            </GridPane>
+
         </GridPane>
+        <!--END hyperopia-->
 
         <Separator></Separator>
 
-        <!--Astigmatism-->
-        <GridPane>
-            <columnConstraints>
-                <ColumnConstraints percentWidth="50"></ColumnConstraints>
-                <ColumnConstraints percentWidth="50"></ColumnConstraints>
-            </columnConstraints>
-            <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
-                <Label text="Astigmatism" />
-            </HBox>
-            <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
-                <Label fx:id="astigmatismLabel" text="N/A" />
-            </HBox>
-        </GridPane>
+        <!-- TODO: Astigmatism-->
+        <!--<GridPane>-->
+            <!--<columnConstraints>-->
+                <!--<ColumnConstraints percentWidth="50"></ColumnConstraints>-->
+                <!--<ColumnConstraints percentWidth="50"></ColumnConstraints>-->
+            <!--</columnConstraints>-->
+            <!--<HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">-->
+                <!--<Label text="Astigmatism" />-->
+            <!--</HBox>-->
+            <!--<HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">-->
+                <!--<Label fx:id="astigmatismLabel" text="N/A" />-->
+            <!--</HBox>-->
+        <!--</GridPane>-->
 
-        <Separator></Separator>
+        <!--<Separator></Separator>-->
 
         <!--Strabismus-->
         <GridPane>
@@ -81,45 +216,96 @@
                 <ColumnConstraints percentWidth="50"></ColumnConstraints>
                 <ColumnConstraints percentWidth="50"></ColumnConstraints>
             </columnConstraints>
-            <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
-                <Label text="Strabismus" />
-            </HBox>
-            <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
-                <Label fx:id="strabismusLabel" text="N/A" />
-            </HBox>
+
+            <!--Horizontal-->
+            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                    <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                </columnConstraints>
+                <!--Left Eye-->
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
+                    <Label text="Angle Threshold:" />
+                    <Label fx:id="strabismusHLThreshold" text="n/a" />
+                </HBox>
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" alignment="CENTER" spacing="10">
+                    <Label text="Angle: " />
+                    <Label fx:id="strabismusHLValue" text="n/a" />
+                </HBox>
+
+                <!--Right Eye-->
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
+                    <Label text="Angle Threshold:" />
+                    <Label fx:id="strabismusHRThreshold" text="n/a" />
+                </HBox>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" spacing="10">
+                    <Label text="Angle: " />
+                    <Label fx:id="strabismusHRValue" text="n/a" />
+                </HBox>
+            </GridPane>
+
+            <!--Vertical-->
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                    <ColumnConstraints percentWidth="50"></ColumnConstraints>
+                </columnConstraints>
+
+                <!--Left Eye-->
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
+                    <Label text="Angle Threshold:" />
+                    <Label fx:id="strabismusVLThreshold" text="n/a" />
+                </HBox>
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" alignment="CENTER" spacing="10">
+                    <Label text="Angle: " />
+                    <Label fx:id="strabismusVLValue" text="n/a" />
+                </HBox>
+
+                <!--Right Eye-->
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
+                    <Label text="Angle Threshold:" />
+                    <Label fx:id="strabismusVRThreshold" text="n/a" />
+                </HBox>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" spacing="10">
+                    <Label text="Angle: " />
+                    <Label fx:id="strabismusVRValue" text="n/a" />
+                </HBox>
+            </GridPane>
+
         </GridPane>
+        <!--END strabismus-->
 
         <Separator></Separator>
 
-        <!--Cataracts-->
-        <GridPane>
-            <columnConstraints>
-                <ColumnConstraints percentWidth="50"></ColumnConstraints>
-                <ColumnConstraints percentWidth="50"></ColumnConstraints>
-            </columnConstraints>
-            <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
-                <Label text="Cataracts" />
-            </HBox>
-            <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
-                <Label fx:id="cataractsLabel" text="N/A" />
-            </HBox>
-        </GridPane>
+        <!-- TODO: Cataracts-->
+        <!--<GridPane>-->
+            <!--<columnConstraints>-->
+                <!--<ColumnConstraints percentWidth="50"></ColumnConstraints>-->
+                <!--<ColumnConstraints percentWidth="50"></ColumnConstraints>-->
+            <!--</columnConstraints>-->
+            <!--<HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">-->
+                <!--<Label text="Cataracts" />-->
+            <!--</HBox>-->
+            <!--<HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">-->
+                <!--<Label fx:id="cataractsLabel" text="N/A" />-->
+            <!--</HBox>-->
+        <!--</GridPane>-->
 
-        <Separator></Separator>
+        <!--<Separator></Separator>-->
 
-        <!--Anisometropia-->
-        <GridPane>
-            <columnConstraints>
-                <ColumnConstraints percentWidth="50"></ColumnConstraints>
-                <ColumnConstraints percentWidth="50"></ColumnConstraints>
-            </columnConstraints>
-            <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
-                <Label text="Anisometropia" />
-            </HBox>
-            <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
-                <Label fx:id="anisometropiaLabel" text="N/A" />
-            </HBox>
-        </GridPane>
+        <!-- TODO: Anisometropia-->
+        <!--<GridPane>-->
+            <!--<columnConstraints>-->
+                <!--<ColumnConstraints percentWidth="50"></ColumnConstraints>-->
+                <!--<ColumnConstraints percentWidth="50"></ColumnConstraints>-->
+            <!--</columnConstraints>-->
+            <!--<HBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">-->
+                <!--<Label text="Anisometropia" />-->
+            <!--</HBox>-->
+            <!--<HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">-->
+                <!--<Label fx:id="anisometropiaLabel" text="N/A" />-->
+            <!--</HBox>-->
+        <!--</GridPane>-->
 
     </VBox>
 </GridPane>

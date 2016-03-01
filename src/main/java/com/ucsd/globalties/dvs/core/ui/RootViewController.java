@@ -1,7 +1,10 @@
 package com.ucsd.globalties.dvs.core.ui;
 
 import com.ucsd.globalties.dvs.core.Controller;
+import com.ucsd.globalties.dvs.core.EyeDisease;
 import com.ucsd.globalties.dvs.core.Main;
+import com.ucsd.globalties.dvs.core.Patient;
+import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
@@ -26,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -240,6 +244,25 @@ public class RootViewController implements Initializable {
 
     @FXML
     private void goToResults(ActionEvent event) {
+        Patient patient = Patient.builder()
+                .firstName("Jane")
+                .lastName("Austin")
+                .birth("")
+                .gender("Female")
+                .ethnicity("")
+                .language("")
+                .roomNumber("")
+                .school("UCSD")
+                .comment("Hello, Nurse!")
+                .diseaseRecord(new ArrayList<>())
+                .build();
+        patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ANISOMETROPIA, DiseaseRecord.PASS, true));
+        patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.MYOPIA, DiseaseRecord.PASS, true));
+        patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.HYPEROPIA, DiseaseRecord.PASS, true));
+        patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ASTIGMATISM, DiseaseRecord.PASS, true));
+        patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.CATARACTS, DiseaseRecord.PASS, true));
+        patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.STRABISMUS, DiseaseRecord.PASS, true));
+        controller.setPatient(patient);
         uiController.setScreen(Main.resultGridID);
     }
 }

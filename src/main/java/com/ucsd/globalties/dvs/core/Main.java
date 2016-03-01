@@ -20,11 +20,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -201,7 +203,7 @@ public class Main extends Application {
             rootViewController.setController(controller);
             rootViewController.stage = stage;
             stage.setScene(new Scene(anchorPane));
-            stage.setMinHeight(600); // set minimum window size
+            stage.setMaximized(true);
             stage.show();
 
             /**

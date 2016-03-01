@@ -87,7 +87,7 @@ public class ExcelDataGenerator {
         List<DiseaseRecord> diseaseRecord = patientList.get(0).getDiseaseRecord();
         for (DiseaseRecord disease : diseaseRecord) {
             Cell cell = headerRow.createCell(cellNum++);
-            cell.setCellValue(disease.getDiseaseName().toString());
+            cell.setCellValue(disease.getMDiseaseName().toString());
         }
 
         for (Patient p : patientList) {
@@ -100,7 +100,7 @@ public class ExcelDataGenerator {
             }
             for(DiseaseRecord disease : diseaseRecord) {
                 Cell cell = row.createCell(cellNum++);
-                cell.setCellValue(disease.getStatus());
+                cell.setCellValue(disease.getMStatus());
             }
         }
 

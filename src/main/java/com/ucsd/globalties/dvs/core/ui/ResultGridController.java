@@ -42,12 +42,23 @@ public class ResultGridController implements Initializable, ControlledScreen {
     @FXML private GridPane root;
     @FXML private Label nameLabel;
     @FXML private Label globalStatusLabel;
-    @FXML private Label myopiaLabel;
-    @FXML private Label hyperopiaLabel;
-    @FXML private Label astigmatismLabel;
-    @FXML private Label strabismusLabel;
-    @FXML private Label cataractsLabel;
-    @FXML private Label anisometropiaLabel;
+
+    // Myopia - Horizontal Picture
+    @FXML private Label myopiaHLThreshold;
+    @FXML private Label myopiaHLValue;
+    @FXML private Label myopiaHRThreshold;
+    @FXML private Label myopiaHRValue;
+    // Myopia - Vertical Picture
+    @FXML private Label myopiaVLThreshold;
+    @FXML private Label myopiaVLValue;
+    @FXML private Label myopiaVRThreshold;
+    @FXML private Label myopiaVRValue;
+
+    // Hyperopia - Horizontal Picture
+    // Hyperopia - Vertical Picture
+
+    // Strabismus - Horizontal Picture
+    // Strabismus - Vertical Picture
 
 
     /***************************************************************************
@@ -87,51 +98,52 @@ public class ResultGridController implements Initializable, ControlledScreen {
         resetState();
         bindButtons();
 
-        //FIXME: set the overall patient's status
         nameLabel.setText(rootViewController.getController().getPatient().getFirstName() +
                 " " + rootViewController.getController().getPatient().getLastName());
 
         rootViewController.getController().diagnose();
         List<DiseaseRecord> medicalRecord = rootViewController.getController().getRecords();
+        String refer = "PASS";
         for(DiseaseRecord record : medicalRecord) {
-            switch(record.getDiseaseName())  {
+            if (record.getMStatus() == DiseaseRecord.REFER) {
+                refer = "REFER";
+                break;
+            }
+            switch(record.getMDiseaseName())  {
                 case MYOPIA: {
-                    myopiaLabel.setText(record.getStatus());
+                    // left eye
+                    myopiaHLThreshold.setText(record.getMHorizontalImage().getMLeftEye().getMThresholds().get(DiseaseRecord.MYOPIA_THRESHOLD));
+                    myopiaHLValue.setText(record.getMHorizontalImage().getMLeftEye().getMValues().get(DiseaseRecord.MYOPIA_VALUE));
+                    // right eye
+                    myopiaHRThreshold.setText(record.getMHorizontalImage().getMRightEye().getMThresholds().get(DiseaseRecord.MYOPIA_THRESHOLD));
+                    myopiaHRValue.setText(record.getMHorizontalImage().getMRightEye().getMValues().get(DiseaseRecord.MYOPIA_VALUE));
                     break;
                 }
                 case HYPEROPIA: {
-                    hyperopiaLabel.setText(record.getStatus());
-                    break;
-                }
-                case ANISOMETROPIA: {
-                    anisometropiaLabel.setText(record.getStatus());
                     break;
                 }
                 case STRABISMUS: {
-                    strabismusLabel.setText(record.getStatus());
-                    break;
-                }
-                case CATARACTS: {
-                    cataractsLabel.setText(record.getStatus());
                     break;
                 }
                 case ASTIGMATISM: {
-                    astigmatismLabel.setText(record.getStatus());
+                    break;
+                }
+                case ANISOMETROPIA: {
+                    break;
+                }
+                case CATARACTS: {
                     break;
                 }
                 default: {
-                    log.error("Something went wrong!");
+                    log.error("ResultGridController.java:update(): Shit's gone wrong man!");
                     break;
                 }
             }
         }
 
-        setStyleForLabel(myopiaLabel);
-        setStyleForLabel(hyperopiaLabel);
-        setStyleForLabel(astigmatismLabel);
-        setStyleForLabel(strabismusLabel);
-        setStyleForLabel(cataractsLabel);
-        setStyleForLabel(anisometropiaLabel);
+        globalStatusLabel.setText(refer);
+
+        setStyleForLabel(globalStatusLabel);
 
         rootViewController.getController().finalizePatient();
     } /* END update() */

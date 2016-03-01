@@ -1,5 +1,6 @@
 package com.ucsd.globalties.dvs.core.detect;
 
+import com.sun.javafx.tk.DummyToolkit;
 import com.ucsd.globalties.dvs.core.EyeDisease;
 import com.ucsd.globalties.dvs.core.Patient;
 import com.ucsd.globalties.dvs.core.Photo;
@@ -25,56 +26,61 @@ import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
  * @author Rahul
  */
 public class StrabismusDetector implements DiseaseDetector {
-    private static final double DISTANCE_THRESHOLD = 10;
-    private static final double ANGLE_THRESHOLD = Math.PI / 2d;
-
+    /**
+     * The patient has strabismus if the distance of the white dot is greater than
+     * 10 from the center of the pupil or if the angle is greater than the threshold
+     *
+     * The angle is measured from the line of sight of the patients' eye to the line of
+     * sight of an ideal eye (perpendicular to the eye)
+     * @param p Patient
+     */
     public void detect(Patient p) {
-        StringBuilder msg = new StringBuilder();
+        final double DISTANCE_THRESHOLD = 10;
+        final double ANGLE_THRESHOLD = Math.PI / 2d;
 
-        //for (Photo photo : p.getPhotos()) {
-        //msg.append("\nStats for " + photo.getType().toString().toLowerCase() + " photo:\n");
-
+        // TODO implement for vertical picture
         Photo photo = p.getPhotos().get(0);        // Use horizontal picture for now.
 
         boolean distWarning = false, angleWarning = false;
         WhiteDot leftDot = photo.getLeftEye().getPupil().getWhiteDot();
         WhiteDot rightDot = photo.getRightEye().getPupil().getWhiteDot();
 
-        // Compare difference between the distances of the two white dots => No, not doing this
-        //double distDiff = Math.abs(leftDot.getDistance() - rightDot.getDistance());
-
         double leftDistDiff = leftDot.getDistance();
         double rightDistDiff = rightDot.getDistance();
-        String distMsg = "";
 
-        DiseaseRecord diseaseRecord = new DiseaseRecord();
-        diseaseRecord.setDiseaseName(EyeDisease.STRABISMUS);
-
-        if (leftDistDiff > DISTANCE_THRESHOLD || rightDistDiff > DISTANCE_THRESHOLD) {
-            distMsg = String.format("\tDistance of %.2f and %.2f detected when allowed limit is %.2f\n", leftDistDiff, rightDistDiff, DISTANCE_THRESHOLD);
-            distWarning = true;
-        }
-
-        //double angleDiff = Math.abs(leftDot.getAngle() - rightDot.getAngle());
         double leftAngleDiff = leftDot.getAngle();
         double rightAngleDiff = rightDot.getAngle();
-        String angleMsg = "";
-      /*
-      if (leftAngleDiff > ANGLE_THRESHOLD || rightAngleDiff > ANGLE_THRESHOLD) {
-        angleMsg = String.format("\tAngle of %.2f and %.2f detected when allowed limit is %.2f\n", leftAngleDiff, rightAngleDiff, ANGLE_THRESHOLD);
-        angleWarning = true;
-      }*/
+
+        DiseaseRecord diseaseRecord = new DiseaseRecord();
+        diseaseRecord.setMDiseaseName(EyeDisease.STRABISMUS);
+
+        // Do left eye
+        diseaseRecord.getMHorizontalImage().getMLeftEye().getMThresholds().put(
+                DiseaseRecord.STRABISMUS_DISTANCE_THRESHOLD, Double.toString(DISTANCE_THRESHOLD));
+        diseaseRecord.getMHorizontalImage().getMLeftEye().getMValues().put(
+                DiseaseRecord.STRABISMUS_DISTANCE_VALUE, Double.toString(leftDistDiff));
+        diseaseRecord.getMHorizontalImage().getMLeftEye().getMThresholds().put(
+                DiseaseRecord.STRABISMUS_ANGLE_THRESHOLD, Double.toString(ANGLE_THRESHOLD));
+        diseaseRecord.getMHorizontalImage().getMLeftEye().getMValues().put(
+                DiseaseRecord.STRABISMUS_ANGLE_VALUE, Double.toString(leftAngleDiff));
+
+
+        // Do right eye
+        diseaseRecord.getMHorizontalImage().getMRightEye().getMThresholds().put(
+                DiseaseRecord.STRABISMUS_DISTANCE_THRESHOLD, Double.toString(DISTANCE_THRESHOLD));
+        diseaseRecord.getMHorizontalImage().getMRightEye().getMValues().put(
+                DiseaseRecord.STRABISMUS_DISTANCE_VALUE, Double.toString(rightDistDiff));
+        diseaseRecord.getMHorizontalImage().getMRightEye().getMThresholds().put(
+                DiseaseRecord.STRABISMUS_ANGLE_THRESHOLD, Double.toString(ANGLE_THRESHOLD));
+        diseaseRecord.getMHorizontalImage().getMRightEye().getMValues().put(
+                DiseaseRecord.STRABISMUS_ANGLE_VALUE, Double.toString(rightAngleDiff));
 
         if (distWarning && angleWarning) {
-            //msg.append("Patient has Strabismus");
-            diseaseRecord.setStatus("REFER");
-            diseaseRecord.setDescription(distMsg + "\n" + angleMsg);
+            diseaseRecord.setMStatus(DiseaseRecord.REFER);
         } else if (distWarning || angleWarning) {
-            //msg.append("Patient may have Strabismus");
-            diseaseRecord.setStatus("REFER");
-            diseaseRecord.setDescription(distMsg + "\n" + angleMsg);
+            diseaseRecord.setMStatus(DiseaseRecord.REFER);
         } else {
-            diseaseRecord.setStatus("PASS");
+            diseaseRecord.setMStatus(DiseaseRecord.PASS);
         }
 
         p.getDiseaseRecord().add(diseaseRecord);

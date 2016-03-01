@@ -12,6 +12,6 @@ import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
  */
 public class AnisometropiaDetector implements DiseaseDetector {
     public void detect(Patient p) {
-        p.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ANISOMETROPIA, "N/A: WIP", ""));
+        p.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ANISOMETROPIA, DiseaseRecord.NOT_IMPLEMENTED));
     }
 }

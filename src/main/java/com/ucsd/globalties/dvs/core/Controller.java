@@ -98,12 +98,12 @@ public class Controller {
                     .comment(generateName())
                     .diseaseRecord(new ArrayList<>())
                     .build();
-            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ANISOMETROPIA, "PASS", "TEST"));
-            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.MYOPIA, "PASS", "TEST"));
-            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.HYPEROPIA, "PASS", "TEST"));
-            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ASTIGMATISM, "PASS", "TEST"));
-            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.CATARACTS, "PASS", "TEST"));
-            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.STRABISMUS, "PASS", "TEST"));
+            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ANISOMETROPIA, DiseaseRecord.PASS));
+            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.MYOPIA, DiseaseRecord.PASS));
+            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.HYPEROPIA, DiseaseRecord.PASS));
+            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ASTIGMATISM, DiseaseRecord.PASS));
+            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.CATARACTS, DiseaseRecord.PASS));
+            patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.STRABISMUS, DiseaseRecord.PASS));
             sessionPatients.add(patient);
         }
 

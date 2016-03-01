@@ -12,6 +12,6 @@ import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
  */
 public class CataractsDetector implements DiseaseDetector {
     public void detect(Patient p) {
-        p.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.CATARACTS, "N/A: WIP", ""));
+        p.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.CATARACTS, DiseaseRecord.NOT_IMPLEMENTED));
     }
 }
