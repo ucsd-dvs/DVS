@@ -415,7 +415,7 @@ public class Pupil {
         //resultImg.showImage(inter);
         //Imgproc.dilate(inter, inter2, kernel);
 
-        interImg.showImage(src);
+//        interImg.showImage(src);
         src.copyTo(inter2);
         //src.copyTo(inter2);
         double[] black = {0,0,0};
@@ -438,7 +438,7 @@ public class Pupil {
 
         //Imgproc.erode(src, dst, kernel);
         Imgproc.dilate(inter2, dst, kernel);
-        resultImg.showImage(dst);
+//        resultImg.showImage(dst);
         //interImg.showImage(dst);
 
         //Imgproc.dilate(inter2, inter, kernel);
@@ -511,7 +511,7 @@ public class Pupil {
 
         Imgproc.cvtColor(src, hsv_cvted, Imgproc.COLOR_BGR2HSV);	// Convert BGR to HSV for thresholding
         Core.inRange(hsv_cvted, lowerBound, upperBound, dst);	// Do the thresholded image??
-        test.showImage(dst);
+//        test.showImage(dst);
 
         if(_DEBUG)
             i1.showImage(dst);

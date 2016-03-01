@@ -148,7 +148,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
         String folder = getCurrentTimeStamp();
         System.out.println("This is our folder: " + folder);
         Path dir_path = Paths.get(System.getProperty("user.home") + "/Desktop/" + folder);
-        WatchDir watcher = new WatchDir(dir_path, false);
+        watcher = new WatchDir(dir_path, false);
 
         // Set horizontal picture
         hStrProperty = new SimpleStringProperty();
