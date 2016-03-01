@@ -87,8 +87,8 @@ public class Photo {
                     (int)(eye.tl().y + eye.height * 0.3),
                     eye.width, (int)(eye.height * 0.5));
             region = mFace.submat(isolatedEye);
-            Imshow testImage = new Imshow("Eye");
-            testImage.showImage(region);
+            //Imshow testImage = new Imshow("Eye");
+            //testImage.showImage(region);
             break;
         }
         return isolatedEye;
