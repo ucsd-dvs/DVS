@@ -154,23 +154,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
         hStrProperty = new SimpleStringProperty();
         hStrProperty.bind(watcher.messageProperty());
 
-        //Set vertical picture
-        hStrProperty.addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println("hStrProperty change listener");
-                System.out.println(newValue);
-                if(hFilePath == null){
-                    hFilePath = newValue;
-                    imgHoriz.setImage(new Image("file:///" + newValue));
-                } else if(vFilePath == null){
-                    vFilePath = newValue;
-                    imgVert.setImage(new Image("file:///" + newValue));
-                    imgVert.setRotate(-90);
-                }
-            }
-
-        });
+        listenForHorizontal(true);
 
         //Run watcher on individual thread
         Thread th = new Thread(watcher);
@@ -198,15 +182,16 @@ public class PhotoGridController implements Initializable, ControlledScreen {
 
     @FXML
     private void selectVerticalPicture(ActionEvent event) {
-
         vFilePath = null;
         imgVert.setImage(null);
+        listenForVertical();
     }
 
     @FXML
     private void selectHorizontalPicture(ActionEvent event) {
         hFilePath = null;
         imgHoriz.setImage(null);
+        listenForHorizontal(false);
     }
 
     private void goToInputGrid() {
@@ -215,6 +200,10 @@ public class PhotoGridController implements Initializable, ControlledScreen {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Could not cancel watcher thread!", ButtonType.CLOSE);
                 alert.showAndWait();
             } else {
+                imgHoriz.setImage(null);
+                hFilePath = null;
+                imgVert.setImage(null);
+                vFilePath = null;
                 navigationController.setScreen(Main.inputScreenID);
             }
         }
@@ -234,5 +223,41 @@ public class PhotoGridController implements Initializable, ControlledScreen {
                 navigationController.setScreen(Main.detectGridID);
             }
         }
+    }
+
+    /**
+     * Binds a String property to the watcher to watch for new images
+     * @param propagateToVertical Indicates whether to watch for vertical images
+     *                            after receiving a horizontal image. This is mainly
+     *                            used to differentiate between watching when the screen
+     *                            is first set vs. watching when the "retake horizontal picture"
+     *                            button is pressed
+     */
+    private void listenForHorizontal(boolean propagateToVertical) {
+        hStrProperty = new SimpleStringProperty();
+        hStrProperty.bind(watcher.messageProperty());
+        hStrProperty.addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                hFilePath = newValue;
+                imgHoriz.setImage(new Image("file:///" + newValue));
+                hStrProperty.unbind();
+                if (propagateToVertical) listenForVertical();
+            }
+        });
+    }
+
+    private void listenForVertical() {
+        vStrProperty = new SimpleStringProperty();
+        vStrProperty.bind(watcher.messageProperty());
+        vStrProperty.addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                vFilePath = newValue;
+                imgVert.setImage(new Image("file:///" + newValue));
+                vStrProperty.unbind();
+                imgVert.setRotate(-90);
+            }
+        });
     }
 }
