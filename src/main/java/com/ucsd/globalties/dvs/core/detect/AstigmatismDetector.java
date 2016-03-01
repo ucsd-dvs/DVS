@@ -14,7 +14,7 @@ public class AstigmatismDetector implements DiseaseDetector {
     public void detect(Patient p) {
         StringBuilder msg = new StringBuilder();
         DiseaseRecord diseaseRecord = new DiseaseRecord();
-        diseaseRecord.setDiseaseName(EyeDisease.ASTIGMATISM);
+        diseaseRecord.setMDiseaseName(EyeDisease.ASTIGMATISM);
 
         Photo horizontal = p.getPhotos().get(0);
         Photo vertical   = p.getPhotos().get(1);
@@ -28,11 +28,11 @@ public class AstigmatismDetector implements DiseaseDetector {
         double horizontalSize = leftHorizontal.getCrescentSize();
         double verticalSize   = leftVertical.getCrescentSize();
 
-        diseaseRecord.setStatus("PASSED");
+        diseaseRecord.setMStatus(DiseaseRecord.PASS);
 
         if( horizontalSize < verticalSize - verticalSize * 0.1 || horizontalSize > verticalSize + verticalSize * 0.1) {
-            diseaseRecord.setStatus("REFER");
-            diseaseRecord.setDescription(String.format(
+            diseaseRecord.setMStatus(DiseaseRecord.REFER);
+            diseaseRecord.setMDescription(String.format(
                     "Left eye crescent is asymmetrical: horizontal crescent size %.2f vertical crescent size %.2f\n",
                     horizontalSize, verticalSize));
         }
@@ -40,8 +40,8 @@ public class AstigmatismDetector implements DiseaseDetector {
         horizontalSize = rightHorizontal.getCrescentSize();
         verticalSize   = rightVertical.getCrescentSize();
         if(horizontalSize < verticalSize - verticalSize * 0.1 || horizontalSize > verticalSize + verticalSize * 0.1) {
-            diseaseRecord.setStatus("REFER");
-            diseaseRecord.setDescription(String.format(
+            diseaseRecord.setMStatus(DiseaseRecord.REFER);
+            diseaseRecord.setMDescription(String.format(
                     "Left eye crescent is asymmetrical: horizontal crescent size %.2f vertical crescent size %.2f\n",
                     horizontalSize, verticalSize));
         }

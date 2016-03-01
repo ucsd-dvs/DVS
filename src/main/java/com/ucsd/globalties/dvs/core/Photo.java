@@ -129,10 +129,10 @@ public class Photo {
         Mat image = Highgui.imread(path);
 
         if(type == PhotoType.VERTICAL) {
-            Core.transpose(image, image);
-            Core.flip(image.t(), image, 1);
-            //Imshow im = new Imshow("negative");
-            //im.showImage(image);
+//            Core.transpose(image, image);
+//            Core.flip(image, image, 0);
+//            Imshow im = new Imshow("sdfd");
+//            im.showImage(image);
         }
 
         // find face
