@@ -15,7 +15,6 @@ public class HyperopiaDetector implements DiseaseDetector {
 
         // TODO implement vertical picture
         Photo photo = p.getPhotos().get(0);        // Use horizontal picture for now.
-        final double HYPEROPIA_THRESHOLD = 1.75;
 
         Crescent_info leftCrescent = photo.getLeftEye().getPupil().getCrescent();
         Crescent_info rightCrescent = photo.getRightEye().getPupil().getCrescent();
@@ -29,15 +28,11 @@ public class HyperopiaDetector implements DiseaseDetector {
         double diopter;
         // Do left eye
         diopter = Pupil.findClosestDiopter(leftCrescent.getCrescentSize());
-        diseaseRecord.getMHorizontalImage().getMLeftEye().getMThresholds().put(
-                DiseaseRecord.HYPEROPIA_THRESHOLD, Double.toString(HYPEROPIA_THRESHOLD));
         diseaseRecord.getMHorizontalImage().getMLeftEye().getMValues().put(
                 DiseaseRecord.HYPEROPIA_VALUE, Double.toString(diopter));
 
         // Do Right eye
         diopter = Pupil.findClosestDiopter(rightCrescent.getCrescentSize());
-        diseaseRecord.getMHorizontalImage().getMRightEye().getMThresholds().put(
-                DiseaseRecord.HYPEROPIA_THRESHOLD, Double.toString(HYPEROPIA_THRESHOLD));
         diseaseRecord.getMHorizontalImage().getMRightEye().getMValues().put(
                 DiseaseRecord.HYPEROPIA_VALUE, Double.toString(diopter));
 

@@ -4,6 +4,7 @@ import com.ucsd.globalties.dvs.core.Controller;
 import com.ucsd.globalties.dvs.core.EyeDisease;
 import com.ucsd.globalties.dvs.core.Main;
 import com.ucsd.globalties.dvs.core.Patient;
+import com.ucsd.globalties.dvs.core.detect.DiseaseDetector;
 import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -29,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -264,5 +266,22 @@ public class RootViewController implements Initializable {
         patient.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.STRABISMUS, DiseaseRecord.PASS, true));
         controller.setPatient(patient);
         uiController.setScreen(Main.resultGridID);
+    }
+
+    @FXML
+    private void showMetrics(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Diagnosis Metrics");
+
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+
+        String message = "";
+        message += "Myopia: " + DiseaseDetector.MYOPIA_THRESHOLD + "\n";
+        message += "Hyperopia: " + DiseaseDetector.HYPEROPIA_THRESHOLD + "\n";
+        message += "Strabismus Angle: " + DiseaseDetector.STRABISMUS_ANGLE_THRESHOLD + "\n";
+        message += "Strabismus Distance: " + decimalFormat.format(DiseaseDetector.STRABISMUS_DISTANCE_THRESHOLD) + "\n";
+
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

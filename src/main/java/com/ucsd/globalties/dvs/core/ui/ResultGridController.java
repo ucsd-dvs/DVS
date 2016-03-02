@@ -44,21 +44,29 @@ public class ResultGridController implements Initializable, ControlledScreen {
     @FXML private Label globalStatusLabel;
 
     // Myopia - Horizontal Picture
-    @FXML private Label myopiaHLThreshold;
     @FXML private Label myopiaHLValue;
-    @FXML private Label myopiaHRThreshold;
     @FXML private Label myopiaHRValue;
     // Myopia - Vertical Picture
-    @FXML private Label myopiaVLThreshold;
     @FXML private Label myopiaVLValue;
-    @FXML private Label myopiaVRThreshold;
     @FXML private Label myopiaVRValue;
 
     // Hyperopia - Horizontal Picture
+    @FXML private Label hyperopiaHLValue;
+    @FXML private Label hyperopiaHRValue;
     // Hyperopia - Vertical Picture
+    @FXML private Label hyperopiaVLValue;
+    @FXML private Label hyperopiaVRValue;
 
     // Strabismus - Horizontal Picture
+    @FXML private Label strabismusHLAngleValue;
+    @FXML private Label strabismusHLDistanceValue;
+    @FXML private Label strabismusHRAngleValue;
+    @FXML private Label strabismusHRDistanceValue;
     // Strabismus - Vertical Picture
+    @FXML private Label strabismusVLAngleValue;
+    @FXML private Label strabismusVLDistanceValue;
+    @FXML private Label strabismusVRAngleValue;
+    @FXML private Label strabismusVRDistanceValue;
 
 
     /***************************************************************************
@@ -101,7 +109,7 @@ public class ResultGridController implements Initializable, ControlledScreen {
         nameLabel.setText(rootViewController.getController().getPatient().getFirstName() +
                 " " + rootViewController.getController().getPatient().getLastName());
 
-        rootViewController.getController().diagnose();
+//        rootViewController.getController().diagnose();
         List<DiseaseRecord> medicalRecord = rootViewController.getController().getRecords();
         String refer = "PASS";
         for(DiseaseRecord record : medicalRecord) {
@@ -111,21 +119,39 @@ public class ResultGridController implements Initializable, ControlledScreen {
             }
             switch(record.getMDiseaseName())  {
                 case MYOPIA: {
-                    // left eye
-                    myopiaHLThreshold.setText(record.getMHorizontalImage().getMLeftEye().getMThresholds().get(DiseaseRecord.MYOPIA_THRESHOLD));
+                    // horizontal
                     myopiaHLValue.setText(record.getMHorizontalImage().getMLeftEye().getMValues().get(DiseaseRecord.MYOPIA_VALUE));
-                    // right eye
-                    myopiaHRThreshold.setText(record.getMHorizontalImage().getMRightEye().getMThresholds().get(DiseaseRecord.MYOPIA_THRESHOLD));
                     myopiaHRValue.setText(record.getMHorizontalImage().getMRightEye().getMValues().get(DiseaseRecord.MYOPIA_VALUE));
+                    // vertical
+                    myopiaVLValue.setText(record.getMVerticalImage().getMLeftEye().getMValues().get(DiseaseRecord.MYOPIA_VALUE));
+                    myopiaVRValue.setText(record.getMVerticalImage().getMRightEye().getMValues().get(DiseaseRecord.MYOPIA_VALUE));
                     break;
                 }
                 case HYPEROPIA: {
+                    // horizontal
+                    hyperopiaHLValue.setText(record.getMHorizontalImage().getMLeftEye().getMValues().get(DiseaseRecord.HYPEROPIA_VALUE));
+                    hyperopiaHRValue.setText(record.getMHorizontalImage().getMRightEye().getMValues().get(DiseaseRecord.HYPEROPIA_VALUE));
+                    // vertical
+                    hyperopiaVLValue.setText(record.getMVerticalImage().getMLeftEye().getMValues().get(DiseaseRecord.HYPEROPIA_VALUE));
+                    hyperopiaVRValue.setText(record.getMVerticalImage().getMRightEye().getMValues().get(DiseaseRecord.HYPEROPIA_VALUE));
                     break;
                 }
                 case STRABISMUS: {
+                    // horizontal
+                    strabismusHLAngleValue.setText(record.getMHorizontalImage().getMLeftEye().getMValues().get(DiseaseRecord.STRABISMUS_ANGLE_VALUE));
+                    strabismusHLDistanceValue.setText(record.getMHorizontalImage().getMLeftEye().getMValues().get(DiseaseRecord.STRABISMUS_DISTANCE_VALUE));
+                    strabismusHRAngleValue.setText(record.getMHorizontalImage().getMRightEye().getMValues().get(DiseaseRecord.STRABISMUS_ANGLE_VALUE));
+                    strabismusHRDistanceValue.setText(record.getMHorizontalImage().getMRightEye().getMValues().get(DiseaseRecord.STRABISMUS_DISTANCE_VALUE));
+                    // vertical
+                    strabismusVLAngleValue.setText(record.getMVerticalImage().getMLeftEye().getMValues().get(DiseaseRecord.STRABISMUS_ANGLE_VALUE));
+                    strabismusVLDistanceValue.setText(record.getMVerticalImage().getMLeftEye().getMValues().get(DiseaseRecord.STRABISMUS_DISTANCE_VALUE));
+                    strabismusVRAngleValue.setText(record.getMVerticalImage().getMRightEye().getMValues().get(DiseaseRecord.STRABISMUS_ANGLE_VALUE));
+                    strabismusVRDistanceValue.setText(record.getMVerticalImage().getMRightEye().getMValues().get(DiseaseRecord.STRABISMUS_DISTANCE_VALUE));
                     break;
                 }
                 case ASTIGMATISM: {
+                    // horizontal
+                    // vertical
                     break;
                 }
                 case ANISOMETROPIA: {

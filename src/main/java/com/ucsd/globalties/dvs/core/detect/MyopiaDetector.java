@@ -16,7 +16,6 @@ public class MyopiaDetector implements DiseaseDetector {
     public void detect(Patient p) {
         // TODO implement for vertical picture
         Photo photo = p.getPhotos().get(0);        // Use horizontal picture for now.
-        final double MYOPIA_THRESHOLD = -3.25;
 
         Crescent_info leftCrescent = photo.getLeftEye().getPupil().getCrescent();
         Crescent_info rightCrescent = photo.getRightEye().getPupil().getCrescent();
@@ -27,15 +26,11 @@ public class MyopiaDetector implements DiseaseDetector {
         double diopter;
         // Do left eye
         diopter = Pupil.findClosestDiopter(leftCrescent.getCrescentSize());
-        disease.getMHorizontalImage().getMLeftEye().getMThresholds().put(
-                DiseaseRecord.MYOPIA_THRESHOLD, Double.toString(MYOPIA_THRESHOLD));
         disease.getMHorizontalImage().getMLeftEye().getMValues().put(
                 DiseaseRecord.MYOPIA_VALUE, Double.toString(diopter));
 
         // Do right eye
         diopter = Pupil.findClosestDiopter(rightCrescent.getCrescentSize());
-        disease.getMHorizontalImage().getMRightEye().getMThresholds().put(
-                DiseaseRecord.MYOPIA_THRESHOLD, Double.toString(MYOPIA_THRESHOLD));
         disease.getMHorizontalImage().getMRightEye().getMValues().put(
                 DiseaseRecord.MYOPIA_VALUE, Double.toString(diopter));
 

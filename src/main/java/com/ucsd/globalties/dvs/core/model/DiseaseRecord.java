@@ -43,10 +43,7 @@ public class DiseaseRecord {
         mVerticalImage = new ImageInfo();
 
         if (debug) {
-            mHorizontalImage.getMLeftEye().getMThresholds().put(MYOPIA_THRESHOLD, "1.75");
             mHorizontalImage.getMLeftEye().getMValues().put(MYOPIA_VALUE, "0.22");
-
-            mHorizontalImage.getMRightEye().getMThresholds().put(MYOPIA_THRESHOLD, "1.75");
             mHorizontalImage.getMRightEye().getMValues().put(MYOPIA_VALUE, "0.75");
         }
     }
@@ -61,11 +58,9 @@ public class DiseaseRecord {
         }
 
         public class EyeInfo {
-            @Getter @Setter private Map<Integer, String> mThresholds;
             @Getter @Setter private Map<Integer, String> mValues;
 
             public EyeInfo() {
-                mThresholds = new HashMap<>();
                 mValues = new HashMap<>();
             }
         }

@@ -35,9 +35,6 @@ public class StrabismusDetector implements DiseaseDetector {
      * @param p Patient
      */
     public void detect(Patient p) {
-        final double DISTANCE_THRESHOLD = 10;
-        final double ANGLE_THRESHOLD = Math.PI / 2d;
-
         // TODO implement for vertical picture
         Photo photo = p.getPhotos().get(0);        // Use horizontal picture for now.
 
@@ -55,23 +52,15 @@ public class StrabismusDetector implements DiseaseDetector {
         diseaseRecord.setMDiseaseName(EyeDisease.STRABISMUS);
 
         // Do left eye
-        diseaseRecord.getMHorizontalImage().getMLeftEye().getMThresholds().put(
-                DiseaseRecord.STRABISMUS_DISTANCE_THRESHOLD, Double.toString(DISTANCE_THRESHOLD));
         diseaseRecord.getMHorizontalImage().getMLeftEye().getMValues().put(
                 DiseaseRecord.STRABISMUS_DISTANCE_VALUE, Double.toString(leftDistDiff));
-        diseaseRecord.getMHorizontalImage().getMLeftEye().getMThresholds().put(
-                DiseaseRecord.STRABISMUS_ANGLE_THRESHOLD, Double.toString(ANGLE_THRESHOLD));
         diseaseRecord.getMHorizontalImage().getMLeftEye().getMValues().put(
                 DiseaseRecord.STRABISMUS_ANGLE_VALUE, Double.toString(leftAngleDiff));
 
 
         // Do right eye
-        diseaseRecord.getMHorizontalImage().getMRightEye().getMThresholds().put(
-                DiseaseRecord.STRABISMUS_DISTANCE_THRESHOLD, Double.toString(DISTANCE_THRESHOLD));
         diseaseRecord.getMHorizontalImage().getMRightEye().getMValues().put(
                 DiseaseRecord.STRABISMUS_DISTANCE_VALUE, Double.toString(rightDistDiff));
-        diseaseRecord.getMHorizontalImage().getMRightEye().getMThresholds().put(
-                DiseaseRecord.STRABISMUS_ANGLE_THRESHOLD, Double.toString(ANGLE_THRESHOLD));
         diseaseRecord.getMHorizontalImage().getMRightEye().getMValues().put(
                 DiseaseRecord.STRABISMUS_ANGLE_VALUE, Double.toString(rightAngleDiff));
 
