@@ -1,6 +1,7 @@
 package com.ucsd.globalties.dvs.core;
 
 import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
+import javafx.util.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Builder;
@@ -69,17 +70,17 @@ public class Patient {
      *
      * @return
      */
-    public Map<String, String> getPatientData() {
-        Map<String, String> data = new HashMap<>();
-        data.put("Name", firstName + " " + lastName);
-        data.put("Date of Birth", birth);
-        data.put("Gender", gender);
-        data.put("Ethnicity", ethnicity);
-        data.put("Language", language);
-        data.put("School", school);
-        data.put("Room Number", roomNumber);
-        data.put("School", school);
-        data.put("Comment", comment);
+    public Queue<Pair<String, String>> getPatientData() {
+        Queue<Pair<String, String>> data = new LinkedList<>();
+        data.add(new Pair<>("Name", firstName + " " + lastName));
+        data.add(new Pair<>("Date of Birth", birth));
+        data.add(new Pair<>("Gender", gender));
+        data.add(new Pair<>("Ethnicity", ethnicity));
+        data.add(new Pair<>("Language", language));
+        data.add(new Pair<>("School", school));
+        data.add(new Pair<>("Room Number", roomNumber));
+        data.add(new Pair<>("School", school));
+        data.add(new Pair<>("Comment", comment));
         return data;
     }
 

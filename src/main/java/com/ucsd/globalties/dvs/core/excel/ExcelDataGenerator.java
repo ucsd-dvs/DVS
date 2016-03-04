@@ -15,6 +15,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -37,6 +38,7 @@ import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Queue;
 
 /**
  * Basic excel export class that writes patient information into an excel file
@@ -79,28 +81,81 @@ public class ExcelDataGenerator {
         Row headerRow = sheet.createRow(rowNum++);
 
         // Create Row headers for Patient information
-        Map<String, String> pData = patientList.get(0).getPatientData();
-        for (String key : pData.keySet()) {
+        Queue<Pair<String, String>> pData = patientList.get(0).getPatientData();
+        Pair<String, String> pair;
+
+        while ((pair = pData.poll()) != null) {
             Cell cell = headerRow.createCell(cellNum++);
-            cell.setCellValue(key);
+            cell.setCellValue(pair.getKey());
         }
         List<DiseaseRecord> diseaseRecord = patientList.get(0).getDiseaseRecord();
         for (DiseaseRecord disease : diseaseRecord) {
             Cell cell = headerRow.createCell(cellNum++);
             cell.setCellValue(disease.getMDiseaseName().toString());
+
+            switch (disease.getMDiseaseName()) {
+                case MYOPIA: {
+                    Cell myopia = headerRow.createCell(cellNum++);
+                    myopia.setCellValue("Diopter");
+                    break;
+                }
+                case HYPEROPIA: {
+                    Cell hyperopia = headerRow.createCell(cellNum++);
+                    hyperopia.setCellValue("Diopter");
+                    break;
+                }
+                case STRABISMUS: {
+                    Cell angle = headerRow.createCell(cellNum++);
+                    angle.setCellValue("Angle");
+                    Cell distance = headerRow.createCell(cellNum++);
+                    distance.setCellValue("Distance");
+                    break;
+                }
+                case ASTIGMATISM: {
+                    break;
+                }
+                case ANISOMETROPIA: {
+                    break;
+                }
+                case CATARACTS: {
+                    break;
+                }
+            }
         }
 
         for (Patient p : patientList) {
             Row row = sheet.createRow(rowNum++);
             cellNum = 0;
-            Map<String, String> patientData = p.getPatientData();
-            for(String value : patientData.values()) {
+
+            Queue<Pair<String, String>> patientData = p.getPatientData();
+            while ((pair = patientData.poll()) != null) {
                 Cell cell = row.createCell(cellNum++);
-                cell.setCellValue(value);
+                cell.setCellValue(pair.getValue());
             }
             for(DiseaseRecord disease : diseaseRecord) {
                 Cell cell = row.createCell(cellNum++);
                 cell.setCellValue(disease.getMStatus());
+
+                switch (disease.getMDiseaseName()) {
+                    case MYOPIA: {
+                        break;
+                    }
+                    case HYPEROPIA: {
+                        break;
+                    }
+                    case STRABISMUS: {
+                        break;
+                    }
+                    case ASTIGMATISM: {
+                        break;
+                    }
+                    case ANISOMETROPIA: {
+                        break;
+                    }
+                    case CATARACTS: {
+                        break;
+                    }
+                }
             }
         }
 
