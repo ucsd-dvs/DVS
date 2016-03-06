@@ -87,8 +87,8 @@ public class Photo {
                     (int)(eye.tl().y + eye.height * 0.3),
                     (int)(eye.width - eye.width * 0.25), (int)(eye.height * 0.5));
             region = mFace.submat(isolatedEye);
-            Imshow testImage = new Imshow("Eye");
-            testImage.showImage(region);
+            //Imshow testImage = new Imshow("Eye");
+            //testImage.showImage(region);
             break;
         }
         return isolatedEye;
@@ -130,7 +130,7 @@ public class Photo {
 
         if(type == PhotoType.VERTICAL) {
             // TODO: Figure out why this varies across computers.
-            Core.transpose(image, image);
+            //Core.transpose(image, image);
             Core.flip(image, image, 0);
 //            Imshow im = new Imshow("sdfd");
 //            im.showImage(image);
