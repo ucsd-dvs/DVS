@@ -2,6 +2,7 @@ package com.ucsd.globalties.dvs.core.detect;
 
 import com.ucsd.globalties.dvs.core.*;
 import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Detect Astigmatism in a Patient.
@@ -9,6 +10,7 @@ import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
  *
  * @author Rahul
  */
+@Slf4j
 public class AstigmatismDetector implements DiseaseDetector {
 
     public void detect(Patient p) {
@@ -16,6 +18,11 @@ public class AstigmatismDetector implements DiseaseDetector {
         DiseaseRecord diseaseRecord = new DiseaseRecord();
         diseaseRecord.setMDiseaseName(EyeDisease.ASTIGMATISM);
 
+        if(p.getPhotos().size() < 2) {
+            log.info("One or more images have been removed by algorithm so we cannot diagnose astigmatism");
+            p.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ASTIGMATISM, 400));
+            return;
+        }
         Photo horizontal = p.getPhotos().get(0);
         Photo vertical   = p.getPhotos().get(1);
 
