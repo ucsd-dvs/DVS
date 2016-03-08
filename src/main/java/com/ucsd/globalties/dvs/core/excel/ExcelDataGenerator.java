@@ -166,7 +166,7 @@ public class ExcelDataGenerator {
                 cell.setCellValue(pair.getValue());
             }
             for(DiseaseRecord disease : diseaseRecord) {
-                 Cell cell = row.createCell(cellNum++);
+                Cell cell = row.createCell(cellNum++);
                 cell.setCellValue(disease.getMStatus());
 
                 switch (disease.getMDiseaseName()) {

@@ -277,6 +277,8 @@
             </GridPane>
         </GridPane>
 
+        <Separator></Separator>
+
         <!--Strabismus-->
         <GridPane>
             <columnConstraints>

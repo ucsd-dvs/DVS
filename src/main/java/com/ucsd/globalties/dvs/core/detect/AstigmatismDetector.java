@@ -20,7 +20,7 @@ public class AstigmatismDetector implements DiseaseDetector {
 
         if(p.getPhotos().size() < 2) {
             log.info("One or more images have been removed by algorithm so we cannot diagnose astigmatism");
-            p.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ASTIGMATISM, 400));
+            p.getDiseaseRecord().add(new DiseaseRecord(EyeDisease.ASTIGMATISM, DiseaseRecord.NOT_IMPLEMENTED));
             return;
         }
         Photo horizontal = p.getPhotos().get(0);

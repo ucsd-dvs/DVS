@@ -9,15 +9,15 @@ import java.util.*;
 
 public class DiseaseRecord {
     @Getter @Setter private EyeDisease mDiseaseName;
-    @Getter @Setter private int mStatus;
+    @Getter @Setter private String mStatus;
     @Getter @Setter private String mDescription;
 
     @Getter private ImageInfo mHorizontalImage;
     @Getter private ImageInfo mVerticalImage;
 
-    public static final int PASS = 0;
-    public static final int REFER = 1;
-    public static final int NOT_IMPLEMENTED = 501;
+    public static final String PASS = "PASS";
+    public static final String REFER = "REFER";
+    public static final String NOT_IMPLEMENTED = "Not Implemented";
 
     public static final int MYOPIA_VALUE = 3;
     public static final int HYPEROPIA_VALUE = 5;
@@ -29,11 +29,11 @@ public class DiseaseRecord {
         this(null, REFER);
     }
 
-    public DiseaseRecord(EyeDisease name, int status) {
+    public DiseaseRecord(EyeDisease name, String status) {
         this(name, status, false);
     }
 
-    public DiseaseRecord(EyeDisease name, int status, boolean debug) {
+    public DiseaseRecord(EyeDisease name, String status, boolean debug) {
         mDiseaseName = name;
         mStatus = status;
         mHorizontalImage = new ImageInfo();
