@@ -13,12 +13,13 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 public enum EyeDisease {
+    MYOPIA(new MyopiaDetector()),
+    HYPEROPIA(new HyperopiaDetector()),
     ASTIGMATISM(new AstigmatismDetector()),
     STRABISMUS(new StrabismusDetector()),
     CATARACTS(new CataractsDetector()),
-    ANISOMETROPIA(new AnisometropiaDetector()),
-    MYOPIA(new MyopiaDetector()),
-    HYPEROPIA(new HyperopiaDetector());
+    ANISOMETROPIA(new AnisometropiaDetector());
+
 
     @Getter
     private DiseaseDetector detector;

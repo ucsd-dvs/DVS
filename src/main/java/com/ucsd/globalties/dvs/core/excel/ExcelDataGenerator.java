@@ -95,20 +95,45 @@ public class ExcelDataGenerator {
 
             switch (disease.getMDiseaseName()) {
                 case MYOPIA: {
-                    Cell myopia = headerRow.createCell(cellNum++);
-                    myopia.setCellValue("Diopter");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Horizontal Left Diopter");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Horizontal Right Diopter");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Vertical Left Diopter");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Vertical Right Diopter");
                     break;
                 }
                 case HYPEROPIA: {
-                    Cell hyperopia = headerRow.createCell(cellNum++);
-                    hyperopia.setCellValue("Diopter");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Horizontal Left Diopter");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Horizontal Right Diopter");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Vertical Left Diopter");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Vertical Right Diopter");
                     break;
                 }
                 case STRABISMUS: {
-                    Cell angle = headerRow.createCell(cellNum++);
-                    angle.setCellValue("Angle");
-                    Cell distance = headerRow.createCell(cellNum++);
-                    distance.setCellValue("Distance");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Horizontal Left Angle");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Horizontal Right Angle");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Vertical Left Angle");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Vertical Right Angle");
+
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Horizontal Left Distance");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Horizontal Right Distance");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Vertical Left Distance");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Vertical Right Distance");
                     break;
                 }
                 case ASTIGMATISM: {
@@ -133,17 +158,50 @@ public class ExcelDataGenerator {
                 cell.setCellValue(pair.getValue());
             }
             for(DiseaseRecord disease : diseaseRecord) {
-                Cell cell = row.createCell(cellNum++);
+                 Cell cell = row.createCell(cellNum++);
                 cell.setCellValue(disease.getMStatus());
 
                 switch (disease.getMDiseaseName()) {
                     case MYOPIA: {
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMHorizontalImage().getMLeftEye().getMValues().get(DiseaseRecord.MYOPIA_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMHorizontalImage().getMRightEye().getMValues().get(DiseaseRecord.MYOPIA_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMVerticalImage().getMLeftEye().getMValues().get(DiseaseRecord.MYOPIA_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMVerticalImage().getMRightEye().getMValues().get(DiseaseRecord.MYOPIA_VALUE));
                         break;
                     }
                     case HYPEROPIA: {
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMHorizontalImage().getMLeftEye().getMValues().get(DiseaseRecord.HYPEROPIA_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMHorizontalImage().getMRightEye().getMValues().get(DiseaseRecord.HYPEROPIA_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMVerticalImage().getMLeftEye().getMValues().get(DiseaseRecord.HYPEROPIA_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMVerticalImage().getMRightEye().getMValues().get(DiseaseRecord.HYPEROPIA_VALUE));
                         break;
                     }
                     case STRABISMUS: {
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMHorizontalImage().getMLeftEye().getMValues().get(DiseaseRecord.STRABISMUS_ANGLE_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMHorizontalImage().getMRightEye().getMValues().get(DiseaseRecord.STRABISMUS_ANGLE_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMVerticalImage().getMLeftEye().getMValues().get(DiseaseRecord.STRABISMUS_ANGLE_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMVerticalImage().getMRightEye().getMValues().get(DiseaseRecord.STRABISMUS_ANGLE_VALUE));
+
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMHorizontalImage().getMLeftEye().getMValues().get(DiseaseRecord.STRABISMUS_DISTANCE_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMHorizontalImage().getMRightEye().getMValues().get(DiseaseRecord.STRABISMUS_DISTANCE_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMVerticalImage().getMLeftEye().getMValues().get(DiseaseRecord.STRABISMUS_DISTANCE_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMVerticalImage().getMRightEye().getMValues().get(DiseaseRecord.STRABISMUS_DISTANCE_VALUE));
                         break;
                     }
                     case ASTIGMATISM: {

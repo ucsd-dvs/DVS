@@ -19,12 +19,8 @@ public class DiseaseRecord {
     public static final int REFER = 1;
     public static final int NOT_IMPLEMENTED = 501;
 
-    public static final int MYOPIA_THRESHOLD = 2;
     public static final int MYOPIA_VALUE = 3;
-    public static final int HYPEROPIA_THRESHOLD = 4;
     public static final int HYPEROPIA_VALUE = 5;
-    public static final int STRABISMUS_DISTANCE_THRESHOLD = 6;
-    public static final int STRABISMUS_ANGLE_THRESHOLD = 7;
     public static final int STRABISMUS_DISTANCE_VALUE = 8;
     public static final int STRABISMUS_ANGLE_VALUE = 9;
 
