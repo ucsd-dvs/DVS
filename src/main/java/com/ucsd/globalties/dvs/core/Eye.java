@@ -143,10 +143,10 @@ public class Eye {
     Imgproc.HoughCircles(destGray, innerCircle, Imgproc.CV_HOUGH_GRADIENT, 2.0, (destGray.height()/4.0), 150.0, 20.0, (destGray.height()/16), (destGray.height()/4));
     double[] innerPupils = innerCircle.get(0, 0);
 
-    if(innerPupils == null)
-      return null;
-    Core.circle(innerCircle, new Point(innerPupils[0], innerPupils[1]), (int) innerPupils[2], new Scalar(255,0,0), 2);
-    dest.copyTo(innerCircle);
+    if(innerPupils != null) {
+      Core.circle(innerCircle, new Point(innerPupils[0], innerPupils[1]), (int) innerPupils[2], new Scalar(255, 0, 0), 2);
+      dest.copyTo(innerCircle);
+    }
     
     //======================> Logging pupils found <==============================
     

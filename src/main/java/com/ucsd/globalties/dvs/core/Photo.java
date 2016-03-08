@@ -83,9 +83,9 @@ public class Photo {
             Rect eye = eyes[i];
             eye.x += faceRec.x;
             eye.y += faceRec.y;
-            isolatedEye = new Rect((int)eye.tl().x,
+            isolatedEye = new Rect((int)(eye.tl().x + eye.tl().x * 0.02),
                     (int)(eye.tl().y + eye.height * 0.3),
-                    eye.width, (int)(eye.height * 0.5));
+                    (int)(eye.width - eye.width * 0.25), (int)(eye.height * 0.5));
             region = mFace.submat(isolatedEye);
             //Imshow testImage = new Imshow("Eye");
             //testImage.showImage(region);
@@ -129,8 +129,9 @@ public class Photo {
         Mat image = Highgui.imread(path);
 
         if(type == PhotoType.VERTICAL) {
-//            Core.transpose(image, image);
-//            Core.flip(image, image, 0);
+            // TODO: Figure out why this varies across computers.
+            //Core.transpose(image, image);
+            Core.flip(image, image, 0);
 //            Imshow im = new Imshow("sdfd");
 //            im.showImage(image);
         }
