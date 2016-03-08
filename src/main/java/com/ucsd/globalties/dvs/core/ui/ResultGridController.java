@@ -68,6 +68,13 @@ public class ResultGridController implements Initializable, ControlledScreen {
     @FXML private Label strabismusVRAngleValue;
     @FXML private Label strabismusVRDistanceValue;
 
+    // Astigmatism - Horizontal Picture
+    @FXML private Label astigmatismHLValue;
+    @FXML private Label astigmatismHRValue;
+    // Astigmatism - Vertical Picture
+    @FXML private Label astigmatismVLValue;
+    @FXML private Label astigmatismVRValue;
+
 
     /***************************************************************************
      * Public Methods
@@ -151,7 +158,11 @@ public class ResultGridController implements Initializable, ControlledScreen {
                 }
                 case ASTIGMATISM: {
                     // horizontal
+                    astigmatismHLValue.setText(record.getMHorizontalImage().getMLeftEye().getMValues().get(DiseaseRecord.ASTIGMATISM_VALUE));
+                    astigmatismHRValue.setText(record.getMHorizontalImage().getMRightEye().getMValues().get(DiseaseRecord.ASTIGMATISM_VALUE));
                     // vertical
+                    astigmatismVLValue.setText(record.getMVerticalImage().getMLeftEye().getMValues().get(DiseaseRecord.ASTIGMATISM_VALUE));
+                    astigmatismVRValue.setText(record.getMVerticalImage().getMRightEye().getMValues().get(DiseaseRecord.ASTIGMATISM_VALUE));
                     break;
                 }
                 case ANISOMETROPIA: {

@@ -280,6 +280,7 @@ public class RootViewController implements Initializable {
         message += "Hyperopia: " + DiseaseDetector.HYPEROPIA_THRESHOLD + "\n";
         message += "Strabismus Angle: " + DiseaseDetector.STRABISMUS_ANGLE_THRESHOLD + "\n";
         message += "Strabismus Distance: " + decimalFormat.format(DiseaseDetector.STRABISMUS_DISTANCE_THRESHOLD) + "\n";
+        message += "Astigmatism: " + DiseaseDetector.ASTIGMATISM_THRESHOLD + " difference\n";
 
         alert.setContentText(message);
         alert.showAndWait();

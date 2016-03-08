@@ -15,7 +15,7 @@ public interface DiseaseDetector {
     static final double HYPEROPIA_THRESHOLD = 1.75;
     static final double STRABISMUS_ANGLE_THRESHOLD = 10;
     static final double STRABISMUS_DISTANCE_THRESHOLD = Math.PI / 2d;
-    static final double ASTIGMATISM_THRESHOLD = -1.5;
+    static final String ASTIGMATISM_THRESHOLD = "10%";
 
     public void detect(Patient p);
 }

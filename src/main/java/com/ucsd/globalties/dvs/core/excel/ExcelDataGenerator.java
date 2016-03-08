@@ -137,6 +137,14 @@ public class ExcelDataGenerator {
                     break;
                 }
                 case ASTIGMATISM: {
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Horizontal Left Crescent Size");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Horizontal Right Crescent Size");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Vertical Left Crescent Size");
+                    cell = headerRow.createCell(cellNum++);
+                    cell.setCellValue("Vertical Right Crescent Size");
                     break;
                 }
                 case ANISOMETROPIA: {
@@ -205,6 +213,14 @@ public class ExcelDataGenerator {
                         break;
                     }
                     case ASTIGMATISM: {
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMHorizontalImage().getMLeftEye().getMValues().get(DiseaseRecord.ASTIGMATISM_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMHorizontalImage().getMRightEye().getMValues().get(DiseaseRecord.ASTIGMATISM_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMVerticalImage().getMLeftEye().getMValues().get(DiseaseRecord.ASTIGMATISM_VALUE));
+                        cell = row.createCell(cellNum++);
+                        cell.setCellValue(disease.getMVerticalImage().getMRightEye().getMValues().get(DiseaseRecord.ASTIGMATISM_VALUE));
                         break;
                     }
                     case ANISOMETROPIA: {

@@ -23,6 +23,7 @@ public class DiseaseRecord {
     public static final int HYPEROPIA_VALUE = 5;
     public static final int STRABISMUS_DISTANCE_VALUE = 8;
     public static final int STRABISMUS_ANGLE_VALUE = 9;
+    public static final int ASTIGMATISM_VALUE = 10;
 
     public DiseaseRecord() {
         this(null, REFER);
@@ -58,11 +59,12 @@ public class DiseaseRecord {
 
             public EyeInfo() {
                 mValues = new HashMap<>();
-
+                // Set default values
                 mValues.put(MYOPIA_VALUE, "n/a");
                 mValues.put(HYPEROPIA_VALUE, "n/a/");
                 mValues.put(STRABISMUS_DISTANCE_VALUE, "n/a");
                 mValues.put(STRABISMUS_ANGLE_VALUE, "n/a");
+                mValues.put(ASTIGMATISM_VALUE, "n/a");
             }
         }
     }

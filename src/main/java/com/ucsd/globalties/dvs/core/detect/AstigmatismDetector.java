@@ -35,6 +35,11 @@ public class AstigmatismDetector implements DiseaseDetector {
         double horizontalSize = leftHorizontal.getCrescentSize();
         double verticalSize   = leftVertical.getCrescentSize();
 
+        diseaseRecord.getMHorizontalImage().getMLeftEye().getMValues().replace(
+                DiseaseRecord.ASTIGMATISM_VALUE, Double.toString(horizontalSize));
+        diseaseRecord.getMVerticalImage().getMLeftEye().getMValues().replace(
+                DiseaseRecord.ASTIGMATISM_VALUE, Double.toString(verticalSize));
+
         diseaseRecord.setMStatus(DiseaseRecord.PASS);
 
         if( horizontalSize < verticalSize - verticalSize * 0.1 || horizontalSize > verticalSize + verticalSize * 0.1) {
@@ -46,6 +51,12 @@ public class AstigmatismDetector implements DiseaseDetector {
 
         horizontalSize = rightHorizontal.getCrescentSize();
         verticalSize   = rightVertical.getCrescentSize();
+
+        diseaseRecord.getMHorizontalImage().getMRightEye().getMValues().replace(
+                DiseaseRecord.ASTIGMATISM_VALUE, Double.toString(horizontalSize));
+        diseaseRecord.getMVerticalImage().getMRightEye().getMValues().replace(
+                DiseaseRecord.ASTIGMATISM_VALUE, Double.toString(verticalSize));
+
         if(horizontalSize < verticalSize - verticalSize * 0.1 || horizontalSize > verticalSize + verticalSize * 0.1) {
             diseaseRecord.setMStatus(DiseaseRecord.REFER);
             diseaseRecord.setMDescription(String.format(
