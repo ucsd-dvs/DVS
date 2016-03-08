@@ -4,6 +4,8 @@ import com.ucsd.globalties.dvs.core.EyeDisease;
 import com.ucsd.globalties.dvs.core.Main;
 import com.ucsd.globalties.dvs.core.Patient;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -107,10 +109,20 @@ public class InputGridController implements Initializable, ControlledScreen {
 
         // First row
         root.add(new Label("First Name"), 0, 0);
+        firstNameField.setOnAction((event) -> {
+            if (event.getEventType() == ActionEvent.ACTION) {
+                goToPhotoGrid();
+            }
+        });
         root.add(firstNameField, 1, 0);
 
         // Second Row
         root.add(new Label("Last Name"), 0, 1);
+        lastNameField.setOnAction((event) -> {
+            if (event.getEventType() == ActionEvent.ACTION) {
+                goToPhotoGrid();
+            }
+        });
         root.add(lastNameField, 1, 1);
 
         // Third Row
@@ -130,18 +142,38 @@ public class InputGridController implements Initializable, ControlledScreen {
 
         // Fifth Row
         root.add(new Label("Ethnicity"), 0, 4);
+        ethnicity.setOnAction((event) -> {
+            if (event.getEventType() == ActionEvent.ACTION) {
+                goToPhotoGrid();
+            }
+        });
         root.add(ethnicity, 1, 4);
 
         // Sixth Row
         root.add(new Label("Language"), 0, 5);
+        language.setOnAction((event) -> {
+            if (event.getEventType() == ActionEvent.ACTION) {
+                goToPhotoGrid();
+            }
+        });
         root.add(language, 1, 5);
 
         // Seventh Row
         root.add(new Label("School"), 0, 6);
+        school.setOnAction((event) -> {
+            if (event.getEventType() == ActionEvent.ACTION) {
+                goToPhotoGrid();
+            }
+        });
         root.add(school, 1, 6);
 
         // Eigth Row
         root.add(new Label("Room Number"), 0, 7);
+        roomNumber.setOnAction((event) -> {
+            if (event.getEventType() == ActionEvent.ACTION) {
+                goToPhotoGrid();
+            }
+        });
         root.add(roomNumber, 1, 7);
 
         // Ninth Row
@@ -233,6 +265,12 @@ public class InputGridController implements Initializable, ControlledScreen {
      * @param
      */
     private void goToPhotoGrid() {
+        if (firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "You must enter a First name and Last name", ButtonType.CLOSE);
+            alert.showAndWait();
+            return;
+        }
+
         int i = 0;
         String dob =
                 ((month.getValue() != null) ? month.getValue().toString() : "") + "/" +
