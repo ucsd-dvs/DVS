@@ -109,7 +109,7 @@ public class ResultGridController implements Initializable, ControlledScreen {
         nameLabel.setText(rootViewController.getController().getPatient().getFirstName() +
                 " " + rootViewController.getController().getPatient().getLastName());
 
-//        rootViewController.getController().diagnose();
+        rootViewController.getController().diagnose();
         List<DiseaseRecord> medicalRecord = rootViewController.getController().getRecords();
         String refer = "PASS";
         for(DiseaseRecord record : medicalRecord) {

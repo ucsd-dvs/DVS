@@ -58,6 +58,11 @@ public class DiseaseRecord {
 
             public EyeInfo() {
                 mValues = new HashMap<>();
+
+                mValues.put(MYOPIA_VALUE, "n/a");
+                mValues.put(HYPEROPIA_VALUE, "n/a/");
+                mValues.put(STRABISMUS_DISTANCE_VALUE, "n/a");
+                mValues.put(STRABISMUS_ANGLE_VALUE, "n/a");
             }
         }
     }

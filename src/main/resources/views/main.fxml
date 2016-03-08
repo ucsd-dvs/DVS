@@ -32,8 +32,8 @@
        <ToolBar id="toolbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <items>
               <Button onAction="#exportToExcel" text="Export" />
-              <Button onAction="#createDummyData" text="Create Dummy Data" />
-              <Button onAction="#goToResults" text="Goto Results" />
+              <!--<Button onAction="#createDummyData" text="Create Dummy Data" />-->
+              <!--<Button onAction="#goToResults" text="Goto Results" />-->
               <Pane HBox.hgrow="ALWAYS" />
               <Button onAction="#showMetrics" text="Metrics" />
           </items>

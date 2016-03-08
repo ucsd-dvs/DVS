@@ -28,12 +28,12 @@ public class HyperopiaDetector implements DiseaseDetector {
         double diopter;
         // Do left eye
         diopter = Pupil.findClosestDiopter(leftCrescent.getCrescentSize());
-        diseaseRecord.getMHorizontalImage().getMLeftEye().getMValues().put(
+        diseaseRecord.getMHorizontalImage().getMLeftEye().getMValues().replace(
                 DiseaseRecord.HYPEROPIA_VALUE, Double.toString(diopter));
 
         // Do Right eye
         diopter = Pupil.findClosestDiopter(rightCrescent.getCrescentSize());
-        diseaseRecord.getMHorizontalImage().getMRightEye().getMValues().put(
+        diseaseRecord.getMHorizontalImage().getMRightEye().getMValues().replace(
                 DiseaseRecord.HYPEROPIA_VALUE, Double.toString(diopter));
 
         if (leftCrescent.isCrescentIsAtBot() && rightCrescent.isCrescentIsAtBot()) {

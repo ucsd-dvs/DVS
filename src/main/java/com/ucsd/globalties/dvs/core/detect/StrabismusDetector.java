@@ -52,16 +52,16 @@ public class StrabismusDetector implements DiseaseDetector {
         diseaseRecord.setMDiseaseName(EyeDisease.STRABISMUS);
 
         // Do left eye
-        diseaseRecord.getMHorizontalImage().getMLeftEye().getMValues().put(
+        diseaseRecord.getMHorizontalImage().getMLeftEye().getMValues().replace(
                 DiseaseRecord.STRABISMUS_DISTANCE_VALUE, Double.toString(leftDistDiff));
-        diseaseRecord.getMHorizontalImage().getMLeftEye().getMValues().put(
+        diseaseRecord.getMHorizontalImage().getMLeftEye().getMValues().replace(
                 DiseaseRecord.STRABISMUS_ANGLE_VALUE, Double.toString(leftAngleDiff));
 
 
         // Do right eye
-        diseaseRecord.getMHorizontalImage().getMRightEye().getMValues().put(
+        diseaseRecord.getMHorizontalImage().getMRightEye().getMValues().replace(
                 DiseaseRecord.STRABISMUS_DISTANCE_VALUE, Double.toString(rightDistDiff));
-        diseaseRecord.getMHorizontalImage().getMRightEye().getMValues().put(
+        diseaseRecord.getMHorizontalImage().getMRightEye().getMValues().replace(
                 DiseaseRecord.STRABISMUS_ANGLE_VALUE, Double.toString(rightAngleDiff));
 
         if (distWarning && angleWarning) {

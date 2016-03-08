@@ -26,12 +26,12 @@ public class MyopiaDetector implements DiseaseDetector {
         double diopter;
         // Do left eye
         diopter = Pupil.findClosestDiopter(leftCrescent.getCrescentSize());
-        disease.getMHorizontalImage().getMLeftEye().getMValues().put(
+        disease.getMHorizontalImage().getMLeftEye().getMValues().replace(
                 DiseaseRecord.MYOPIA_VALUE, Double.toString(diopter));
 
         // Do right eye
         diopter = Pupil.findClosestDiopter(rightCrescent.getCrescentSize());
-        disease.getMHorizontalImage().getMRightEye().getMValues().put(
+        disease.getMHorizontalImage().getMRightEye().getMValues().replace(
                 DiseaseRecord.MYOPIA_VALUE, Double.toString(diopter));
 
         if (leftCrescent.isCrescentIsAtTop() && rightCrescent.isCrescentIsAtTop()) {
