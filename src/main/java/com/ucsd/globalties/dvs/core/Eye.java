@@ -1,6 +1,7 @@
 package com.ucsd.globalties.dvs.core;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
@@ -31,6 +32,8 @@ public class Eye {
   private Pupil pupil;
   
   private final double CROP_RATIO = 1.1;
+
+  HashMap<Float, Float> Ranges;
 
   /**
    * Create a new Eye object with the "parent" photo and the Mat that
@@ -152,7 +155,7 @@ public class Eye {
     boolean foundPupil = false;
     double[] finalPupil = new double[3];
     //double[] accurayValues = { 2.0, 1.0, 1.5, 2.5 };
-    double[] accurayValues = { 2.5, 2.0, 1.5, 1.0, 0.5, 0.4, 0.3, 0.2, 0.1, 0.001, 5.0, 10.0, 20.0 };
+    double[] accurayValues = { 2.5, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 1.8, 1.7, 1.5, 1.0, 5.0, 10.0, 20.0 };
     //double[] accurayValues = ;
     int radius = -1;
     Point center = null;
@@ -160,55 +163,118 @@ public class Eye {
     Mat dest = new Mat();
     src.copyTo(dest);
 
-    outerloop:
-    for(double accuracy : accurayValues) {
-      MatOfPoint3f circles = new MatOfPoint3f();
-      Imgproc.HoughCircles(gray, (Mat) circles, Imgproc.CV_HOUGH_GRADIENT, accuracy, (gray.height() / 4.0), 200.0, 100.0, (gray.height() / 16), gray.height() / 2);
+    ArrayList<Point3> foundCircles = new ArrayList<Point3>();
+    double[] centerThresholds = { 550, 100 };
 
-      if (circles.toArray().length != 1)
-        continue;
+    for(double centerThreshold : centerThresholds) {
 
-      for(Point3 circle : circles.toArray()) {
-     //   Point3 circle = circles.toArray()[0];
-        radius = (int) Math.round(circle.z);
-        if(radius < 30) {
-          radius = -1;
-          continue outerloop;
-        }
-        center = new Point(circle.x, circle.y);
-        finalPupil[0] = circle.x;
-        finalPupil[1] = circle.y;
-        finalPupil[2] = circle.z;
-      }
-      break;
-    }
-
-
-    if(radius == -1) {
-      double[] estimatedValues = { 2.0, 1.5, 1.0, 5.0, 10.0, 20.0 };
-      for (double accuracy : estimatedValues) {
+      outerloop:
+      for (double accuracy : accurayValues) {
         MatOfPoint3f circles = new MatOfPoint3f();
         Imgproc.HoughCircles(gray, (Mat) circles, Imgproc.CV_HOUGH_GRADIENT, accuracy, (gray.height() / 4.0), 200.0, 100.0, (gray.height() / 16), gray.height() / 2);
 
-        if (circles.toArray().length < 1)
+        if (circles.toArray().length != 1)
           continue;
 
         for (Point3 circle : circles.toArray()) {
-          int currentRadius = (int) Math.round(circle.z);
-          if (currentRadius > 30 && currentRadius > radius) {
-            center = new Point(circle.x, circle.y);
-            radius = currentRadius;
-            finalPupil[0] = circle.x;
-            finalPupil[1] = circle.y;
-            finalPupil[2] = circle.z;
+          //   Point3 circle = circles.toArray()[0];
+          radius = (int) Math.round(circle.z);
+          foundCircles.add(circle);
+          if (radius < 30) {
+            radius = -1;
+            continue outerloop;
           }
+          center = new Point(circle.x, circle.y);
+          finalPupil[0] = circle.x;
+          finalPupil[1] = circle.y;
+          finalPupil[2] = circle.z;
         }
+        break;
+      }
 
-        if (radius != -1)
-          break;
+
+      //if (radius == -1) {
+        double[] estimatedValues = {2.5, 2.0, 1.9, 1.8, 1.7, 1.5, 1.0, 5.0, 10.0, 20.0};
+        for (double accuracy : estimatedValues) {
+          MatOfPoint3f circles = new MatOfPoint3f();
+          //Imgproc.HoughCircles(gray, (Mat) circles, Imgproc.CV_HOUGH_GRADIENT, accuracy, (gray.height() / 4.0), 200.0, 100.0, (gray.height() / 16), gray.height() / 2);
+          Imgproc.HoughCircles(gray, (Mat) circles, Imgproc.CV_HOUGH_GRADIENT, accuracy, 32.0, 30.0, centerThreshold, (gray.height() / 16), gray.height() / 2);
+
+          if (circles.toArray().length < 1)
+            continue;
+
+          for (Point3 circle : circles.toArray()) {
+            int currentRadius = (int) Math.round(circle.z);
+            foundCircles.add(circle);
+            if (currentRadius > 30 && currentRadius > radius) {
+              center = new Point(circle.x, circle.y);
+              radius = currentRadius;
+              finalPupil[0] = circle.x;
+              finalPupil[1] = circle.y;
+              finalPupil[2] = circle.z;
+            }
+          }
+
+          if (radius != -1)
+            break;
+
+        }
+      //}
+
+      log.info("[STDERR] ", foundCircles.toString());
+      for(Point3 cur : foundCircles) {
+        log.info("[STDERR] x: {} \ty: {} \tr: {}", cur.x, cur.y, cur.z);
 
       }
+
+      if(foundCircles.size() > 0)
+        break;
     }
+
+    float someRange = 5f;
+
+    Point3 currentMax = null;
+    int maxPairs = -1;
+
+    for(int i = 0; i < foundCircles.size(); i++) {
+      ArrayList<Point3> xpairs = new ArrayList<Point3>();
+      xpairs.add(foundCircles.get(i));
+
+      for(int j = i + 1; j < foundCircles.size(); j++) {
+        if( Math.abs( foundCircles.get(i).x - foundCircles.get(j).x ) <= someRange )
+          xpairs.add(foundCircles.get(j));
+      }
+
+      ArrayList<Point3> ypairs = new ArrayList<Point3>();
+      for(int k = 0; k < xpairs.size(); k++) {
+        ypairs.add(xpairs.get(0));
+        for(int l = k + 1; l < xpairs.size(); l++) {
+          if( Math.abs( xpairs.get(k).y - xpairs.get(l).y ) <= someRange )
+            ypairs.add(xpairs.get(l));
+        }
+      }
+
+      if(maxPairs < ypairs.size()) {
+        for(Point3 current : ypairs) {
+          if(current.z > 30) {
+            maxPairs = ypairs.size();
+            currentMax = current;
+          }
+        }
+      }
+    }
+
+    if(currentMax == null) {
+      currentMax = foundCircles.get(0);
+      for(Point3 current : foundCircles)
+        currentMax = (currentMax.z < current.z) ? current : currentMax;
+    }
+
+    center = new Point(currentMax.x, currentMax.y);
+    radius = (int) Math.round(currentMax.z);
+    finalPupil[0] = currentMax.x;
+    finalPupil[1] = currentMax.y;
+    finalPupil[2] = currentMax.z;
 
     Core.circle(gray, center, 3, new Scalar(0, 255, 0), -1, 8, 0);
     Core.circle(gray, center, radius, new Scalar(255, 0, 0), 3, 8, 0);
