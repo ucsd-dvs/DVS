@@ -153,27 +153,65 @@ public class Eye {
     double[] finalPupil = new double[3];
     //double[] accurayValues = { 2.0, 1.0, 1.5, 2.5 };
     double[] accurayValues = { 2.5, 2.0, 1.5, 1.0, 0.5, 0.4, 0.3, 0.2, 0.1, 0.001, 5.0, 10.0, 20.0 };
+    //double[] accurayValues = ;
+    int radius = -1;
+    Point center = null;
+
     Mat dest = new Mat();
     src.copyTo(dest);
+
+    outerloop:
     for(double accuracy : accurayValues) {
       MatOfPoint3f circles = new MatOfPoint3f();
       Imgproc.HoughCircles(gray, (Mat) circles, Imgproc.CV_HOUGH_GRADIENT, accuracy, (gray.height() / 4.0), 200.0, 100.0, (gray.height() / 16), gray.height() / 2);
 
-      if(circles.toArray().length != 1)
+      if (circles.toArray().length != 1)
         continue;
 
-      for (Point3 circle : circles.toArray()) {
-        int radius = (int) Math.round(circle.z);
-        Point center = new Point(circle.x, circle.y);
-        Core.circle(gray, center, 3, new Scalar(0, 255, 0), -1, 8, 0);
-        Core.circle(gray, center, radius, new Scalar(255, 0, 0), 3, 8, 0);
+      for(Point3 circle : circles.toArray()) {
+     //   Point3 circle = circles.toArray()[0];
+        radius = (int) Math.round(circle.z);
+        if(radius < 30) {
+          radius = -1;
+          continue outerloop;
+        }
+        center = new Point(circle.x, circle.y);
         finalPupil[0] = circle.x;
         finalPupil[1] = circle.y;
         finalPupil[2] = circle.z;
       }
       break;
-
     }
+
+
+    if(radius == -1) {
+      double[] estimatedValues = { 2.0, 1.5, 1.0, 5.0, 10.0, 20.0 };
+      for (double accuracy : estimatedValues) {
+        MatOfPoint3f circles = new MatOfPoint3f();
+        Imgproc.HoughCircles(gray, (Mat) circles, Imgproc.CV_HOUGH_GRADIENT, accuracy, (gray.height() / 4.0), 200.0, 100.0, (gray.height() / 16), gray.height() / 2);
+
+        if (circles.toArray().length < 1)
+          continue;
+
+        for (Point3 circle : circles.toArray()) {
+          int currentRadius = (int) Math.round(circle.z);
+          if (currentRadius > 30 && currentRadius > radius) {
+            center = new Point(circle.x, circle.y);
+            radius = currentRadius;
+            finalPupil[0] = circle.x;
+            finalPupil[1] = circle.y;
+            finalPupil[2] = circle.z;
+          }
+        }
+
+        if (radius != -1)
+          break;
+
+      }
+    }
+
+    Core.circle(gray, center, 3, new Scalar(0, 255, 0), -1, 8, 0);
+    Core.circle(gray, center, radius, new Scalar(255, 0, 0), 3, 8, 0);
 
 
     Imshow dest1 = new Imshow("foobar");
@@ -186,7 +224,7 @@ public class Eye {
 
     //======================> Logging pupils found <==============================
     
-    log.info("Pupil found: x: {} y: {} r: finalPupil[0], finalPupil[1], finalPupil[2]");
+    log.info("Pupil found: x: {} y: {} r: {}", finalPupil[0], finalPupil[1], finalPupil[2]);
     //Crop eye mat and create pupil mat
     Point topLeft = new Point(finalPupil[0]-finalPupil[2],finalPupil[1]-finalPupil[2]);
     Point bottomRight = new Point(finalPupil[0]+finalPupil[2],finalPupil[1]+finalPupil[2]);
