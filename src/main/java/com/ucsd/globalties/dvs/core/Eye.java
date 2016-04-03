@@ -8,14 +8,7 @@ import java.util.Random;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
+import org.opencv.core.*;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
@@ -75,10 +68,10 @@ public class Eye {
     Mat src = new Mat();
     Mat gray = new Mat();
     Mat invert = new Mat();
-    Mat circles = new Mat();
     //make copy of eye mat so we do not modify it
     mat.copyTo(src);
-    
+    /*
+    Mat circles = new Mat();
     Imgproc.threshold(src, invert, 100, 255, Imgproc.THRESH_BINARY_INV);
 //    Imshow inverted = new Imshow("Inverted");
 //    inverted.showImage(invert);
@@ -147,10 +140,53 @@ public class Eye {
       Core.circle(innerCircle, new Point(innerPupils[0], innerPupils[1]), (int) innerPupils[2], new Scalar(255, 0, 0), 2);
       dest.copyTo(innerCircle);
     }
-    
+    */
+
+
+    /****************************************************************************/
+
+    Imgproc.cvtColor(src, gray, Imgproc.COLOR_BGR2GRAY);
+    Imgproc.GaussianBlur(gray, gray, new Size(5,5), 9.0, 9.0);
+    Imgproc.Canny(gray, gray, 5.0, 70.0);
+
+    boolean foundPupil = false;
+    double[] finalPupil = new double[3];
+    //double[] accurayValues = { 2.0, 1.0, 1.5, 2.5 };
+    double[] accurayValues = { 2.5, 2.0, 1.5, 1.0, 0.5, 0.4, 0.3, 0.2, 0.1, 0.001, 5.0, 10.0, 20.0 };
+    Mat dest = new Mat();
+    src.copyTo(dest);
+    for(double accuracy : accurayValues) {
+      MatOfPoint3f circles = new MatOfPoint3f();
+      Imgproc.HoughCircles(gray, (Mat) circles, Imgproc.CV_HOUGH_GRADIENT, accuracy, (gray.height() / 4.0), 200.0, 100.0, (gray.height() / 16), gray.height() / 2);
+
+      if(circles.toArray().length != 1)
+        continue;
+
+      for (Point3 circle : circles.toArray()) {
+        int radius = (int) Math.round(circle.z);
+        Point center = new Point(circle.x, circle.y);
+        Core.circle(gray, center, 3, new Scalar(0, 255, 0), -1, 8, 0);
+        Core.circle(gray, center, radius, new Scalar(255, 0, 0), 3, 8, 0);
+        finalPupil[0] = circle.x;
+        finalPupil[1] = circle.y;
+        finalPupil[2] = circle.z;
+      }
+      break;
+
+    }
+
+
+    Imshow dest1 = new Imshow("foobar");
+    Imshow dest2 = new Imshow("foobar");
+    dest1.showImage(gray);
+    dest2.showImage(src);
+    /****************************************************************************/
+
+
+
     //======================> Logging pupils found <==============================
     
-    log.info("Pupil found: x: {} y: {} r: {}", finalPupil[0], finalPupil[1], finalPupil[2]);
+    log.info("Pupil found: x: {} y: {} r: finalPupil[0], finalPupil[1], finalPupil[2]");
     //Crop eye mat and create pupil mat
     Point topLeft = new Point(finalPupil[0]-finalPupil[2],finalPupil[1]-finalPupil[2]);
     Point bottomRight = new Point(finalPupil[0]+finalPupil[2],finalPupil[1]+finalPupil[2]);
@@ -179,6 +215,11 @@ public class Eye {
     }
     Rect pupilArea = new Rect(topLeft, bottomRight);
     Mat pupilMat = new Mat(dest, pupilArea);
+    dest2.showImage((pupilMat));
+
+    if(pupilMat.empty()) {
+      log.warn("[Eye.java] ERROR: Mat object should not be empty");
+    }
 
     photo.appendPupilX(finalPupil[0]);
     return new Pupil(this, pupilMat);

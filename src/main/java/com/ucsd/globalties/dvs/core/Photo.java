@@ -131,7 +131,7 @@ public class Photo {
         if(type == PhotoType.VERTICAL) {
             // TODO: Figure out why this varies across computers.
             //Core.transpose(image, image);
-            Core.flip(image, image, 0);
+           // Core.flip(image, image, 0);
 //            Imshow im = new Imshow("sdfd");
 //            im.showImage(image);
         }
