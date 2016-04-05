@@ -171,6 +171,7 @@ public class Eye {
       outerloop:
       for (double accuracy : accurayValues) {
         MatOfPoint3f circles = new MatOfPoint3f();
+        // Values for houghcircles have different results than following loop, this is a stricter comparison
         Imgproc.HoughCircles(gray, (Mat) circles, Imgproc.CV_HOUGH_GRADIENT, accuracy, (gray.height() / 4.0), 200.0, 100.0, (gray.height() / 16), gray.height() / 2);
 
         if (circles.toArray().length != 1)
@@ -194,6 +195,7 @@ public class Eye {
 
 
       //if (radius == -1) {
+      // We decided to run this loop as well to search for the most consistent circular shape found
         double[] estimatedValues = {2.5, 2.0, 1.9, 1.8, 1.7, 1.5, 1.0, 5.0, 10.0, 20.0};
         for (double accuracy : estimatedValues) {
           MatOfPoint3f circles = new MatOfPoint3f();
