@@ -13,4 +13,9 @@ public class MyDialogs {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
         alert.showAndWait();
     }
+
+    public static void showWarning(String msg) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, msg, ButtonType.OK);
+        alert.showAndWait();
+    }
 }

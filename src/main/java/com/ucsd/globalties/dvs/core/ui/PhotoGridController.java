@@ -253,7 +253,10 @@ public class PhotoGridController implements Initializable, ControlledScreen {
      * TODO need to improve passing user input to controller
      */
     private void goToDetectGrid() {
-        if (watcher != null) {
+        if (vFilePath == null || hFilePath == null) {
+            MyDialogs.showWarning("Images needed before proceeding!");
+        }
+        else if (watcher != null) {
             // FIXME thread isn't being cancelled for some reason
             if (!watcher.cancel()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Could not cancel watcher thread!", ButtonType.CLOSE);
