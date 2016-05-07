@@ -210,7 +210,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     @FXML
     private void selectVerticalPicture(ActionEvent event) {
 
-        File dir = new File(System.getProperty("user.dir")+"/pics"); // use this for testing
+        File dir = new File(System.getProperty("user.dir")); // use this for testing
 //        File dir = new File(System.getProperty("user.home")); // use this for production
         fileChooser.setInitialDirectory(dir.getAbsoluteFile());
         File file = fileChooser.showOpenDialog(root.getScene().getWindow());
@@ -226,7 +226,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     @FXML
     private void selectHorizontalPicture(ActionEvent event) {
 
-        File dir = new File(System.getProperty("user.dir")+"/pics"); // use this for testing
+        File dir = new File(System.getProperty("user.dir")); // use this for testing
 //        File dir = new File(System.getProperty("user.home")); // use this for production
         fileChooser.setInitialDirectory(dir.getAbsoluteFile());
         File file = fileChooser.showOpenDialog(root.getScene().getWindow());
