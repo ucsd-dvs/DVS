@@ -8,4 +8,9 @@ public class MyDialogs {
         Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.CLOSE);
         alert.showAndWait();
     }
+
+    public static void showNotice(String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
+        alert.showAndWait();
+    }
 }

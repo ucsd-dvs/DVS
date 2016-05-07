@@ -156,6 +156,7 @@ public class ResultGridController implements Initializable, ControlledScreen {
 
     @Override
     public void bindButtons() {
+        rootViewController.getExportToExcel().setVisible(true);
         rootViewController.getBackButton().setVisible(false);
         rootViewController.getNextButton().setText("Start Over");
         rootViewController.getNextButton().setMinWidth(100);

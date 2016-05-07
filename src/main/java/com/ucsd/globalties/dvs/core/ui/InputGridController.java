@@ -3,6 +3,7 @@ package com.ucsd.globalties.dvs.core.ui;
 import com.ucsd.globalties.dvs.core.EyeDisease;
 import com.ucsd.globalties.dvs.core.Main;
 import com.ucsd.globalties.dvs.core.Patient;
+import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -233,6 +234,8 @@ public class InputGridController implements Initializable, ControlledScreen {
      * @param
      */
     private void goToPhotoGrid() {
+        MyDialogs.showNotice("Please select a horizontal and vertical image, or begin taking pictures.");
+
         int i = 0;
         String dob =
                 ((month.getValue() != null) ? month.getValue().toString() : "") + "/" +
@@ -266,6 +269,7 @@ public class InputGridController implements Initializable, ControlledScreen {
 
     @Override
     public void bindButtons() {
+        rootViewController.getExportToExcel().setVisible(false);
         rootViewController.getBackButton().setVisible(false);
         rootViewController.getNextButton().setText("Next >");
         rootViewController.getNextButton().setOnAction((event) -> goToPhotoGrid());

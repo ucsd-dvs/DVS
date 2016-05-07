@@ -58,6 +58,9 @@ public class RootViewController implements Initializable {
     private Button backButton;
     @FXML
     private MenuItem exportItem;
+    @FXML
+    @Getter
+    private Button exportToExcel;
 
     /*************************************************************************
      * Member Variables

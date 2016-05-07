@@ -31,9 +31,9 @@
        <!--</MenuBar>-->
        <ToolBar id="toolbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <items>
-              <Button onAction="#exportToExcel" text="Export" />
-              <Button onAction="#createDummyData" text="Create Dummy Data" />
-              <Button onAction="#goToResults" text="Goto Results" />
+              <Button fx:id="exportToExcel" onAction="#exportToExcel" text="Export" />
+              <!--<Button onAction="#createDummyData" text="Create Dummy Data" />-->
+              <!--<Button onAction="#goToResults" text="Goto Results" />-->
           </items>
        </ToolBar>
        <HBox id="hbox" prefHeight="17.0" prefWidth="800.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">

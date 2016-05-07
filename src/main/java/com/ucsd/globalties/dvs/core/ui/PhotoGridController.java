@@ -1,6 +1,7 @@
 package com.ucsd.globalties.dvs.core.ui;
 
 import com.ucsd.globalties.dvs.core.Main;
+import com.ucsd.globalties.dvs.core.tools.MyDialogs;
 import com.ucsd.globalties.dvs.core.tools.WatchDir;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -25,7 +26,9 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -62,6 +65,8 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     private HBox imgHorizBox;
     @FXML
     private HBox imgVertBox;
+
+    private Thread th;
 
     /***************************************************************************
      * Directory Watcher bindings
@@ -144,43 +149,49 @@ public class PhotoGridController implements Initializable, ControlledScreen {
          * 4) Do we delete picture if it can't be processed?
          * 5) What do we do w/ existing pictures in folder?
          */
+            String folder = getCurrentTimeStamp();
+            System.out.println("This is our folder: " + folder);
+            try {
+                Path dir_path = Paths.get(System.getProperty("user.home") + "/Desktop/" + folder);
+                watcher = new WatchDir(dir_path, false);
 
-        String folder = getCurrentTimeStamp();
-        System.out.println("This is our folder: " + folder);
-        Path dir_path = Paths.get(System.getProperty("user.home") + "/Desktop/" + folder);
-        watcher = new WatchDir(dir_path, false);
+                // Set horizontal picture
+                hStrProperty = new SimpleStringProperty();
+                hStrProperty.bind(watcher.messageProperty());
 
-        // Set horizontal picture
-        hStrProperty = new SimpleStringProperty();
-        hStrProperty.bind(watcher.messageProperty());
+                //Set vertical picture
+                hStrProperty.addListener(new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                        System.out.println("hStrProperty change listener");
+                        System.out.println(newValue);
+                        if (hFilePath == null) {
+                            hFilePath = newValue;
+                            imgHoriz.setImage(new Image("file:///" + newValue));
+                        } else if (vFilePath == null) {
+                            vFilePath = newValue;
+                            imgVert.setImage(new Image("file:///" + newValue));
+                            imgVert.setRotate(-90);
+                        }
+                    }
 
-        //Set vertical picture
-        hStrProperty.addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println("hStrProperty change listener");
-                System.out.println(newValue);
-                if(hFilePath == null){
-                    hFilePath = newValue;
-                    imgHoriz.setImage(new Image("file:///" + newValue));
-                } else if(vFilePath == null){
-                    vFilePath = newValue;
-                    imgVert.setImage(new Image("file:///" + newValue));
-                    imgVert.setRotate(-90);
-                }
+                });
+
+            }
+            catch (NoSuchFileException e) {
+                (new File(System.getProperty("user.home") + "/Desktop/" + folder)).mkdir();
             }
 
-        });
-
-        //Run watcher on individual thread
-        Thread th = new Thread(watcher);
-        th.setDaemon(true);
-        th.start();
+            //Run watcher on individual thread
+            th = new Thread(watcher);
+            th.setDaemon(true);
+            th.start();
 
     }
 
     @Override
     public void bindButtons() {
+        rootViewController.getExportToExcel().setVisible(false);
         rootViewController.getBackButton().setVisible(true);
         rootViewController.getBackButton().setOnAction((event) -> goToInputGrid());
         rootViewController.getNextButton().setText("Next >");
@@ -199,14 +210,32 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     @FXML
     private void selectVerticalPicture(ActionEvent event) {
 
-        vFilePath = null;
-        imgVert.setImage(null);
+        File dir = new File(System.getProperty("user.dir")+"/pics"); // use this for testing
+//        File dir = new File(System.getProperty("user.home")); // use this for production
+        fileChooser.setInitialDirectory(dir.getAbsoluteFile());
+        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+        if (file != null) {
+            fileChooser.setInitialDirectory(file.getParentFile());
+            vFilePath = file.getAbsolutePath();
+            imgVert.setImage(new Image("file:///" + vFilePath));
+            imgVert.setRotate(-90);
+        }
+
     }
 
     @FXML
     private void selectHorizontalPicture(ActionEvent event) {
-        hFilePath = null;
-        imgHoriz.setImage(null);
+
+        File dir = new File(System.getProperty("user.dir")+"/pics"); // use this for testing
+//        File dir = new File(System.getProperty("user.home")); // use this for production
+        fileChooser.setInitialDirectory(dir.getAbsoluteFile());
+        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+        if (file != null) {
+            fileChooser.setInitialDirectory(file.getParentFile());
+            hFilePath = file.getAbsolutePath();
+            imgHoriz.setImage(new Image("file:///" + hFilePath));
+        }
+
     }
 
     private void goToInputGrid() {
