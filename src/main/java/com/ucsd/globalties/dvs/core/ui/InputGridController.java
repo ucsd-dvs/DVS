@@ -4,17 +4,26 @@ import com.ucsd.globalties.dvs.core.EyeDisease;
 import com.ucsd.globalties.dvs.core.Main;
 import com.ucsd.globalties.dvs.core.Patient;
 import com.ucsd.globalties.dvs.core.tools.MyDialogs;
+import com.ucsd.globalties.dvs.core.tools.WatchDir;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.net.URL;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -228,12 +237,26 @@ public class InputGridController implements Initializable, ControlledScreen {
         comment = new TextArea();
     } /* END createComponents() */
 
+    public static String getCurrentTimeStamp() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy_MM_dd");
+        Date now = new Date();
+        String strDate = sdfDate.format(now);
+        return strDate;
+    }
+
     /**
      * TODO Definitely want to improve passing user input to controller
      *
      * @param
      */
     private void goToPhotoGrid() {
+        String folder = getCurrentTimeStamp();
+        System.out.println("This is our folder: " + folder);
+        File file = new File(System.getProperty("user.home")+"/Desktop/"+folder);
+        if(!file.exists())
+            file.mkdir();
+
+
         MyDialogs.showNotice("Please select a horizontal and vertical image, or begin taking pictures.");
 
         int i = 0;
