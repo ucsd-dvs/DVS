@@ -35,6 +35,8 @@ public class Eye {
 
   HashMap<Float, Float> Ranges;
 
+  private boolean debugMode = false;
+
   /**
    * Create a new Eye object with the "parent" photo and the Mat that
    * describes its pixels.
@@ -281,11 +283,13 @@ public class Eye {
     Core.circle(gray, center, 3, new Scalar(0, 255, 0), -1, 8, 0);
     Core.circle(gray, center, radius, new Scalar(255, 0, 0), 3, 8, 0);
 
-
     Imshow dest1 = new Imshow("foobar");
     Imshow dest2 = new Imshow("foobar");
-    dest1.showImage(gray);
-    dest2.showImage(src);
+
+    if(debugMode) {
+      dest1.showImage(gray);
+      dest2.showImage(src);
+    }
     /****************************************************************************/
 
 
@@ -321,7 +325,10 @@ public class Eye {
     }
     Rect pupilArea = new Rect(topLeft, bottomRight);
     Mat pupilMat = new Mat(dest, pupilArea);
-    dest2.showImage((pupilMat));
+
+    if(debugMode) {
+      dest2.showImage((pupilMat));
+    }
 
     if(pupilMat.empty()) {
       log.warn("[Eye.java] ERROR: Mat object should not be empty");

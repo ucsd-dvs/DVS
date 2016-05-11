@@ -20,12 +20,12 @@
         </padding>
 
         <Label text="Left Eye" GridPane.halignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <ImageView fx:id="hLeftEye" fitWidth="100" fitHeight="100" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <ImageView fx:id="hLeftPupil" fitWidth="100" fitHeight="100" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <ImageView fx:id="hLeftEye"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <!--<ImageView fx:id="hLeftPupil"  GridPane.columnIndex="0" GridPane.rowIndex="2"/>-->
 
         <Label text="Right Eye" GridPane.halignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <ImageView fx:id="hRightEye" fitWidth="100" fitHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <ImageView fx:id="hRightPupil" fitWidth="100" fitHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <ImageView fx:id="hRightEye"  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <!--<ImageView fx:id="hRightPupil"  GridPane.columnIndex="1" GridPane.rowIndex="2"/>-->
 
     </GridPane>
 
@@ -39,12 +39,12 @@
         </padding>
 
         <Label text="Left Eye" GridPane.halignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <ImageView fx:id="vLeftEye" fitWidth="100" fitHeight="100" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <ImageView fx:id="vLeftPupil" fitWidth="100" fitHeight="100" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <ImageView fx:id="vLeftEye"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <!--<ImageView fx:id="vLeftPupil"  GridPane.columnIndex="0" GridPane.rowIndex="2"/>-->
 
         <Label text="Right Eye" GridPane.halignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <ImageView fx:id="vRightEye" fitWidth="100" fitHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <ImageView fx:id="vRightPupil" fitWidth="100" fitHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <ImageView fx:id="vRightEye"  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <!--<ImageView fx:id="vRightPupil"  GridPane.columnIndex="1" GridPane.rowIndex="2"/>-->
 
     </GridPane>
 
