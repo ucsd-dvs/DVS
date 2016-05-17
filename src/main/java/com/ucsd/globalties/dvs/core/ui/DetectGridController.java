@@ -44,6 +44,7 @@ public class DetectGridController implements Initializable, ControlledScreen {
     @FXML private ImageView vLeftPupil;
     @FXML private ImageView vRightEye;
     @FXML private ImageView vRightPupil;
+    private Map<String, String> detected;
 
 
     /***************************************************************************
@@ -76,41 +77,38 @@ public class DetectGridController implements Initializable, ControlledScreen {
      */
     @Override
     public void update() throws Exception {
-//        ControlledScreen.super.update();
+        ControlledScreen.super.update();
 
         //FIXME: I want to update the view w/o detecting
         //So I can show a progress bar on the screen while the detection runs in the background
 
-        Map<String, String> detected = rootViewController.getController().detectAll();
-        if(detected == null) {
-            MyDialogs.showWarning("Unable to detect two eyes! Retake pictures or try again.");
-            navigationController.setScreen(Main.photoGridID);
-        }
-        else {
-            ControlledScreen.super.update();
+        detected = rootViewController.getController().detectAll();
 
-            if (detected.get("left_eye_horizontal") != null) {
-                hLeftEye.setImage(new Image("file:" + detected.get("left_eye_horizontal")));
-            }
+        if(detected == null) {
+            throw new Exception();
+        }
+        if (detected.get("left_eye_horizontal") != null) {
+            hLeftEye.setImage(new Image("file:" + detected.get("left_eye_horizontal")));
+        }
 //        if(detected.get("left_eye_pupil_horizontal") != null) {
 //            hLeftPupil.setImage(new Image("file:" + detected.get("left_eye_pupil_horizontal")));
 //        }
-            if (detected.get("right_eye_horizontal") != null) {
-                hRightEye.setImage(new Image("file:" + detected.get("right_eye_horizontal")));
-            }
+        if (detected.get("right_eye_horizontal") != null) {
+            hRightEye.setImage(new Image("file:" + detected.get("right_eye_horizontal")));
+        }
 //        if(detected.get("right_eye_pupil_horizontal") != null) {
 //            hRightPupil.setImage(new Image("file:" + detected.get("right_eye_pupil_horizontal")));
 //        }
-            if (detected.get("left_eye_vertical") != null) {
-                vLeftEye.setImage(new Image("file:" + detected.get("left_eye_vertical")));
-            }
+        if (detected.get("left_eye_vertical") != null) {
+            vLeftEye.setImage(new Image("file:" + detected.get("left_eye_vertical")));
+        }
 //        if (detected.get("left_eye_pupil_vertical") != null) {
 //            vLeftPupil.setImage(new Image("file:" + detected.get("left_eye_pupil_vertical")));
-//        }
-            if (detected.get("right_eye_vertical") != null) {
-                vRightEye.setImage(new Image("file:" + detected.get("right_eye_vertical")));
-            }
+//       }
+        if (detected.get("right_eye_vertical") != null) {
+            vRightEye.setImage(new Image("file:" + detected.get("right_eye_vertical")));
         }
+
 //        if (detected.get("right_eye_pupil_vertical") != null) {
 //            vRightPupil.setImage(new Image("file:" + detected.get
 //("right_eye_pupil_vertical")));
@@ -122,10 +120,10 @@ public class DetectGridController implements Initializable, ControlledScreen {
 
     @Override
     public void bindButtons() {
-        rootViewController.getExportToExcel().setVisible(false);
-        rootViewController.getBackButton().setOnAction((event) -> goToPhotoGrid());
-        rootViewController.getNextButton().setText("Next >");
-        rootViewController.getNextButton().setOnAction((event) -> goToResultsGrid());
+            rootViewController.getExportToExcel().setVisible(false);
+            rootViewController.getBackButton().setOnAction((event) -> goToPhotoGrid());
+            rootViewController.getNextButton().setText("Next >");
+            rootViewController.getNextButton().setOnAction((event) -> goToResultsGrid());
     }
 
     /***************************************************************************
@@ -145,9 +143,4 @@ public class DetectGridController implements Initializable, ControlledScreen {
         navigationController.setScreen(Main.resultGridID);
     }
 
-    @FXML
-    private void goToInputGrid() {
-        navigationController.resetAll();
-        navigationController.setScreen(Main.inputScreenID);
-    }
 }

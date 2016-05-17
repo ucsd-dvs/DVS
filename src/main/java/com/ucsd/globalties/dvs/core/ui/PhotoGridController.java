@@ -33,6 +33,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.DoubleAccumulator;
 
@@ -67,6 +68,8 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     private HBox imgVertBox;
 
     private Thread th;
+
+    private Map<String, String> detected;
 
     /***************************************************************************
      * Directory Watcher bindings
@@ -191,6 +194,8 @@ public class PhotoGridController implements Initializable, ControlledScreen {
 
     @Override
     public void bindButtons() {
+
+
         rootViewController.getExportToExcel().setVisible(false);
         rootViewController.getBackButton().setVisible(true);
         rootViewController.getBackButton().setOnAction((event) -> goToInputGrid());
@@ -257,6 +262,15 @@ public class PhotoGridController implements Initializable, ControlledScreen {
         if (vFilePath == null || hFilePath == null) {
             MyDialogs.showWarning("Images needed before proceeding!");
         }
+        else{
+            rootViewController.getController().setPatientPhotos(hFilePath, vFilePath);
+            detected = rootViewController.getController().detectAll();
+        }
+        if (detected == null) {
+            MyDialogs.showNotice("Could not detect both eyes! Check that the first image is horizontal" +
+                                    " and the second image is vertical, or retake the pictures.");
+            navigationController.resetAll();
+        }
         else if (watcher != null) {
             // FIXME thread isn't being cancelled for some reason
             if (!watcher.cancel()) {
@@ -265,7 +279,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
                 navigationController.setScreen(Main.detectGridID);
 
             } else {
-                rootViewController.getController().setPatientPhotos(hFilePath, vFilePath);
+                //rootViewController.getController().setPatientPhotos(hFilePath, vFilePath);
                 navigationController.setScreen(Main.detectGridID);
             }
         }
