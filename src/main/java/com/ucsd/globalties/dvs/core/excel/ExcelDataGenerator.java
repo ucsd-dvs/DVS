@@ -163,7 +163,7 @@ public class ExcelDataGenerator {
         passwordField.setPromptText("Password");
         Platform.runLater(() -> { passwordField.requestFocus(); });
         PasswordField passwordField1 = new PasswordField();
-        passwordField1.setPromptText("Reenter Password");
+        passwordField1.setPromptText("Confirm Password");
 
         Label errorLabel = new Label("Your passwords do not match!");
         errorLabel.setTextFill(Color.RED);
