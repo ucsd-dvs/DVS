@@ -241,8 +241,9 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     private void goToInputGrid() {
         if (watcher != null) {
             if (!watcher.cancel()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Could not cancel watcher thread!", ButtonType.CLOSE);
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Could not cancel watcher thread!", ButtonType.CLOSE);
                 alert.showAndWait();
+                navigationController.setScreen(Main.inputScreenID);
             } else {
                 navigationController.setScreen(Main.inputScreenID);
             }
@@ -259,8 +260,10 @@ public class PhotoGridController implements Initializable, ControlledScreen {
         else if (watcher != null) {
             // FIXME thread isn't being cancelled for some reason
             if (!watcher.cancel()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Could not cancel watcher thread!", ButtonType.CLOSE);
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Could not cancel watcher thread!", ButtonType.CLOSE);
                 alert.showAndWait();
+                navigationController.setScreen(Main.detectGridID);
+
             } else {
                 rootViewController.getController().setPatientPhotos(hFilePath, vFilePath);
                 navigationController.setScreen(Main.detectGridID);

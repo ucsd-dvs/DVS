@@ -76,36 +76,40 @@ public class DetectGridController implements Initializable, ControlledScreen {
      */
     @Override
     public void update() throws Exception {
-        ControlledScreen.super.update();
+//        ControlledScreen.super.update();
 
         //FIXME: I want to update the view w/o detecting
         //So I can show a progress bar on the screen while the detection runs in the background
 
         Map<String, String> detected = rootViewController.getController().detectAll();
         if(detected == null) {
-            throw new Exception();
+            MyDialogs.showWarning("Unable to detect two eyes! Retake pictures or try again.");
+            navigationController.setScreen(Main.photoGridID);
         }
-        resetState();
-        if(detected.get("left_eye_horizontal") != null) {
-            hLeftEye.setImage(new Image("file:" + detected.get("left_eye_horizontal")));
-        }
+        else {
+            ControlledScreen.super.update();
+
+            if (detected.get("left_eye_horizontal") != null) {
+                hLeftEye.setImage(new Image("file:" + detected.get("left_eye_horizontal")));
+            }
 //        if(detected.get("left_eye_pupil_horizontal") != null) {
 //            hLeftPupil.setImage(new Image("file:" + detected.get("left_eye_pupil_horizontal")));
 //        }
-        if(detected.get("right_eye_horizontal") != null) {
-            hRightEye.setImage(new Image("file:" + detected.get("right_eye_horizontal")));
-        }
+            if (detected.get("right_eye_horizontal") != null) {
+                hRightEye.setImage(new Image("file:" + detected.get("right_eye_horizontal")));
+            }
 //        if(detected.get("right_eye_pupil_horizontal") != null) {
 //            hRightPupil.setImage(new Image("file:" + detected.get("right_eye_pupil_horizontal")));
 //        }
-        if (detected.get("left_eye_vertical") != null) {
-            vLeftEye.setImage(new Image("file:" + detected.get("left_eye_vertical")));
-        }
+            if (detected.get("left_eye_vertical") != null) {
+                vLeftEye.setImage(new Image("file:" + detected.get("left_eye_vertical")));
+            }
 //        if (detected.get("left_eye_pupil_vertical") != null) {
 //            vLeftPupil.setImage(new Image("file:" + detected.get("left_eye_pupil_vertical")));
 //        }
-        if (detected.get("right_eye_vertical") != null) {
-            vRightEye.setImage(new Image("file:" + detected.get("right_eye_vertical")));
+            if (detected.get("right_eye_vertical") != null) {
+                vRightEye.setImage(new Image("file:" + detected.get("right_eye_vertical")));
+            }
         }
 //        if (detected.get("right_eye_pupil_vertical") != null) {
 //            vRightPupil.setImage(new Image("file:" + detected.get
@@ -139,5 +143,11 @@ public class DetectGridController implements Initializable, ControlledScreen {
     @FXML
     private void goToResultsGrid() {
         navigationController.setScreen(Main.resultGridID);
+    }
+
+    @FXML
+    private void goToInputGrid() {
+        navigationController.resetAll();
+        navigationController.setScreen(Main.inputScreenID);
     }
 }
