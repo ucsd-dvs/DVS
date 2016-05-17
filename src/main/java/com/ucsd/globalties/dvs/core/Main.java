@@ -136,7 +136,7 @@ public class Main extends Application {
         try {
             InputStream in = null;
             String osName = System.getProperty("os.name");
-            String fileName = "opencv_java";
+            String fileName = "opencv_java249";
             String ext = ".dll";
             log.info(osName);
             if (osName.startsWith("Windows")) {
