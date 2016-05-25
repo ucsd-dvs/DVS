@@ -85,6 +85,8 @@ public class PhotoGridController implements Initializable, ControlledScreen {
 
     private WatchDir watcher = null;
 
+    private String folder;
+
     /***************************************************************************
      * Public Methods
      ***************************************************************************/
@@ -154,7 +156,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
          * 4) Do we delete picture if it can't be processed?
          * 5) What do we do w/ existing pictures in folder?
          */
-            String folder = getCurrentTimeStamp();
+            folder = getCurrentTimeStamp();
             System.out.println("This is our folder: " + folder);
             try {
                 Path dir_path = Paths.get(System.getProperty("user.home") + "/Desktop/" + folder);
@@ -214,7 +216,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     @FXML
     private void selectVerticalPicture(ActionEvent event) {
 
-        File dir = new File(System.getProperty("user.dir")); // use this for testing
+        File dir = new File(System.getProperty("user.home") + "/Desktop/" + folder); // use this for testing
 //        File dir = new File(System.getProperty("user.home")); // use this for production
         fileChooser.setInitialDirectory(dir.getAbsoluteFile());
         File file = fileChooser.showOpenDialog(root.getScene().getWindow());
@@ -230,7 +232,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     @FXML
     private void selectHorizontalPicture(ActionEvent event) {
 
-        File dir = new File(System.getProperty("user.dir")); // use this for testing
+        File dir = new File(System.getProperty("user.home") + "/Desktop/" + folder); // use this for testing
 //        File dir = new File(System.getProperty("user.home")); // use this for production
         fileChooser.setInitialDirectory(dir.getAbsoluteFile());
         File file = fileChooser.showOpenDialog(root.getScene().getWindow());
