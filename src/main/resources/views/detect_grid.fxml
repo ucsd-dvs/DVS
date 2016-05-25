@@ -21,11 +21,9 @@
 
         <Label text="Left Eye" GridPane.halignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
         <ImageView fx:id="hLeftEye"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <!--<ImageView fx:id="hLeftPupil"  GridPane.columnIndex="0" GridPane.rowIndex="2"/>-->
 
         <Label text="Right Eye" GridPane.halignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <ImageView fx:id="hRightEye"  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <!--<ImageView fx:id="hRightPupil"  GridPane.columnIndex="1" GridPane.rowIndex="2"/>-->
 
     </GridPane>
 
@@ -40,11 +38,9 @@
 
         <Label text="Left Eye" GridPane.halignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
         <ImageView fx:id="vLeftEye"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <!--<ImageView fx:id="vLeftPupil"  GridPane.columnIndex="0" GridPane.rowIndex="2"/>-->
 
         <Label text="Right Eye" GridPane.halignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <ImageView fx:id="vRightEye"  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <!--<ImageView fx:id="vRightPupil"  GridPane.columnIndex="1" GridPane.rowIndex="2"/>-->
 
     </GridPane>
 
