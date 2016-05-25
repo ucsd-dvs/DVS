@@ -178,7 +178,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
                         } else if (vFilePath == null) {
                             vFilePath = newValue;
                             imgVert.setImage(new Image("file:///" + newValue));
-                            imgVert.setRotate(-90);
+                            //imgVert.setRotate(-90);
                         }
                     }
 
@@ -224,7 +224,7 @@ public class PhotoGridController implements Initializable, ControlledScreen {
             fileChooser.setInitialDirectory(file.getParentFile());
             vFilePath = file.getAbsolutePath();
             imgVert.setImage(new Image("file:///" + vFilePath));
-            imgVert.setRotate(-90);
+            //imgVert.setRotate(-90);
         }
 
     }

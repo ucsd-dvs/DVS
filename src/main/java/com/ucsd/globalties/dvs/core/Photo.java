@@ -149,7 +149,7 @@ public class Photo {
 
         if(type == PhotoType.VERTICAL && (width > height)) {
             // TODO: Figure out why this varies across computers.
-            System.out.println("picture is vertical.");
+            System.out.println("picture is not vertical.");
             Core.transpose(image, image);
             Core.flip(image, image, 0);
             if(DEBUG) {
