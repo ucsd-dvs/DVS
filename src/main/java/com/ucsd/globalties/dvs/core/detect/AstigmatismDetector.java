@@ -4,6 +4,8 @@ import com.ucsd.globalties.dvs.core.*;
 import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+
 /**
  * Detect Astigmatism in a Patient.
  * TODO port this algorithm from the Python code when Crescent detection is added
@@ -13,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AstigmatismDetector implements DiseaseDetector {
 
-    public void detect(Patient p) {
+    public void detect(Patient p) throws IOException{
         StringBuilder msg = new StringBuilder();
         DiseaseRecord diseaseRecord = new DiseaseRecord();
         diseaseRecord.setMDiseaseName(EyeDisease.ASTIGMATISM);

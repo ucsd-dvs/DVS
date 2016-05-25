@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.experimental.Builder;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -37,7 +38,7 @@ public class Patient {
      * references to any necessary components.
      * TODO PLZ REFACTOR.
      */
-    public void diagnose() {
+    public void diagnose() throws IOException{
         for (Iterator<Photo> it = photos.iterator(); it.hasNext(); ) {
             Photo p = it.next();
             Eye left = p.getLeftEye();

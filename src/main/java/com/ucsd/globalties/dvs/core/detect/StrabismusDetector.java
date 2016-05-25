@@ -7,6 +7,8 @@ import com.ucsd.globalties.dvs.core.Photo;
 import com.ucsd.globalties.dvs.core.WhiteDot;
 import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 
+import java.io.IOException;
+
 /**
  * Detect strabismus in a patient.
  * Currently, the algorithm gets the distance of the white dot from the center of the Pupil
@@ -34,7 +36,7 @@ public class StrabismusDetector implements DiseaseDetector {
      * sight of an ideal eye (perpendicular to the eye)
      * @param p Patient
      */
-    public void detect(Patient p) {
+    public void detect(Patient p) throws IOException{
         final double DISTANCE_THRESHOLD = 10;
         final double ANGLE_THRESHOLD = Math.PI / 2d;
 

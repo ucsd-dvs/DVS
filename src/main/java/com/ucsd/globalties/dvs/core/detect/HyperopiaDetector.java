@@ -4,13 +4,15 @@ import com.sun.javafx.binding.DoubleConstant;
 import com.ucsd.globalties.dvs.core.*;
 import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 
+import java.io.IOException;
+
 public class HyperopiaDetector implements DiseaseDetector {
 
     /**
      * The patient has Hyperopia if the diopter is greater than 1.75
      * @param p Patient
      */
-    public void detect(Patient p) {
+    public void detect(Patient p) throws IOException{
         StringBuilder msg = new StringBuilder();
 
         // TODO implement vertical picture

@@ -5,6 +5,8 @@ import com.sun.javafx.tk.DummyToolkit;
 import com.ucsd.globalties.dvs.core.*;
 import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
 
+import java.io.IOException;
+
 public class MyopiaDetector implements DiseaseDetector {
 
     public MyopiaDetector() {}
@@ -13,7 +15,7 @@ public class MyopiaDetector implements DiseaseDetector {
      * The patient has Myopia if the diopter is less than -3.25
      * @param p Patient
      */
-    public void detect(Patient p) {
+    public void detect(Patient p) throws IOException{
         // TODO implement for vertical picture
         Photo photo = p.getPhotos().get(0);        // Use horizontal picture for now.
         final double MYOPIA_THRESHOLD = -3.25;

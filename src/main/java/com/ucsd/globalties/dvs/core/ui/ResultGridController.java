@@ -19,6 +19,7 @@ import javafx.scene.text.*;
 import javafx.scene.text.Font;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -94,7 +95,7 @@ public class ResultGridController implements Initializable, ControlledScreen {
      * Updates and creates UI elements to show Diagnosis results
      */
     @Override
-    public void update() {
+    public void update() throws IOException{
         resetState();
         bindButtons();
 

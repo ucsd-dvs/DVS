@@ -12,7 +12,10 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -48,6 +51,8 @@ public class Photo {
 
     private Mat mFace;
 
+    private boolean DEBUG = false;
+
     public Photo(String path, Patient patient, PhotoType type) {
         this.path = path;
         if (!new File(path).exists()) {
@@ -58,19 +63,24 @@ public class Photo {
     }
 
     public Eye getLeftEye() {
-        if (eyes == null) {
-            eyes = findEyes();
-            if(eyes == null) return null;
-        }
+        getEye();
+        if(eyes == null) return null;
         return eyes.getLeft();
     }
 
     public Eye getRightEye() {
-        if (eyes == null) {
-            eyes = findEyes();
-            if(eyes == null) return null;
-        }
+        getEye();
+        if(eyes == null) return null;
         return eyes.getRight();
+    }
+
+    private void getEye() {
+        if (eyes == null) {
+            try {
+                eyes = findEyes();
+            }
+            catch (IOException e) {}
+        }
     }
 
     private Rect getTemplate(CascadeClassifier classifier, Rect faceRec) {
@@ -87,8 +97,10 @@ public class Photo {
                     (int)(eye.tl().y + eye.height * 0.3),
                     (int)(eye.width - eye.width * 0.15), (int)(eye.height * 0.5));
             region = mFace.submat(isolatedEye);
-            //Imshow testImage = new Imshow("Eye");
-            //testImage.showImage(region);
+            if (DEBUG) {
+                Imshow testImage = new Imshow("Eye");
+                testImage.showImage(region);
+            }
             break;
         }
         return isolatedEye;
@@ -125,15 +137,25 @@ public class Photo {
         return faceBox;
     }
 
-    public Pair<Eye, Eye> findEyes() {
+    public Pair<Eye, Eye> findEyes() throws IOException{
         Mat image = Highgui.imread(path);
 
-        if(type == PhotoType.VERTICAL) {
+        BufferedImage imagePassed = ImageIO.read(new File(path));
+        int width = imagePassed.getWidth();
+        int height = imagePassed.getHeight();
+
+        if(DEBUG)
+        System.out.println(width + " " + height);
+
+        if(type == PhotoType.VERTICAL && (width > height)) {
             // TODO: Figure out why this varies across computers.
+            System.out.println("picture is vertical.");
             Core.transpose(image, image);
             Core.flip(image, image, 0);
-//            Imshow im = new Imshow("sdfd");
-//            im.showImage(image);
+            if(DEBUG) {
+                Imshow im = new Imshow("sdfd");
+                im.showImage(image);
+            }
         }
 
         // find face
@@ -158,8 +180,10 @@ public class Photo {
                         (int)(faceBox.height/3.0));
         Core.rectangle(image, leftArea.tl(), leftArea.br(), new Scalar(255, 0, 0, 255), 2);
         Core.rectangle(image, rightArea.tl(), rightArea.br(), new Scalar(255, 0, 0, 255), 2);
-        //Imshow testImage = new Imshow("Faces With Eyes");
-        //testImage.showImage(image);
+        if(DEBUG) {
+            Imshow testImage = new Imshow("Faces With Eyes");
+            testImage.showImage(image);
+        }
         mFace = image;
         List<Rect> detectedEyes = new ArrayList<Rect>();
         Rect templateL = getTemplate(eyeDetector, leftArea);

@@ -1,5 +1,6 @@
 package com.ucsd.globalties.dvs.core;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import com.ucsd.globalties.dvs.core.Photo.PhotoType;
 import com.ucsd.globalties.dvs.core.excel.ExcelDataGenerator;
 import com.ucsd.globalties.dvs.core.model.DiseaseRecord;
@@ -17,6 +18,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.opencv.highgui.Highgui;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -65,7 +67,7 @@ public class Controller {
         patient = null;
     }
 
-    public void diagnose() {
+    public void diagnose() throws IOException{
         patient.diagnose();
     }
 

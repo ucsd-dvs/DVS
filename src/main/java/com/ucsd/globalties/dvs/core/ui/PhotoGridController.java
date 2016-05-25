@@ -21,12 +21,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import jdk.nashorn.internal.runtime.ECMAException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -193,15 +195,12 @@ public class PhotoGridController implements Initializable, ControlledScreen {
     }
 
     @Override
-    public void bindButtons() {
-
-
+    public void bindButtons()  {
         rootViewController.getExportToExcel().setVisible(false);
         rootViewController.getBackButton().setVisible(true);
         rootViewController.getBackButton().setOnAction((event) -> goToInputGrid());
         rootViewController.getNextButton().setText("Next >");
         rootViewController.getNextButton().setOnAction((event) -> goToDetectGrid());
-//        rootViewController.getNextButton().setDisable(true);
     }
 
     /***************************************************************************
@@ -279,7 +278,6 @@ public class PhotoGridController implements Initializable, ControlledScreen {
                 navigationController.setScreen(Main.detectGridID);
 
             } else {
-                //rootViewController.getController().setPatientPhotos(hFilePath, vFilePath);
                 navigationController.setScreen(Main.detectGridID);
             }
         }

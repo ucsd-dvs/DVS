@@ -2,6 +2,8 @@ package com.ucsd.globalties.dvs.core.ui;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+
 /**
  * Common interface for our screens
  *
@@ -47,5 +49,5 @@ public interface ControlledScreen {
      */
     void onLoad();
 
-    void bindButtons();
+    void bindButtons() throws IOException;
 }
