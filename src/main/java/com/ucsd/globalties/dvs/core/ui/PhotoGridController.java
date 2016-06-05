@@ -26,6 +26,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -220,11 +222,23 @@ public class PhotoGridController implements Initializable, ControlledScreen {
 //        File dir = new File(System.getProperty("user.home")); // use this for production
         fileChooser.setInitialDirectory(dir.getAbsoluteFile());
         File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+
+        int width = 0;
+        int height = 0;
+
+        try {
+            BufferedImage imagePassed = ImageIO.read(file);
+             width = imagePassed.getWidth();
+             height = imagePassed.getHeight();
+        }
+        catch (IOException e) {}
+
         if (file != null) {
             fileChooser.setInitialDirectory(file.getParentFile());
             vFilePath = file.getAbsolutePath();
             imgVert.setImage(new Image("file:///" + vFilePath));
-            //imgVert.setRotate(-90);
+            if(width>height)
+                imgVert.setRotate(-90);
         }
 
     }
